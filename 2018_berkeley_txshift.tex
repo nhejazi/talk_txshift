@@ -1,0 +1,630 @@
+\documentclass[12pt,t]{beamer}
+\usepackage{graphicx}
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+\usepackage{datetime}
+\usepackage{url}
+
+% specifications for presenter mode
+\beamerdefaultoverlayspecification{<+->}
+\setbeamercovered{transparent}
+
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+
+\usepackage{amstext}
+%\usepackage{coloremoji}
+
+\usepackage{graphicx}
+\graphicspath{ {Figs/} }
+
+% math shorthand
+\usepackage{bm}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\X}{\mathcal{X}}
+\newcommand{\lik}{\mathcal{L}}
+\DeclarePairedDelimiterX{\infdivx}[2]{(}{)}{%
+  #1\;\delimsize\|\;#2%
+}
+\newcommand{\infdiv}{D\infdivx}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+% Bibliography
+\usepackage{natbib}
+\bibpunct{(}{)}{,}{a}{}{;}
+\usepackage{bibentry}
+\nobibliography*
+
+\input{header.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% end of header
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% title info
+\title{\large Data-Adaptive Estimation and Inference in the Analysis of
+  Differential Methylation}
+\subtitle{\scriptsize for the annual retreat of the \textit{Center for
+                      Computational Biology},\\
+                    given 18 November 2017
+                    \\[-10pt]
+         }
+\author{\href{http://nimahejazi.org}{Nima Hejazi}
+       \\[-10pt]
+       }
+\institute{Division of Biostatistics \\
+           University of California, Berkeley \\
+           \href{https://www.stat.berkeley.edu/~nhejazi}
+             {\tt \scriptsize \color{foreground}
+               stat.berkeley.edu/\textasciitilde{}nhejazi
+             }
+           \\[4pt]
+           \includegraphics[height=20mm]{Figs/seal-berkeley.png}
+           \\[-12pt]
+          }
+\date{
+  \href{https://nimahejazi.org}
+      {\tt \scriptsize \color{foreground} nimahejazi.org}
+  \\[-4pt]
+  \href{https://twitter.com/nshejazi}
+      {\tt \scriptsize \color{foreground} twitter/@nshejazi}
+  \\[-4pt]
+  \href{https://github.com/nhejazi}
+      {\tt \scriptsize \color{foreground} github/nhejazi}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+% title slide
+{
+\setbeamertemplate{footline}{} % no page number here
+\frame{
+  \titlepage
+
+  \vspace{-1em}
+
+  \centerline{\href{https://goo.gl/xabp3Q}{\tt \scriptsize
+                                           \underline{slides}: goo.gl/xabp3Q}}
+  \vspace{-1.5em}
+  \vfill \hfill \includegraphics[height=6mm]{Figs/cc-zero.png} \vspace*{-0.5cm}
+
+  \note{This slide deck is for a brief (about 15-minute) talk on a new
+    statistical algorithm for using nonparametric and data-adaptive estimates of
+    variable importance measures for differential methylation analysis. This
+    talk was most recently given at the annual retreat of the
+    \href{http://ccb.berkeley.edu/}{Center for
+    Computational Biology} at the University of California, Berkeley.
+
+    Source: {\tt https://github.com/nhejazi/talk\_methyvim} \\
+    Slides: {\tt https://goo.gl/JDhSEg} \\
+    With notes: {\tt https://goo.gl/xabp3Q}
+}
+}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{Preview: Summary}
+\only<1>{\addtocounter{framenumber}{-1}}
+
+\begin{center}
+\begin{itemize}
+  \itemsep10pt
+  \item DNA methylation data is \textit{extremely} high-dimensional --- we can
+    collect data on 850K genomic sites with modern arrays!
+  \item Normalization and QC are critical components of properly analyzing
+    modern DNA methylation data. There are many choices of technique.
+  \item A relative scarcity of techniques for estimation and inference exists
+    --- analyses are often limited to the general linear model.
+  \item Statistical causal inference provides an avenue for answering richer
+    scientific questions, especially when combined with modern advances in
+    machine learning.
+\end{itemize}
+\end{center}
+
+\note{We'll go over this summary again at the end of the talk. Hopefully, it
+  will all make more sense then.
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{Motivation: Let's meet the data}
+
+\begin{center}
+\begin{itemize}
+  \itemsep10pt
+  \item Observational study of the impact of disease state on DNA methylation.
+  \item Phenotype-level quantities: $216$ subjects, binary disease status (FASD)
+    of each subject, background info on subjects (e.g., sex, age).
+  \item Genomic-level quantities: $\sim 850,000$ CpG sites interrogated using
+    the \textit{Infinium MethylationEPIC BeadChip} by Illumina.
+  \item \textbf{Questions}: How do disease status and differential methylation
+    relate? Is a coherent biomarker-type signature detectable?
+\end{itemize}
+\end{center}
+
+\note{
+\begin{itemize}
+  \itemsep10pt
+  \item FASD is an abbreviation for Fetal Alcohol Spectrum Disorders.
+  \item We're mostly interested in the interplay between disease and DNA
+    methylation.
+  \item In particular, we'd like to construct some kind of importance score for
+    CpG sites impacted by the exposure/disease of interest.
+  \item Re: dimensionality, c.f., RNA-seq analyses are $\sim 30,000$ in
+    dimension at the gene level.
+\end{itemize}
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{DNA Methylation}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{dna_methylation}
+  \caption{
+    \url{https://www.illumina.com/techniques/sequencing/methylation-sequencing.html}
+    (source)}
+\end{figure}
+
+\note{
+\begin{itemize}
+  \itemsep10pt
+  \item The biology of these structures is quite complicated: many different
+    structures --- CpG islands, shores, etc.
+  \item Both hypermethylation and hypomethylation are linked to disease states.
+  \item It's especially important to examine these processes, keeping in mind
+    that the process may be complex and non-monotonic.
+\end{itemize}
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{Data analysis? Linear Models!}
+\begin{center}
+\begin{itemize}
+  \itemsep10pt
+  \item Standard operating procedure: For each CpG site ($g = 1, \dots, G$), fit
+    a linear model:
+    \[
+      \mathbb{E}[y_g] = X \beta_g
+    \]
+  \item Test the coefficent of interest using a standard t-test:
+    \[
+      t_{g} = \frac{\hat{\beta}_{g} - \beta_{g, H_0}}{s_g}
+    \]
+  \item Such models are a matter of convenience: does $\hat{\beta}_{g}$ answer
+    our scientific questions? Perhaps not.
+  \item Is consideration being given to whether the data could have been
+    generated by a linear model? Perhaps not.
+\end{itemize}
+\end{center}
+
+\note{
+\begin{itemize}
+  \itemsep10pt
+  \item CpG sites are thought to function in networks. Treating them as acting
+    independently is \textit{not} faithful to the underlying biology.
+  \item The linear model is a great starting point for analyses whne the data is
+    generated using complex technology --- no need to make the analysis more
+    complicated.
+  \item That being said, the data is difficult and expensive to collect, so why
+    restrict the scope of the questions we'd like to ask.
+\end{itemize}
+}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile,c]{Motivation: Science Before Statistics}
+
+\begin{center}
+\begin{minipage}[c]{9.4cm}
+\begin{semiverbatim}
+\lstset{basicstyle=\normalsize}
+\begin{lstlisting}[linewidth=9.4cm]
+What is the effect of disease status
+on DNA methylation at a specific CpG
+site, controlling for the observed
+methylation status of the neighbors
+of the given CpG site?
+
+\end{lstlisting}
+\end{semiverbatim}
+\end{minipage}
+\end{center}
+
+\note{
+\begin{itemize}
+  \itemsep10pt
+  \item Again, CpG sites are thought to function in networks. Treating them as
+    acting independently is \textit{not} faithful to the underlying biology.
+  \item This means that we should take into account the methylation status of
+    neighboring CpG sites when assessing differential methylation at a single
+    site.
+  \item This is a coherent scientific question that we can set out to answer
+    statistically. It's motivated by the established science and possible to do
+    with modern statistical methodology.
+\end{itemize}
+}
+
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{Data analysis? A Data-Adaptive Approach}
+
+\begin{center}
+\begin{enumerate}
+  \itemsep8pt
+  \item Isolate a subset of CpG sites for which there is cursory evidence of
+    differential methylation.
+  \item Assign CpG sites into neighborhoods (e.g., bp distance). If there are
+    many neighbors, apply clustering (e.g., \textit{PAM}) to select a subset.
+  \item Estimate \textit{variable importance measure} (VIM) at each screened CpG
+    site, with disease as intervention ($A$) and controlling for neighboring CpG
+    sites ($W$).
+  \item Apply a variant of the Benjamini \& Hochberg method for FDR control,
+    accounting for initial screening.
+\end{enumerate}
+\end{center}
+
+\note{
+\begin{itemize}
+  \itemsep10pt
+  \item Pre-screening is a critical step since we cannot perform computationally
+    intensive estimation on all the sites. This is flexible --- just use your
+    favorite method (as long as allows a ranking to be made).
+  \item The variable importance step merely comes down to the creation of a
+    score. We use TMLE to statistically estimate parameters from causal models.
+    The procedure is general enough to accomodate any inference technique.
+\end{itemize}
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{Pre-Screening --- Pick Your Favorite Method}
+
+\begin{center}
+\begin{itemize}
+  \itemsep10pt
+  \item The estimation procedure is computationally intensive --- apply it only
+    to sites that appear promising.
+  \item Consider estimating univariate (linear) regressions of intervention on
+    CpG methylation status. Fast, easy.
+  \item Select CpG sites with a marginal p-value below, say, $0.01$. Apply
+    data-adaptive procedure to this subset.
+  \item The modeling assumptions do not matter since the we won't be pursuing
+    inference under such a model.
+  \item Software implementation is extensible. Users are encouraged to add their
+    own. (It's easy!)
+\end{itemize}
+\end{center}
+
+\note{
+\begin{itemize}
+  \itemsep10pt
+  \item We'll be adding to the available routines for pre-screening too! For
+    now, we have \textsc{limma}, and more are on the way.
+\end{itemize}
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{Too Many Neighbors? Clustering}
+
+\begin{center}
+\begin{itemize}
+  \itemsep10pt
+  \item There are many options: $k$-means, $k$-medoids, etc., as well as many
+    algorithmic solutions.
+  \item For convenience, we use \underline{P}artitioning \underline{A}round
+    \underline{M}edoids (PAM), a well-established algorithm.
+  \item With limited sample sizes, the number of neighboring sites that may be
+    controlled for is limited.
+  \item To faithfully answer the question of interest, choose the neighboring
+    sites that are the most representative.
+  \item This is an \textit{optional} step --- it need only be applied when there
+    is a large number of CpG sites in the neighborhood of the target CpG site.
+\end{itemize}
+\end{center}
+
+\note{
+\begin{itemize}
+  \itemsep10pt
+  \item The number of sites that we can control for is roughly a function of
+    sample size. This impacts the definition of the parameter that we estimate,
+    and allows enough flexibility to obtain either very local or more regional
+    estimates.
+\end{itemize}
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{Nonparametric Variable Importance}
+
+\begin{center}
+\begin{itemize}
+  \itemsep8pt
+  \item Let's consider a simple target parameter: the average treatment effect
+    (ATE):
+    \[
+      \Psi_g(P_0) = \mathbb{E}_{W,0}[\mathbb{E}_0[Y_g \mid A = 1, W_{-g}] -
+      \mathbb{E}_0[Y_g \mid A = 0, W_{-g}]]
+    \]
+  \item Under certain (untestable) assumptions, interpretable as difference in
+    methylation at site $g$ with intervention and, possibly contrary to
+    fact, the same under no intervention, controlling for neighboring sites.
+  \item Provides a \textit{nonparametric} (model-free) measure for those CpG
+    sites impacted by a discrete intervention.
+  \item Let the choice of parameter be determined by our scientific question of
+    interest.
+\end{itemize}
+\end{center}
+
+\note{
+By allowing scientific questions to inform the parameters that we choose
+to estimate, we can do a better job of actually answering the questions of
+interest to our collaborators. Further, we abandon the need to specify the
+functional relationship between our outcome and covariates; moreover, we
+can now make use of advances in machine learning.
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{Target Minimum Loss-Based Estimation}
+
+\begin{center}
+\begin{itemize}
+  \itemsep8pt
+  \item We use \textit{targeted minimum loss-based estimation} (TMLE), a method
+    for inference in semiparametric infinite-dimensional statistical models.
+  \item No need to specify a functional form or assume that we know the true
+    data-generating distribution.
+  \item \textbf{Asymptotic linearity:}
+    \[
+      \Psi_g(P_n^*) - \Psi_g(P_0) = \frac{1}{n} \sum_{i = 1}^{n} IC(O_i) +
+      o_P\left(\frac{1}{\sqrt{n}}\right)
+    \]
+  \item \textbf{Limiting distribution:}
+    \[
+      \sqrt{n}(\Psi_n - \Psi) \to N(0, Var(D(P_0)))
+    \]
+  \item \textbf{Statistical inference:}
+    \[
+      \Psi_n \pm z_{\alpha} \cdot \frac{\sigma_n}{\sqrt{n}}
+    \]
+\end{itemize}
+\end{center}
+
+\note{
+Under the additional condition that the remainder term $R(\hat{P}^*, P_0)$
+decays as $o_P \left( \frac{1}{\sqrt{n}} \right),$ we have that
+$\Psi_n - \Psi_0 = (P_n - P_0) \cdot D(P_0) + o_P
+\left( \frac{1}{\sqrt{n}} \right),$ which, by a central limit theorem,
+establishes a Gaussian limiting distribution for the estimator, with variance
+$V(D(P_0))$, the variance of the efficient influence curve (canonical gradient)
+when $\Psi$ admits an asymptotically linear representation.
+
+The above implies that $\Psi_n$ is a $\sqrt{n}$-consistent estimator of $\Psi$,
+that it is asymptotically normal (as given above), and that it is locally
+efficient. This allows us to build Wald-type confidence intervals, where
+$\sigma_n^2$ is an estimator of $V(D(P_0))$. The estimator $\sigma_n^2$
+may be obtained using the bootstrap or computed directly via $ \sigma_n^2 =
+\frac{1}{n} \sum_{i = 1}^{n} D^2(\bar{Q}_n^*, g_n)(O_i)$
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{Corrections for Multiple Testing}
+
+\begin{center}
+\begin{itemize}
+  \itemsep10pt
+  \item Multiple testing corrections are critical. Without these, we
+    systematically obtain misleading results.
+  \item The Benjamini \& Hochberg procedure for controlling the False Discovery
+    Rate (FDR) is a well-established technique for addressing the multiple
+    testing issue.
+  \item We use a modified BH-FDR procedure to account for the pre-screening step
+    of the proposed algorithm.
+  \item This modified BH-FDR procedure for multi-stage analyses (FDR-MSA) works
+    by adding a p-value of $1.0$ for each site that did not pass pre-screening
+    then performs BH-FDR as normal.
+\end{itemize}
+\end{center}
+
+\note{
+\begin{itemize}
+  \itemsep10pt
+  \item Note that $\text{FDR} = \E\left[\frac{V}{R}\right] =
+    \E\left[\frac{V}{R} \mid R > 0 \right] P(R > 0)$.
+  \item BH-FDR procedure: Find $\hat{k} = max\{k: p_{(k)} \leq \frac{k}{M} \cdot
+    \alpha\}$
+  \item FDR-MSA will only incur a loss of power if the initial screening
+    excludes variables that would have been rejected by the BH procedure when
+    applied to the subset on which estimation was performed.
+  \item BH-FDR control is a rank-based procedure, so we must assume that the
+    pre-screening does not disrupt the ranking with respect to the estimation
+    subset, which is provably true for screening procedures of a given type.
+  \item MSA controls type I error with any procedure that is a function of only
+    the type I error itself --- e.g., FWER. This does not hold for the FDR in
+    complete generality.
+\end{itemize}
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{Software package: R/methyvim}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{methyvim_bioc}
+  \caption{
+    \url{https://bioconductor.org/packages/methyvim}
+  }
+\end{figure}
+
+\begin{center}
+\begin{itemize}
+  \itemsep4pt
+  \item Variable importance for discrete interventions.
+  \item Future releases will support continuous interventions.
+  \item Take it for a test drive!
+\end{itemize}
+\end{center}
+
+\note{
+\begin{itemize}
+  \itemsep10pt
+  \item Contribute on GitHub.
+  \item Reach out to us with questions and feature requests.
+\end{itemize}
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{Data analysis the methyvim way}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.25]{heatmap_methyvim}
+  \caption{
+    \url{http://code.nimahejazi.org/methyvim}
+  }
+\end{figure}
+
+\note{
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{Review: Summary}
+
+\begin{center}
+\begin{itemize}
+  \itemsep10pt
+  \item DNA methylation data is \textit{extremely} high-dimensional --- we can
+    collect data on 850K genomic sites with modern arrays!
+  \item Normalization and QC are critical components of properly analyzing
+    modern DNA methylation data. There are many choices of technique.
+  \item A relative scarcity of techniques for estimation and inference exists
+    --- analyses are often limited to the general linear model.
+  \item Statistical causal inference provides an avenue for answering richer
+    scientific questions, especially when combined with modern advances in
+    machine learning.
+\end{itemize}
+\end{center}
+
+\note{It's always good to include a summary.}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% don't want dimming with references
+\setbeamercovered{}
+\beamerdefaultoverlayspecification{}
+
+\begin{frame}[c,allowframebreaks]{References}
+
+\bibliographystyle{apalike}
+\nocite{*}
+\bibliography{references}
+
+%\note{Here's some work we've talked about. Go check these out if interested.}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Acknowledgments}
+
+\vspace{20pt}
+
+\underline{Collaborators:}
+
+\begin{tabular}{@{}l@{\hspace{1.5cm}}l@{}}
+  Mark van der Laan & \footnotesize \lolit University of California, Berkeley \\
+  Alan Hubbard \\
+  Lab of Martyn Smith \\
+  Lab of Nina Holland \\
+  Rachael Phillips
+\end{tabular}
+
+\vspace{10mm}
+
+\underline{Funding source}:\\
+National Library of Medicine (of NIH): T32LM012417
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{Thank you.}
+
+\Large
+Slides: \href{https://goo.gl/JDhSEg}{goo.gl/JDhSEg} \quad
+\includegraphics[height=5mm]{Figs/cc-zero.png}
+
+\vspace{3mm}
+Notes: \href{https://goo.gl/xabp3Q}{goo.gl/xabp3Q}
+
+\vspace{3mm}
+Source (repo): \href{https://goo.gl/m5As73}{goo.gl/m5As73}
+
+\vspace{3mm}
+\href{https://www.stat.berkeley.edu/~nhejazi}{\tt
+  stat.berkeley.edu/\textasciitilde{}nhejazi}
+
+\vspace{3mm}
+\href{http://nimahejazi.org}{\tt nimahejazi.org}
+
+\vspace{3mm}
+\href{https://twitter.com/nshejazi}{\tt twitter/@nshejazi}
+
+\vspace{3mm}
+\href{https://github.com/nhejazi}{\tt github/nhejazi}
+
+%\note{Here's where you can find me, as well as the slides for this talk.}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}
+
