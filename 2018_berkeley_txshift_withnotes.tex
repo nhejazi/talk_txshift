@@ -7,8 +7,8 @@
 \usepackage{url}
 
 % specifications for presenter mode
-\beamerdefaultoverlayspecification{<+->}
-\setbeamercovered{transparent}
+%\beamerdefaultoverlayspecification{<+->}
+%\setbeamercovered{transparent}
 
 \usepackage[english]{babel}
 \usepackage[utf8x]{inputenc}
@@ -50,17 +50,15 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % title info
-\title{\large Data-Adaptive Estimation and Inference in the Analysis of
-  Differential Methylation}
-\subtitle{\scriptsize for the annual retreat of the \textit{Center for
-                      Computational Biology},\\
-                    given 18 November 2017
-                    \\[-10pt]
+\title{\large Efficient Nonparametric Inference for Stochastic Interventions
+  Under Censoring}
+\subtitle{\scriptsize for the UC Berkeley Biostatistics Seminar Series,\\ given
+                      02 April 2018 \\[-10pt]
          }
-\author{\href{http://nimahejazi.org}{Nima Hejazi}
+\author{\href{https://nimahejazi.org}{Nima Hejazi}
        \\[-10pt]
        }
-\institute{Division of Biostatistics \\
+\institute{Group in Biostatistics \\
            University of California, Berkeley \\
            \href{https://www.stat.berkeley.edu/~nhejazi}
              {\tt \scriptsize \color{foreground}
@@ -98,14 +96,16 @@
   \vspace{-1.5em}
   \vfill \hfill \includegraphics[height=6mm]{Figs/cc-zero.png} \vspace*{-0.5cm}
 
-  \note{This slide deck is for a brief (about 15-minute) talk on a new
-    statistical algorithm for using nonparametric and data-adaptive estimates of
-    variable importance measures for differential methylation analysis. This
-    talk was most recently given at the annual retreat of the
-    \href{http://ccb.berkeley.edu/}{Center for
-    Computational Biology} at the University of California, Berkeley.
+  \note{This slide deck is for a seminar-length talk (about 50 minutes) on a new
+    approach to causal inference and nonparametric variable importance in the
+    context of parameters defined as treatment shifts. Here, we introduce an
+    additive treatment shift parameter, extensions for censored data (including
+    a multiple double robustness property), new statistical software for
+    applying our approach, and applications to a vaccine efficacy trial
+    examining HIV. This talk was most recently given at a meeting of the
+    Biostatistics Seminar Series at the University of California, Berkeley.
 
-    Source: {\tt https://github.com/nhejazi/talk\_methyvim} \\
+    Source: {\tt https://github.com/nhejazi/talk\_txshift} \\
     Slides: {\tt https://goo.gl/JDhSEg} \\
     With notes: {\tt https://goo.gl/xabp3Q}
 }
@@ -120,15 +120,10 @@
 \begin{center}
 \begin{itemize}
   \itemsep10pt
-  \item DNA methylation data is \textit{extremely} high-dimensional --- we can
-    collect data on 850K genomic sites with modern arrays!
-  \item Normalization and QC are critical components of properly analyzing
-    modern DNA methylation data. There are many choices of technique.
-  \item A relative scarcity of techniques for estimation and inference exists
-    --- analyses are often limited to the general linear model.
-  \item Statistical causal inference provides an avenue for answering richer
-    scientific questions, especially when combined with modern advances in
-    machine learning.
+  \item ...
+  \item ...
+  \item ...
+  \item ...
 \end{itemize}
 \end{center}
 
@@ -174,13 +169,13 @@
 
 \begin{frame}[c]{DNA Methylation}
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=\textwidth]{dna_methylation}
-  \caption{
-    \url{https://www.illumina.com/techniques/sequencing/methylation-sequencing.html}
-    (source)}
-\end{figure}
+%\begin{figure}[H]
+  %\centering
+  %\includegraphics[width=\textwidth]{dna_methylation}
+  %\caption{
+    %\url{https://www.illumina.com/techniques/sequencing/methylation-sequencing.html}
+    %(source)}
+%\end{figure}
 
 \note{
 \begin{itemize}
@@ -486,21 +481,20 @@ may be obtained using the bootstrap or computed directly via $ \sigma_n^2 =
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Software package: R/methyvim}
+\begin{frame}[c]{Software package: R/txshift}
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=\textwidth]{methyvim_bioc}
-  \caption{
-    \url{https://bioconductor.org/packages/methyvim}
-  }
-\end{figure}
+%\begin{figure}[H]
+  %\centering
+  %\includegraphics[width=\textwidth]{methyvim_bioc}
+  %\caption{
+    %\url{https://github.com/nhejazi/txshift}
+  %}
+%\end{figure}
 
 \begin{center}
 \begin{itemize}
   \itemsep4pt
-  \item Variable importance for discrete interventions.
-  \item Future releases will support continuous interventions.
+  \item Variable importance for continuous interventions.
   \item Take it for a test drive!
 \end{itemize}
 \end{center}
@@ -511,23 +505,6 @@ may be obtained using the bootstrap or computed directly via $ \sigma_n^2 =
   \item Contribute on GitHub.
   \item Reach out to us with questions and feature requests.
 \end{itemize}
-}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}[c]{Data analysis the methyvim way}
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.25]{heatmap_methyvim}
-  \caption{
-    \url{http://code.nimahejazi.org/methyvim}
-  }
-\end{figure}
-
-\note{
 }
 
 \end{frame}
@@ -580,17 +557,16 @@ may be obtained using the bootstrap or computed directly via $ \sigma_n^2 =
 \underline{Collaborators:}
 
 \begin{tabular}{@{}l@{\hspace{1.5cm}}l@{}}
+  David Benkeser & \footnotesize \lolit Emory University \\
   Mark van der Laan & \footnotesize \lolit University of California, Berkeley \\
-  Alan Hubbard \\
-  Lab of Martyn Smith \\
-  Lab of Nina Holland \\
-  Rachael Phillips
+  Peter Gilbert & \footnotesize \lolit Fred Hutchinson Cancer Research Center \\
+  Holly Janes & \footnotesize \lolit Fred Hutchinson Cancer Research Center \\
 \end{tabular}
 
 \vspace{10mm}
 
 \underline{Funding source}:\\
-National Library of Medicine (of NIH): T32LM012417
+NIH Biomedical Big Data Training Program: T32-LM012417-02
 
 \end{frame}
 
@@ -613,7 +589,7 @@ Source (repo): \href{https://goo.gl/m5As73}{goo.gl/m5As73}
   stat.berkeley.edu/\textasciitilde{}nhejazi}
 
 \vspace{3mm}
-\href{http://nimahejazi.org}{\tt nimahejazi.org}
+\href{https://nimahejazi.org}{\tt nimahejazi.org}
 
 \vspace{3mm}
 \href{https://twitter.com/nshejazi}{\tt twitter/@nshejazi}

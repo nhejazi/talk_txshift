@@ -1,4 +1,4 @@
-# Talk: _Estimating Stochastic Intervention Effects with Censored Data_
+# Talk: _Efficient Nonparametric Inference for Stochastic Intervention Under Censoring_
 
 > Materials for a presentation given at a session of the Biostatistics seminar
 > series, in the Spring 2018 semester, at the University of California, Berkeley
@@ -7,35 +7,16 @@
 
 ### Abstract
 
-DNA methylation is amongst the best studied of epigenetic mechanisms impacting
-gene expression. While much attention has been paid to the proper normalization
-of bioinformatical data produced by DNA methylation assays, linear models remain
-the current standard for analyzing post-processed methylation data, for the ease
-they afford for both statistical inference and scientific interpretation. We
-present a new, general statistical algorithm for the model-free estimation of
-the differential methylation of DNA CpG sites, complete with straightforward and
-interpretable statistical inference for such estimates. The new approach
-leverages variable importance measures, a class of parameters arising in causal
-inference, in a manner that facilitates their use in obtaining targeted
-estimates of the importance of each CpG site. The proposed procedure is
-computationally efficient and self-contained, incorporating techniques to
-isolate a subset of candidate CpG sites based on cursory evidence of
-differential methylation and providing a multiple testing correction that
-appropriately controls the False Discovery Rate in such multi-stage analysis
-settings. The effectiveness of the new methodology is demonstrated by way of
-data analysis with real DNA methylation data, and a recently developed R package
-(`methyvim`; available via Bioconductor) that provides support for data analysis
-with this methodology is introduced.
+Forthcoming...
 
 ### Related
-* Slides (for presentation only) are available [here](https://goo.gl/JDhSEg).
+* Slides (for presentation only) are available [here](https://goo.gl/LAoDUJ).
 
-* Slides with notes are available [here](https://goo.gl/xabp3Q) (printer
+* Slides with notes are available [here](https://goo.gl/Vq6v5o) (printer
    friendly).
 
-* Software (R package): `methyvim`, available on
-    [GitHub](https://github.com/nhejazi/methyvim) and
-    [Bioconductor](https://bioconductor.org/packages/methyvim).
+* Software (R package): `txshift`, available on
+    [GitHub](https://github.com/nhejazi/txshift)
 
 ---
 
