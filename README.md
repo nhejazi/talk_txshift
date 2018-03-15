@@ -1,4 +1,4 @@
-# Talk: _Efficient Nonparametric Inference for Stochastic Intervention Under Censoring_
+## Talk: _Efficient Nonparametric Inference for Stochastic Intervention Under Censoring_
 
 > Materials for a presentation given at a session of the Biostatistics seminar
 > series, in the Spring 2018 semester, at the University of California, Berkeley
@@ -24,8 +24,8 @@ Forthcoming...
 
 To the extent possible under law, [Nima Hejazi](https://nimahejazi.org)
 has waived all copyright and related or neighboring rights to
-&ldquo;[Estimating Stochastic Intervention Effects with Censored
-Data](https://www.stat.berkeley.edu/~nhejazi/present/2018_berkeley_txshift.pdf)&rdquo;.
+&ldquo;[Efficient Nonparametric Inference for Stochastic Intervention Under
+Censoring](https://www.stat.berkeley.edu/~nhejazi/present/2018_berkeley_txshift.pdf)&rdquo;.
 This work is published from the United States.
 <br/>
 [![CC0](http://i.creativecommons.org/p/zero/1.0/88x31.png)](http://creativecommons.org/publicdomain/zero/1.0/)
