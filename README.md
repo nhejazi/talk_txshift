@@ -1,4 +1,4 @@
-## Talk: _Efficient Nonparametric Inference for Stochastic Intervention Under Censoring_
+## Talk: _Efficient Nonparametric Inference for Stochastic Interventions Under Censoring_
 
 > Materials for a presentation given at a session of the Biostatistics seminar
 > series, in the Spring 2018 semester, at the University of California, Berkeley
@@ -9,7 +9,7 @@
 
 Forthcoming...
 
-### Related
+### Resources
 * Slides (for presentation only) are available [here](https://goo.gl/LAoDUJ).
 
 * Slides with notes are available [here](https://goo.gl/Vq6v5o) (printer
@@ -17,6 +17,7 @@ Forthcoming...
 
 * Software (R package): `txshift`, available on
     [GitHub](https://github.com/nhejazi/txshift)
+    <!-- and [CRAN](https://CRAN.R-project.org/package=txshift) -->
 
 ---
 
@@ -24,7 +25,7 @@ Forthcoming...
 
 To the extent possible under law, [Nima Hejazi](https://nimahejazi.org)
 has waived all copyright and related or neighboring rights to
-&ldquo;[Efficient Nonparametric Inference for Stochastic Intervention Under
+&ldquo;[Efficient Nonparametric Inference for Stochastic Interventions Under
 Censoring](https://www.stat.berkeley.edu/~nhejazi/present/2018_berkeley_txshift.pdf)&rdquo;.
 This work is published from the United States.
 <br/>
