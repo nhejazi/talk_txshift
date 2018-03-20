@@ -38,30 +38,35 @@ and the VIM for a given biomarker is the estimated vaccine efficacy resulting
 from the shift. This VIM provides a highly interpretable way to rank immune
 responses for their utility as immunogenicity study endpoints in future HIV-1
 vaccine trials that evaluate putatively improved versions of a given vaccine.
-This is joint work with David Benkeser (Emory), Mark van der Laan (UCB), Peter
-Gilbert (FHCRC), and Holly Janes (FHCRC).
+
+This is joint work with [David C. Benkeser
+(Emory)](https://www.benkeserstatistics.com/),
+[Mark J. van der Laan (UC Berkeley)](https://www.stat.berkeley.edu/~laan),
+[Peter B. Gilbert
+(FHCRC)](https://www.fredhutch.org/en/labs/profiles/gilbert-peter.html), and
+[Holly Janes
+(FHCRC)](https://www.fredhutch.org/en/labs/profiles/janes-holly.html).
 
 ---
 
 ### Resources
-* Slides (for presentation only) are available [here](https://goo.gl/LAoDUJ).
+* Slides are available [here](https://goo.gl/LAoDUJ) (for presentation only).
 
 * Slides with notes are available [here](https://goo.gl/Vq6v5o) (printer
    friendly).
 
-* Software (R package): `txshift`, available on
-    [GitHub](https://github.com/nhejazi/txshift)
-    <!-- and [CRAN](https://CRAN.R-project.org/package=txshift) -->
+* Software: R package `txshift`, available on
+    [GitHub](https://github.com/nhejazi/txshift).
+    <!-- and [CRAN](https://CRAN.R-project.org/package=txshift). -->
 
 ---
 
-## License
+## License [![CC0](http://i.creativecommons.org/p/zero/1.0/88x31.png)](http://creativecommons.org/publicdomain/zero/1.0/) <br/>
 
-To the extent possible under law, [Nima Hejazi](https://nimahejazi.org)
-has waived all copyright and related or neighboring rights to
-&ldquo;[Robust Nonparametric Inference for Stochastic Interventions Under
+To the extent possible under law, [Nima
+Hejazi](https://www.stat.berkeley.edu/~nhejazi) has waived all copyright and
+related or neighboring rights to &ldquo;[Robust Nonparametric Inference for
+Stochastic Interventions Under
 Censoring](https://www.stat.berkeley.edu/~nhejazi/present/2018_berkeley_txshift.pdf)&rdquo;.
 This work is published from the United States.
-<br/>
-[![CC0](http://i.creativecommons.org/p/zero/1.0/88x31.png)](http://creativecommons.org/publicdomain/zero/1.0/)
 
