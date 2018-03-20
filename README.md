@@ -55,13 +55,13 @@ This is joint work with [David C. Benkeser
 * Slides with notes are available [here](https://goo.gl/Vq6v5o) (printer
    friendly).
 
-* Software: R package `txshift`, available on
-    [GitHub](https://github.com/nhejazi/txshift).
+* Software: R package `txshift`, available [on
+    GitHub](https://github.com/nhejazi/txshift).
     <!-- and [CRAN](https://CRAN.R-project.org/package=txshift). -->
 
 ---
 
-## License [![CC0](http://i.creativecommons.org/p/zero/1.0/88x31.png)](http://creativecommons.org/publicdomain/zero/1.0/) <br/>
+## License
 
 To the extent possible under law, [Nima
 Hejazi](https://www.stat.berkeley.edu/~nhejazi) has waived all copyright and
@@ -69,4 +69,6 @@ related or neighboring rights to &ldquo;[Robust Nonparametric Inference for
 Stochastic Interventions Under
 Censoring](https://www.stat.berkeley.edu/~nhejazi/present/2018_berkeley_txshift.pdf)&rdquo;.
 This work is published from the United States.
+<br/>
+[![CC0](http://i.creativecommons.org/p/zero/1.0/88x31.png)](http://creativecommons.org/publicdomain/zero/1.0/)
 
