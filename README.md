@@ -12,7 +12,7 @@ Sampling_
 
 ### Abstract
 
-Perhaps too often work in statistical causal inference focuses on the effect of
+Perhaps too often, work in statistical causal inference focuses on the effect of
 deterministic interventions, under which, for each unit, the magnitude of the
 treatment is set to a fixed value. Under violations of the assumption of
 positivity, the evaluation of such interventions faces a host of problems, among
@@ -31,8 +31,8 @@ inherited from its constituent parts. After providing a general characterization
 of shift interventions, we illustrate the utility of employing our proposed
 nonparametric estimator via simulation studies, showing that it attains fast
 convergence rates even when incorporating machine learning estimators; moreover,
-we introduce a recent software implementation --- the "txshift" R package ---
-and apply this methodology in an investigation of the effects of immune response
+we introduce a recent software implementation (the "txshift" R package) and
+apply this methodology in an investigation of the effects of immune response
 biomarkers on HIV vaccine efficacy, contrasting our proposed approach with
 several classical techniques. Specifically, we show that our proposed method
 obtains efficient inference on a parameter defined as the overall risk of HIV
