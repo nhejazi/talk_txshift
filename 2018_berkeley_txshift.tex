@@ -139,26 +139,29 @@
 \begin{center}
 \begin{itemize}
   \itemsep10pt
-  \item Observational study of the impact of disease state on DNA methylation.
-  \item Phenotype-level quantities: $216$ subjects, binary disease status (FASD)
-    of each subject, background info on subjects (e.g., sex, age).
-  \item Genomic-level quantities: $\sim 850,000$ CpG sites interrogated using
-    the \textit{Infinium MethylationEPIC BeadChip} by Illumina.
-  \item \textbf{Questions}: How do disease status and differential methylation
-    relate? Is a coherent biomarker-type signature detectable?
+  \item HIV Vaccine Trials Network (HVTN) 505 HIV-1 vaccine efficacy trial.
+  \item 2504 participants, with all observed cases matched to controls after
+    collection of endpoints of interest.
+  \item Background quantities ($W$): sex, age, etc.
+  \item Variables of interest ($A$): biomarkers of immune response, plausibly
+    impacted by vaccine.
+  \item Outcome of interest ($Y$): HIV-1 infection risk.
+  \item \textbf{Question}: How would changes in the immune response profile
+    impact risk of HIV-1 infection?
 \end{itemize}
 \end{center}
 
 \note{
 \begin{itemize}
   \itemsep10pt
-  \item FASD is an abbreviation for Fetal Alcohol Spectrum Disorders.
-  \item We're mostly interested in the interplay between disease and DNA
-    methylation.
-  \item In particular, we'd like to construct some kind of importance score for
-    CpG sites impacted by the exposure/disease of interest.
-  \item Re: dimensionality, c.f., RNA-seq analyses are $\sim 30,000$ in
-    dimension at the gene level.
+  \item A vaccine effective at preventing HIV-1 acquisition would be a
+    cost-effective and durable approach to halting the worldwide epidemic.
+  \item Identifying vaccine-induced immune-response biomarkers that predict a
+    vaccine's ability to protect individuals from HIV-1 infection is a high
+    priority.
+  \item The study was halted on 22 April 2013 due to absence of vaccine
+    efficcacy. There was no significant effect of the vaccine on the primary
+    infection end- point of HIV-1 infection between week 28 and month 24.
 \end{itemize}
 }
 
@@ -166,24 +169,29 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{DNA Methylation}
+\begin{frame}[c]{Preventive Vaccines for HIV}
 
-%\begin{figure}[H]
-  %\centering
-  %\includegraphics[width=\textwidth]{dna_methylation}
-  %\caption{
-    %\url{https://www.illumina.com/techniques/sequencing/methylation-sequencing.html}
-    %(source)}
-%\end{figure}
+\begin{center}
+\begin{itemize}
+  \itemsep10pt
+  \item Substantial heterogeneity is present in the genetic characteristics of
+    HIV.
+  \item Preventive HIV vaccines constructed using only several antigens.
+  \item \textit{Success:} Protect well against infection caused by virus strains
+    similar to the source.
+  \item \textit{Failure:} Don't protect against disease caused by strains
+    antigenically dissimilar to source.
+\end{itemize}
+\end{center}
 
 \note{
 \begin{itemize}
   \itemsep10pt
-  \item The biology of these structures is quite complicated: many different
-    structures --- CpG islands, shores, etc.
-  \item Both hypermethylation and hypomethylation are linked to disease states.
-  \item It's especially important to examine these processes, keeping in mind
-    that the process may be complex and non-monotonic.
+  \item HIV is a high-impact public health issue but numerous attempts to
+    develop vaccines have met with only mild success.
+  \item The complexity of the disease mechanism makes it quite challenging to
+    study the numerous factors that contribute to a possible mitigation of
+    infection risk.
 \end{itemize}
 }
 
@@ -191,7 +199,73 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Data analysis? Linear Models!}
+\begin{frame}[c]{Sieve Analysis: A Brief History}
+
+\begin{center}
+\begin{itemize}
+  \itemsep10pt
+  \item The study of whether and how the efficacy of the vaccine varies with the
+    virus' characteristics.
+  \item Why ``sieve''? Vaccine as a barrier against select strains, but
+    dissimilar strains break through.
+  \item Identification of sieve effects guides decisions for developing future,
+    multivalent vaccines.
+\end{itemize}
+\end{center}
+
+\note{
+\begin{itemize}
+  \itemsep10pt
+  \item Sieve analysis usually relies on a competing risks framework, relying on
+    nonparametric estimators like Aalen-Johnson or semiparametric methods like
+    the Cox model.
+  \item Within this framework, could evaluate instantaneous risks of infection
+    (i.e., hazard) or cumulative incidence. The latter could be more interesting
+    from a public health perspective.
+\end{itemize}
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{T-Cell Response and Vaccine Efficacy}
+\begin{center}
+\begin{itemize}
+  \itemsep10pt
+  \item Standard operating procedure: For each CpG site ($g = 1, \dots, G$), fit
+    a linear model:
+    \[
+      \mathbb{E}[y_g] = X \beta_g
+    \]
+  \item Test the coefficent of interest using a standard t-test:
+    \[
+      t_{g} = \frac{\hat{\beta}_{g} - \beta_{g, H_0}}{s_g}
+    \]
+  \item Such models are a matter of convenience: does $\hat{\beta}_{g}$ answer
+    our scientific questions? Perhaps not.
+  \item Is consideration being given to whether the data could have been
+    generated by a linear model? Perhaps not.
+\end{itemize}
+\end{center}
+
+\note{
+\begin{itemize}
+  \itemsep10pt
+  \item CpG sites are thought to function in networks. Treating them as acting
+    independently is \textit{not} faithful to the underlying biology.
+  \item The linear model is a great starting point for analyses whne the data is
+    generated using complex technology --- no need to make the analysis more
+    complicated.
+  \item That being said, the data is difficult and expensive to collect, so why
+    restrict the scope of the questions we'd like to ask.
+\end{itemize}
+}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{T-Cell Response and Vaccine Efficacy}
 \begin{center}
 \begin{itemize}
   \itemsep10pt
@@ -460,19 +534,9 @@ may be obtained using the bootstrap or computed directly via $ \sigma_n^2 =
 \note{
 \begin{itemize}
   \itemsep10pt
-  \item Note that $\text{FDR} = \E\left[\frac{V}{R}\right] =
-    \E\left[\frac{V}{R} \mid R > 0 \right] P(R > 0)$.
-  \item BH-FDR procedure: Find $\hat{k} = max\{k: p_{(k)} \leq \frac{k}{M} \cdot
-    \alpha\}$
-  \item FDR-MSA will only incur a loss of power if the initial screening
-    excludes variables that would have been rejected by the BH procedure when
-    applied to the subset on which estimation was performed.
-  \item BH-FDR control is a rank-based procedure, so we must assume that the
-    pre-screening does not disrupt the ranking with respect to the estimation
-    subset, which is provably true for screening procedures of a given type.
-  \item MSA controls type I error with any procedure that is a function of only
-    the type I error itself --- e.g., FWER. This does not hold for the FDR in
-    complete generality.
+  \item ...
+  \item ...
+  \item ...
 \end{itemize}
 }
 
@@ -494,15 +558,15 @@ may be obtained using the bootstrap or computed directly via $ \sigma_n^2 =
 \begin{itemize}
   \itemsep4pt
   \item Variable importance for continuous interventions.
-  \item Take it for a test drive!
+  \item Take it for a test drive! Coming soon $\ldots$
 \end{itemize}
 \end{center}
 
 \note{
 \begin{itemize}
   \itemsep10pt
-  \item Contribute on GitHub.
-  \item Reach out to us with questions and feature requests.
+  \item Contribute on GitHub: \url{https://github.com/nhejazi/txshift}.
+  \item Reach out to us with questions and any feature requests.
 \end{itemize}
 }
 
@@ -515,15 +579,10 @@ may be obtained using the bootstrap or computed directly via $ \sigma_n^2 =
 \begin{center}
 \begin{itemize}
   \itemsep10pt
-  \item DNA methylation data is \textit{extremely} high-dimensional --- we can
-    collect data on 850K genomic sites with modern arrays!
-  \item Normalization and QC are critical components of properly analyzing
-    modern DNA methylation data. There are many choices of technique.
-  \item A relative scarcity of techniques for estimation and inference exists
-    --- analyses are often limited to the general linear model.
-  \item Statistical causal inference provides an avenue for answering richer
-    scientific questions, especially when combined with modern advances in
-    machine learning.
+  \item ...
+  \item ...
+  \item ...
+  \item ...
 \end{itemize}
 \end{center}
 
@@ -556,16 +615,19 @@ may be obtained using the bootstrap or computed directly via $ \sigma_n^2 =
 \underline{Collaborators:}
 
 \begin{tabular}{@{}l@{\hspace{1.5cm}}l@{}}
-  David Benkeser & \footnotesize \lolit Emory University \\
-  Mark van der Laan & \footnotesize \lolit University of California, Berkeley \\
-  Peter Gilbert & \footnotesize \lolit Fred Hutchinson Cancer Research Center \\
-  Holly Janes & \footnotesize \lolit Fred Hutchinson Cancer Research Center \\
+  David C.~Benkeser & \footnotesize \lolit Emory University \\
+  Mark J.~van der Laan & \footnotesize \lolit University of California,
+    Berkeley \\
+  Peter B.~Gilbert & \footnotesize \lolit Fred Hutchinson Cancer Research
+    Center \\
+  Holly E.~Janes & \footnotesize \lolit Fred Hutchinson Cancer Research
+    Center \\
 \end{tabular}
 
 \vspace{10mm}
 
 \underline{Funding source}:\\
-NIH Biomedical Big Data Training Program: T32-LM012417-02
+UC Berkeley NIH BD2K Biomedical Big Data Training Program: T32-LM012417-02
 
 \end{frame}
 
