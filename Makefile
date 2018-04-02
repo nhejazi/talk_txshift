@@ -1,7 +1,7 @@
 TITLE = 2018_berkeley_txshift
 
 .PHONY : $(TITLE).pdf
-all: $(TITLE).pdf notes clean
+all: $(TITLE).pdf notes clean web
 
 $(TITLE).pdf: $(TITLE).tex header.tex
 	xelatex $(TITLE)

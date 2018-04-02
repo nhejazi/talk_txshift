@@ -7,8 +7,8 @@
 \usepackage{url}
 
 % specifications for presenter mode
-%\beamerdefaultoverlayspecification{<+->}
-%\setbeamercovered{transparent}
+\beamerdefaultoverlayspecification{<+->}
+\setbeamercovered{transparent}
 
 \usepackage[english]{babel}
 \usepackage[utf8x]{inputenc}
@@ -121,10 +121,16 @@
 \begin{center}
 \begin{itemize}
   \itemsep10pt
-  \item ...
-  \item ...
-  \item ...
-  \item ...
+  \item The evaluation of vaccine efficacy is a high-impact scientific problem
+    that leads to numerous statistical challenges.
+  \item Stochastic interventions provide a flexible framework through which
+    these statistical problems may be viewed from the perspective of causal
+    inference.
+  \item Standard targeted minimum loss-based estimation may be augmented to
+    handle multi-stage sampling designs, like those common in efficacy trials.
+  \item Statistical software is now readily available for deploying these types
+    of techniques in a number of settings. We apply these methods in efficacy
+    trials.
 \end{itemize}
 \end{center}
 
@@ -546,8 +552,9 @@ $\sigma_n^2 = \frac{1}{n} \sum_{i = 1}^{n} D^2(\bar{Q}_n^*, g_n)(O_i)$
 \begin{itemize}
   \itemsep10pt
   \item Asymptotic distribution of TML estimators has been studied thoroughly:
-    $\psi_n - \psi_0 = (P_n - P_0) \cdot D(\bar{Q}_n^, g_n) + R(\hat{P}^, P_0)$,
-    then $\psi_n - \psi_0 = (P_n - P_0) \cdot D(P_0) + R(\hat{P}^*, P_0)$
+    $\psi_n - \psi_0 = (P_n - P_0) \cdot D(P_0) + R(\hat{P}^*, P_0)$, giving
+    $\psi_n - \psi_0 = (P_n - P_0) \cdot D(P_0) + o_P \left( \frac{1}{\sqrt{n}}
+    \right)$.
   \item Have a \textit{Gaussian limiting distribution}
     $\sqrt{n}(\psi_n - \psi) \to N(0, V(D(P_0)))$ when $\psi$ exhibits
     asymptotically linearity.
@@ -573,26 +580,107 @@ $\sigma_n^2 = \frac{1}{n} \sum_{i = 1}^{n} D^2(\bar{Q}_n^*, g_n)(O_i)$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\begin{frame}[c]{Complication: Multi-Stage Sampling}
+
+\begin{center}
+\begin{itemize}
+  \itemsep10pt
+  \item In the 505 HIV-1 trial, all infected individuals are matched to pairs
+    using a complex mechanism.
+  \item Using our observed data structure $O = (W,A,Y)$, let us introduce $V =
+    (W,Y)$, where $V$ is the set of variables used to define the sampling
+    mechanism.
+  \item Thus, the observed data structure is now represented $O = (W, \Delta A,
+    Y)$ wrt to the full data structure.
+    \begin{itemize}
+      \item In the above, let $\Delta = f(V)$ be binary st $\Delta \in \{0,
+        1\}$.
+      \item Further, let $\Pi_0(V) = P(\Delta = 1 \mid V)$ and $\Pi_n(V)$ be an
+        estimator of $\Pi_0(V)$.
+    \end{itemize}
+  \item In this way, our approach accounts for multi-stage sampling (e.g.,
+    matched or case-control designs).
+\end{itemize}
+\end{center}
+
+\note{
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{frame}[c]{Multi-Stage Sampling with TMLEs}
 
 \begin{center}
 \begin{itemize}
   \itemsep10pt
-  \item TMLEs provide semiparametric-efficient estimation and robust inference
-    in nonparametric statistical models.
-  \item \textbf{Asymptotic linearity:}
+  \item Rose \& van der Laan (2011) introduce an IPCW-TMLE to be used when the
+    data structure takes the form $O = (V, \Delta, \Delta X)$, for multi-stage
+    sampling designs.
+  \item How? Use an IPC-weighted loss function:
     \[
-      \Psi(P_n^*) - \Psi(P_0) = \frac{1}{n} \sum_{i = 1}^{n} IC(O_i) +
-      o_P\left(\frac{1}{\sqrt{n}}\right)
+      \lik(P_X)(O) = \frac{\Delta}{\Pi_n(V)}\lik^F(P_X)(X)
     \]
-  \item \textbf{Limiting distribution:}
+  \item The IPCW-TMLE solves the full-data efficient influence function (EIF)
+    equation:
     \[
-      \sqrt{n}(\Psi_n - \Psi) \to N(0, Var(D(P_0)))
+      0 = \frac{1}{n}\sum_{i = 1}^n
+      \frac{\Delta_i}{\Pi_n(V_i)}D^F(P^*_{X,n})(X_i).
     \]
-  \item \textbf{Statistical inference:}
+\end{itemize}
+\end{center}
+
+\note{
+  Note that the IPCW-TMLE is \textbf{not} fully semiparametric-efficient, unless
+  the estimator of $\Pi_n(V)$ is nonparametric, which requires that $V$ be
+  discrete. Of course, violation of these assumptions can be highly problematic.
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{Efficiency Under Multi-Stage Sampling}
+
+\begin{center}
+\begin{itemize}
+  \itemsep10pt
+  \item When working in a nonparametric model, it is necessary to use a
+    nonparametric estimator of the missingness mechanism to obtain full
+    efficiency.
+  \item In many practical settings, this further complicates the efficient
+    influence function estimating equation
     \[
-      \Psi_n \pm z_{\alpha} \cdot \frac{\sigma_n}{\sqrt{n}}
+      \begin{aligned}
+      0 =& P_n \frac{\Delta}{\Pi_n^*(V)}D^F(P^*_{X,n}) \\
+      &- \left\{\frac{\Delta}{\Pi_n^*(V)} - 1 \right\} \E_n(D^F(P^0_{X,n}) \mid
+      \Delta = 1, V).
+     \end{aligned}
     \]
+\end{itemize}
+\end{center}
+
+\note{
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{Putting It Together: Multiple Robustness}
+
+\begin{center}
+\begin{itemize}
+  \itemsep10pt
+  \item We now have a semiparametric-efficient and robust procedure for
+    assessing the effect of the intervention $d(a,w) = a + \delta$ even in the
+    presence of multi-stage sampling.
+  \item Due to the nature of the IPCW-TMLE, we have a form of multiple double
+    robustness --- in terms of combinations of $(g, Q)$ and
+    $(\Pi, \E_0(D^F(P^F) \mid V))$.
+  \item This allows us to assess how simple (additive) shifts of immune response
+    variables affect the risk of HIV-1 infection.
 \end{itemize}
 \end{center}
 
@@ -605,13 +693,13 @@ $\sigma_n^2 = \frac{1}{n} \sum_{i = 1}^{n} D^2(\bar{Q}_n^*, g_n)(O_i)$
 
 \begin{frame}[c]{Software package: R/txshift}
 
-%\begin{figure}[H]
-  %\centering
-  %\includegraphics[width=\textwidth]{methyvim_bioc}
-  %\caption{
-    %\url{https://github.com/nhejazi/txshift}
-  %}
-%\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{txshift}
+  \caption{
+    \url{https://github.com/nhejazi/txshift}
+  }
+\end{figure}
 
 \begin{center}
 \begin{itemize}
@@ -633,15 +721,78 @@ $\sigma_n^2 = \frac{1}{n} \sum_{i = 1}^{n} D^2(\bar{Q}_n^*, g_n)(O_i)$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\begin{frame}[c]{Software Ecosystem: The tlverse!}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{tlverse}
+  \caption{
+    \url{https://github.com/tlverse}
+  }
+\end{figure}
+
+\begin{center}
+\begin{itemize}
+  \itemsep4pt
+  \item This is a new framework for Targeted Learning with a focus on
+    extensibility.
+  \item ``txshift'' will be the first of many connector packages ---
+    collaboration with Jeremy Coyle and others.
+\end{itemize}
+\end{center}
+
+\note{
+\begin{itemize}
+  \itemsep10pt
+  \item Contribute on GitHub: \url{https://github.com/nhejazi/txshift}.
+  \item Reach out to us with questions and any feature requests.
+\end{itemize}
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{Future Work}
+
+\begin{center}
+\begin{itemize}
+  \itemsep10pt
+  \item Exploration of different forms of stochastic treatment shifts --- EH
+    Kennedy provides a shift in propensity score space in a recent JASA
+    manuscript currently in press (collaboration in progress).
+  \item Further refinement of the available software, explore how to provide a
+    more efficient and extensible system, including stronger integration with
+    the tlverse.
+  \item Refinements of statistical theory so as to better work with quantities
+    common in survival analysis: hazards? survival?
+  \item Assessment of efficacy trials other than the HVTN 505 HIV-1 vaccine
+    trial --- perhaps further scientific findings?
+\end{itemize}
+\end{center}
+
+\note{
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{frame}[c]{Review: Summary}
 
 \begin{center}
 \begin{itemize}
   \itemsep10pt
-  \item ...
-  \item ...
-  \item ...
-  \item ...
+  \item The evaluation of vaccine efficacy is a high-impact scientific problem
+    that leads to numerous statistical challenges.
+  \item Stochastic interventions provide a flexible framework through which
+    these statistical problems may be viewed from the perspective of causal
+    inference.
+  \item Standard targeted minimum loss-based estimation may be augmented to
+    handle multi-stage sampling designs, like those common in efficacy trials.
+  \item Statistical software is now readily available for deploying these types
+    of techniques in a number of settings. We apply these methods in efficacy
+    trials.
 \end{itemize}
 \end{center}
 
