@@ -28,6 +28,7 @@
 \newcommand{\F}{\mathcal{F}}
 \newcommand{\X}{\mathcal{X}}
 \newcommand{\lik}{\mathcal{L}}
+\newcommand{\indep}{\rotatebox[origin=c]{90}{$\models$}}
 \DeclarePairedDelimiterX{\infdivx}[2]{(}{)}{%
   #1\;\delimsize\|\;#2%
 }
@@ -326,119 +327,128 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Data analysis? A Data-Adaptive Approach}
+\begin{frame}[c]{Interlude: Causal Inference}
 
 \begin{center}
 \begin{enumerate}
-  \itemsep8pt
-  \item Isolate a subset of CpG sites for which there is cursory evidence of
-    differential methylation.
-  \item Assign CpG sites into neighborhoods (e.g., bp distance). If there are
-    many neighbors, apply clustering (e.g., \textit{PAM}) to select a subset.
-  \item Estimate \textit{variable importance measure} (VIM) at each screened CpG
-    site, with disease as intervention ($A$) and controlling for neighboring CpG
-    sites ($W$).
-  \item Apply a variant of the Benjamini \& Hochberg method for FDR control,
-    accounting for initial screening.
+  \itemsep10pt
+  \item Motivation: ``We do not have knowledge of a thing until we have grasped
+    its why, that is to say, its cause.'' --Aristotle
+  \item Our question of interest concerns the manner in which changes in a given
+    immune response profile affect risk of HIV-1 infection.
+    \begin{itemize}
+      \item This is a question of causality.
+      \item How does \textit{intervening} on immune response profile cause
+        changes in the risk of HIV-1 infection.
+    \end{itemize}
+  \item But how do we go about thinking about intervening on continuous
+    quantities (e.g., immune response profile measures)?
+  \item Classical causal parameters (e.g., ATE) are not well suited for
+    answering these sorts of questions.
 \end{enumerate}
 \end{center}
 
 \note{
-\begin{itemize}
-  \itemsep10pt
-  \item Pre-screening is a critical step since we cannot perform computationally
-    intensive estimation on all the sites. This is flexible --- just use your
-    favorite method (as long as allows a ranking to be made).
-  \item The variable importance step merely comes down to the creation of a
-    score. We use TMLE to statistically estimate parameters from causal models.
-    The procedure is general enough to accomodate any inference technique.
-\end{itemize}
 }
 
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Pre-Screening --- Pick Your Favorite Method}
+\begin{frame}[c]{Causal Inference and Vaccine Efficacy}
 
 \begin{center}
 \begin{itemize}
   \itemsep10pt
-  \item The estimation procedure is computationally intensive --- apply it only
-    to sites that appear promising.
-  \item Consider estimating univariate (linear) regressions of intervention on
-    CpG methylation status. Fast, easy.
-  \item Select CpG sites with a marginal p-value below, say, $0.01$. Apply
-    data-adaptive procedure to this subset.
-  \item The modeling assumptions do not matter since the we won't be pursuing
-    inference under such a model.
-  \item Software implementation is extensible. Users are encouraged to add their
-    own. (It's easy!)
+  \item Consider observing $n$ individuals in a data structure of the form
+    specified above.
+  \item To formalize, consider $O = (W, A, Y) \sim P_0 \in \mathcal{M}$, where
+    we make no assumptions on the statistical model containing $P_0$.
+  \item For the treatment $A$, we would normally be limited to thinking about
+    counterfactual means (i.e., $\E Y_a$ for $A = a$) or similar quantities.
+  \item This requires specifying a particular value of the treatment (i.e.,
+    $A = a$) under which to evaluate the outcome.
 \end{itemize}
 \end{center}
 
 \note{
-\begin{itemize}
-  \itemsep10pt
-  \item We'll be adding to the available routines for pre-screening too! For
-    now, we have \textsc{limma}, and more are on the way.
-\end{itemize}
 }
 
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Too Many Neighbors? Clustering}
+\begin{frame}[c]{Stochastic Treatment Regimes}
 
 \begin{center}
 \begin{itemize}
   \itemsep10pt
-  \item There are many options: $k$-means, $k$-medoids, etc., as well as many
-    algorithmic solutions.
-  \item For convenience, we use \underline{P}artitioning \underline{A}round
-    \underline{M}edoids (PAM), a well-established algorithm.
-  \item With limited sample sizes, the number of neighboring sites that may be
-    controlled for is limited.
-  \item To faithfully answer the question of interest, choose the neighboring
-    sites that are the most representative.
-  \item This is an \textit{optional} step --- it need only be applied when there
-    is a large number of CpG sites in the neighborhood of the target CpG site.
+  \item Rather than a deterministic intervention, consider a shift of the
+    treatment (i.e., instead of $A = a$, consider $A = a + \delta$).
+  \item This is a far more flexible approach. We need not specify a given value
+    of the treatment but rather a shift ($\delta$) of the treatment.
+  \item In this setting, the effect of the intervention appears as $\E Y_{a +
+    \delta} - \E Y_a$, where $A = a$ is simply the observed value of
+    treatment.
+  \item To compare with the linear model, the shift $\delta$ may be thought of
+    as analogous to shifts in the slope of the regression line.
 \end{itemize}
 \end{center}
 
 \note{
-\begin{itemize}
-  \itemsep10pt
-  \item The number of sites that we can control for is roughly a function of
-    sample size. This impacts the definition of the parameter that we estimate,
-    and allows enough flexibility to obtain either very local or more regional
-    estimates.
-\end{itemize}
 }
 
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Nonparametric Variable Importance}
+\begin{frame}[c]{Problems with Stochastic Interventions}
 
 \begin{center}
 \begin{itemize}
-  \itemsep8pt
+  \itemsep10pt
+  \item Even though we employ a more flexible type of intervention, the common
+    assumptions (and problems!) of causal inference still arise.
+    \begin{itemize}
+      \item Randomization: $A \indep Y \mid W$
+      \item Positivity: $0 < P(A \mid W) < 1$ everywhere. The propensity score
+        is bounded in $(0, 1)$.
+    \end{itemize}
+  \item To protect against positivity violations, a clever shifting mechanism:
+    $d(a, w) = a + \delta$, if $a + \delta < u(w)$ and $d(a, w) = a$ otherwise.
+  \item The shift $d(A, W)$ is now a function of the observed data, and the
+    shift intervention ($a + \delta$) is only applied when there is support in
+    the observed data.
+
+\end{itemize}
+\end{center}
+
+\note{
+}
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{Parameters for Treatment Shifting}
+
+\begin{center}
+\begin{itemize}
+  \itemsep10pt
   \item Let's consider a simple target parameter: the average treatment effect
     (ATE):
     \[
-      \Psi_g(P_0) = \mathbb{E}_{W,0}[\mathbb{E}_0[Y_g \mid A = 1, W_{-g}] -
-      \mathbb{E}_0[Y_g \mid A = 0, W_{-g}]]
+      \Psi(P) = \E{\bar{Q}(A,W) I(A \leq \delta)} + \E{\bar{Q}(A,W)
+        I(A > \delta)}
     \]
-  \item Under certain (untestable) assumptions, interpretable as difference in
-    methylation at site $g$ with intervention and, possibly contrary to
-    fact, the same under no intervention, controlling for neighboring sites.
-  \item Provides a \textit{nonparametric} (model-free) measure for those CpG
-    sites impacted by a discrete intervention.
-  \item Let the choice of parameter be determined by our scientific question of
-    interest.
+  \item Assume \textit{piecewise smooth invertibility} of $d(a,w)$ in order to
+    obtain a pathwise differentiability of the parameter.
+  \item This makes semiparametric-efficient estimation in the nonparametric
+    model possible when relying on stochastic interventions.
+  \item The parameter now corresponds to our scientific question of interest:
+    How does shifting immune response by an amount $\delta$ affect the risk of
+    HIV-1 infection?
 \end{itemize}
 \end{center}
 
@@ -454,18 +464,47 @@ can now make use of advances in machine learning.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\begin{frame}[c]{Semiparametric-Efficient Estimation}
+
+\begin{center}
+\begin{itemize}
+  \itemsep10pt
+  \item Our parameter of interest is
+    \[
+      \Psi(P) = \E_P{\bar{Q}(d(A, W), W)}
+    \]
+  \item For which the efficient influence function (EIF) is
+    \[
+      D(P)(o) = H(a, w){y - \bar{Q}(a, w)} + \bar{Q}(d(a, w), w) - \Psi(P)
+    \]
+  \item The auxiliary covariate introduced (i.e., $H(a,w)$) may be expressed
+    \[
+      H(a,w) = I(a < u(w)) \frac{g_0(a - \delta \mid w)}{g_0(a \mid w)} + I(a
+      \geq u(w) - \delta)
+    \]
+\end{itemize}
+\end{center}
+
+\note{
+  The auxiliary covariate simplifies when the treatment is in the limits
+  (conditional on $W$) --- i.e., for $A_i \in (u(w) - \delta, u(w))$, then we
+  have $H(a,w) = \frac{g_0(a - \delta \mid w)}{g_0(a \mid w)} + 1$.
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{frame}[c]{Target Minimum Loss-Based Estimation}
 
 \begin{center}
 \begin{itemize}
-  \itemsep8pt
-  \item We use \textit{targeted minimum loss-based estimation} (TMLE), a method
-    for inference in semiparametric infinite-dimensional statistical models.
-  \item No need to specify a functional form or assume that we know the true
-    data-generating distribution.
+  \itemsep10pt
+  \item TMLEs provide semiparametric-efficient estimation and robust inference
+    in nonparametric models.
   \item \textbf{Asymptotic linearity:}
     \[
-      \Psi_g(P_n^*) - \Psi_g(P_0) = \frac{1}{n} \sum_{i = 1}^{n} IC(O_i) +
+      \Psi(P_n^*) - \Psi(P_0) = \frac{1}{n} \sum_{i = 1}^{n} IC(O_i) +
       o_P\left(\frac{1}{\sqrt{n}}\right)
     \]
   \item \textbf{Limiting distribution:}
@@ -485,46 +524,78 @@ decays as $o_P \left( \frac{1}{\sqrt{n}} \right),$ we have that
 $\Psi_n - \Psi_0 = (P_n - P_0) \cdot D(P_0) + o_P
 \left( \frac{1}{\sqrt{n}} \right),$ which, by a central limit theorem,
 establishes a Gaussian limiting distribution for the estimator, with variance
-$V(D(P_0))$, the variance of the efficient influence curve (canonical gradient)
+$V(D(P_0))$, the variance of the efficient influence function
 when $\Psi$ admits an asymptotically linear representation.
 
 The above implies that $\Psi_n$ is a $\sqrt{n}$-consistent estimator of $\Psi$,
 that it is asymptotically normal (as given above), and that it is locally
 efficient. This allows us to build Wald-type confidence intervals, where
 $\sigma_n^2$ is an estimator of $V(D(P_0))$. The estimator $\sigma_n^2$
-may be obtained using the bootstrap or computed directly via $ \sigma_n^2 =
-\frac{1}{n} \sum_{i = 1}^{n} D^2(\bar{Q}_n^*, g_n)(O_i)$
+may be obtained using the bootstrap or computed directly via
+$\sigma_n^2 = \frac{1}{n} \sum_{i = 1}^{n} D^2(\bar{Q}_n^*, g_n)(O_i)$
 }
 
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Corrections for Multiple Testing}
+\begin{frame}[c]{Statistical Inference for TMLEs}
 
 \begin{center}
 \begin{itemize}
   \itemsep10pt
-  \item Multiple testing corrections are critical. Without these, we
-    systematically obtain misleading results.
-  \item The Benjamini \& Hochberg procedure for controlling the False Discovery
-    Rate (FDR) is a well-established technique for addressing the multiple
-    testing issue.
-  \item We use a modified BH-FDR procedure to account for the pre-screening step
-    of the proposed algorithm.
-  \item This modified BH-FDR procedure for multi-stage analyses (FDR-MSA) works
-    by adding a p-value of $1.0$ for each site that did not pass pre-screening
-    then performs BH-FDR as normal.
+  \item Asymptotic distribution of TML estimators has been studied thoroughly:
+    $\psi_n - \psi_0 = (P_n - P_0) \cdot D(\bar{Q}_n^, g_n) + R(\hat{P}^, P_0)$,
+    then $\psi_n - \psi_0 = (P_n - P_0) \cdot D(P_0) + R(\hat{P}^*, P_0)$
+  \item Have a \textit{Gaussian limiting distribution}
+    $\sqrt{n}(\psi_n - \psi) \to N(0, V(D(P_0)))$ when $\psi$ exhibits
+    asymptotically linearity.
+  \item \textbf{Statistical inference} using Wald-type confidence intervals:
+    $\Psi_n \pm z_{\alpha} \cdot \frac{\sigma_n}{\sqrt{n}}$, where $\sigma_n^2$
+    is an estimator of $V(D(P_0))$.
+  \item Bootstrap for $\sigma_n^2$ or compute directly via
+    $\sigma_n^2 = \frac{1}{n} \sum_{i = 1}^{n} D^2(\bar{Q}_n^*, g_n)(O_i)$.
 \end{itemize}
 \end{center}
 
 \note{
+ \begin{enumerate}
+   \item If $D(\bar{Q}_n^*, g_n)$ converges to $D(P_0)$ in $L_2(P_0)$ norm.
+   \item The size of the class of functions $\bar{Q}_n^*$ and $g_n$ is bounded
+     (technically, $\exists \mathcal{F}$ st
+     $D(\bar{Q}_n^*, g_n) \in \mathcal{F}$ whp, where $\mathcal{F}$ is a
+     Donsker class)
+ \end{enumerate}
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{Multi-Stage Sampling with TMLEs}
+
+\begin{center}
 \begin{itemize}
   \itemsep10pt
-  \item ...
-  \item ...
-  \item ...
+  \item TMLEs provide semiparametric-efficient estimation and robust inference
+    in nonparametric statistical models.
+  \item \textbf{Asymptotic linearity:}
+    \[
+      \Psi(P_n^*) - \Psi(P_0) = \frac{1}{n} \sum_{i = 1}^{n} IC(O_i) +
+      o_P\left(\frac{1}{\sqrt{n}}\right)
+    \]
+  \item \textbf{Limiting distribution:}
+    \[
+      \sqrt{n}(\Psi_n - \Psi) \to N(0, Var(D(P_0)))
+    \]
+  \item \textbf{Statistical inference:}
+    \[
+      \Psi_n \pm z_{\alpha} \cdot \frac{\sigma_n}{\sqrt{n}}
+    \]
 \end{itemize}
+\end{center}
+
+\note{
 }
 
 \end{frame}
