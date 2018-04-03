@@ -7,8 +7,8 @@
 \usepackage{url}
 
 % specifications for presenter mode
-\beamerdefaultoverlayspecification{<+->}
-\setbeamercovered{transparent}
+%\beamerdefaultoverlayspecification{<+->}
+%\setbeamercovered{transparent}
 
 \usepackage[english]{babel}
 \usepackage[utf8x]{inputenc}
@@ -416,7 +416,7 @@
   \item Even though we employ a more flexible type of intervention, the common
     assumptions (and problems!) of causal inference still arise.
     \begin{itemize}
-      \item Randomization: $A \indep Y \mid W$
+      \item Randomization: $Y_{d(a,w)} \indep A \mid W$
       \item Positivity: $0 < P(A \mid W) < 1$ everywhere. The propensity score
         is bounded in $(0, 1)$.
     \end{itemize}
@@ -442,11 +442,9 @@
 \begin{center}
 \begin{itemize}
   \itemsep10pt
-  \item Let's consider a simple target parameter: the average treatment effect
-    (ATE):
+  \item Let's consider a simple statistical target parameter:
     \[
-      \Psi(P) = \E{\bar{Q}(A,W) I(A \leq \delta)} + \E{\bar{Q}(A,W)
-        I(A > \delta)}
+      \Psi(P) = \E_P{\bar{Q}(d(A, W), W)}
     \]
   \item Assume \textit{piecewise smooth invertibility} of $d(a,w)$ in order to
     obtain a pathwise differentiability of the parameter.
@@ -475,7 +473,7 @@ can now make use of advances in machine learning.
 \begin{center}
 \begin{itemize}
   \itemsep10pt
-  \item Our parameter of interest is
+  \item Recall that our statistical parameter of interest is
     \[
       \Psi(P) = \E_P{\bar{Q}(d(A, W), W)}
     \]
