@@ -1,23 +1,27 @@
-TITLE = 2018_berkeley_txshift
+TITLE = 2018_ph298seminar_shifts
 
-.PHONY : $(TITLE).pdf
-all: $(TITLE).pdf notes clean web
+.PHONY : all
+all: $(TITLE).pdf notes clean
 
 $(TITLE).pdf: $(TITLE).tex header.tex
 	xelatex $(TITLE)
 	bibtex $(TITLE)
 	bibtex $(TITLE)
 	xelatex $(TITLE)
+	xelatex $(TITLE)
 
 notes: $(TITLE)_withnotes.pdf
 
 clean:
-	rm -f *.{aux,log,nav,out,snm,toc,vrb,bbl,blg}
+	rm -f $(addprefix $(TITLE), .aux .log .nav .out .snm .toc .vrb .bbl .blg)
+	rm -f $(addprefix $(TITLE)_withnotes, \
+		.aux .log .nav .out .snm .toc .vrb .bbl .blg)
 
 $(TITLE)_withnotes.pdf: $(TITLE)_withnotes.tex header.tex
 	xelatex $(TITLE)_withnotes
 	bibtex $(TITLE)_withnotes
 	bibtex $(TITLE)_withnotes
+	xelatex $(TITLE)_withnotes
 	xelatex $(TITLE)_withnotes
 	pdfnup $(TITLE)_withnotes.pdf \
 		--nup 1x2 --no-landscape --paper letterpaper --frame true --scale 0.9
