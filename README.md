@@ -1,14 +1,6 @@
-# Talk: Nonparametric Inference on Stochastic Interventions
-
-> Materials for a presentation given at a session of the Biostatistics seminar
-> series, in the Spring 2018 semester, at the University of California, Berkeley
+# Talk: Causal Inference and Variable Importance with Stochastic Interventions
 
 ---
-
-### Title
-
-_Robust Nonparametric Inference for Stochastic Interventions Under Multi-Stage
-Sampling_
 
 ### Abstract
 
@@ -42,26 +34,6 @@ distribution in the efficacy trial. Our proposed technique provides a highly
 interpretable variable importance measure for ranking multiple immune responses
 based on their utility as immunogenicity study endpoints in future HIV-1 vaccine
 trials that evaluate putatively improved versions of the vaccine.
-
-This is joint work with [David C. Benkeser
-(Emory)](https://www.benkeserstatistics.com/),
-[Mark J. van der Laan (UC Berkeley)](https://www.stat.berkeley.edu/~laan),
-[Peter B. Gilbert
-(FHCRC)](https://www.fredhutch.org/en/labs/profiles/gilbert-peter.html), and
-[Holly E. Janes
-(FHCRC)](https://www.fredhutch.org/en/labs/profiles/janes-holly.html).
-
----
-
-### Resources
-* Slides are available [here](https://goo.gl/LAoDUJ) (for presentation only).
-
-* Slides with notes are available [here](https://goo.gl/Vq6v5o) (printer
-   friendly).
-
-* Software: R package `txshift`, available [on
-    GitHub](https://github.com/nhejazi/txshift).
-    <!-- and [CRAN](https://CRAN.R-project.org/package=txshift). -->
 
 ---
 
