@@ -1,6 +1,7 @@
-TITLE = 2018_ph298seminar_shifts
+TITLE = 2020_wnar_shift
 
 .PHONY : all
+minimal: $(TITLE).pdf clean
 all: $(TITLE).pdf notes clean
 
 $(TITLE).pdf: $(TITLE).tex header.tex
@@ -35,4 +36,3 @@ web: $(TITLE).pdf $(TITLE)_withnotes.pdf
 		nhejazi@arwen.berkeley.edu:/mirror/data/pub/users/nhejazi/present/$(TITLE).pdf
 	rsync --chmod=go+r $(TITLE)_withnotes.pdf \
 		nhejazi@arwen.berkeley.edu:/mirror/data/pub/users/nhejazi/present/$(TITLE)_withnotes.pdf
-
