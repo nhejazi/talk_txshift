@@ -92,7 +92,7 @@
           \href{https://github.com/nhejazi}{nhejazi} \\
         \includegraphics[scale=0.12]{homepage.png}
           \href{https://nimahejazi.org}{nimahejazi.org} \\
-      Joint work with David Benkeser and Mark van der Laan \\
+      with M.~van der Laan, H.~Janes, P.~Gilbert, D.~Benkeser \\
       WNAR student paper competition presentation
     \end{minipage}%
     \begin{minipage}{0.35\textwidth}
@@ -311,29 +311,30 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Targeted minimum loss estimator}
+\begin{frame}[c]{Flexible, efficient estimation}
 
 \begin{center}
 \begin{itemize}
   \itemsep10pt
-  \item TML estimation algorithm updates initial estimators $g_n$ and
-    $\overline{Q}_n$ so as to satisfy an arbitrary set of estimating equations.
-  \item TML estimator built by updating initial estimates of outcome mechanism
-    $\overline{Q}_n$ via a (logistic) tilting model, yielding
-    \begin{equation*}\label{tmle}
-      \Psi_n \coloneqq \Psi(P_n^{\star}) = \frac{1}{n} \sum_{i = 1}^n
-        \overline{Q}_n^{\star}(d(A_i, L_i), L_i).
-      \end{equation*}
-  \item In this case, the efficient influence function (EIF) is
+  \item The efficient influence function (EIF) is:
     \begin{equation*}
       D(P_0^X)(x) = H(a, l)({y - \overline{Q}(a, l)}) +
-      \overline{Q}(d(a, l), l) - \Psi(P_0^X)
+      \overline{Q}(d(a, l), l) - \Psi(P_0^X).
     \end{equation*}
-  \item The auxiliary covariate $H(a,l)$ may be expressed
-    \begin{equation*}
-      H(a,l) = \I(a + \delta < u(l)) \frac{g_0(a - \delta \mid l)}
-      {g_0(a \mid l)} + \I(a + \delta \geq u(l))
-    \end{equation*}
+  \item The one-step estimator corrects bias by adding the empirical mean of the
+    estimated EIF to the substitution estimator:
+    \begin{equation*}\label{tmle}
+        \Psi_n^{+} = \frac{1}{n} \sum_{i = 1}^n \overline{Q}_n(d(A_i, L_i),
+        L_i) + D_n(O_i).
+      \end{equation*}
+  \item The TML estimator is built by updating initial estimates of
+    $\overline{Q}_n$ via a (logistic) tilting model, yielding
+    \begin{equation*}\label{tmle}
+      \Psi_n^{\star} = \frac{1}{n} \sum_{i = 1}^n
+      \overline{Q}_n^{\star}(d(A_i, L_i), L_i).
+      \end{equation*}
+  \item Both estimators are CAN even when nuisance parameters are estimated via
+    flexible, machine learning techniques.
 \end{itemize}
 \end{center}
 
@@ -367,7 +368,8 @@
     \end{equation*}
   \item When the sampling mechanism $\pi_0(Y,L)$ can be estimated by
     a parametric form, this procedure yields an efficient estimator.
-  \item However, when machine learning is used, this is insufficient.
+  \item However, when machine learning is used (e.g., when $\pi_0(Y,L)$ is not
+    \textit{known by design}), this is insufficient.
 \end{itemize}
 \end{center}
 
@@ -378,13 +380,11 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Efficient estimation under two-phase sampling}
+\begin{frame}[c]{Efficient estimation and multiple robustness}
 
 \begin{center}
 \begin{itemize}
   \itemsep10pt
-  \item When the sampling mechanism is not \textit{known by design}, it is best
-    to employ a flexible (ML) estimator of $\pi_0(Y, L)$.
   \item Then, the IPCW augmentation must be applied to the EIF:
     \begin{align*}
       D(P_0^X)(o) = &\frac{c}{\pi_0(y, l)} D^F(P_0^X)(x) - \left(1 -
@@ -394,54 +394,15 @@
    \begin{itemize}
     \itemsep6pt
      \item Expresses observed data EIF $D^F(P_0^X)(o)$ in terms of full data
-       EIF $D^F(P_0^X)(x)$; inclusion of second term induces efficiency.
+       EIF $D^F(P_0^X)(x)$; inclusion of second term ensures efficiency.
      \item The expectation of the full data EIF $D^F(P_0^X)(x)$, taken only over
       units selected by the sampling mechanism (i.e., $C = 1$).
   \end{itemize}
-\end{itemize}
-\end{center}
-
-\note{
-}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}[c]{Emergent property: multiple robustness}
-
-\begin{center}
-\begin{itemize}
-  \itemsep10pt
-  \item A unique multiple robustness property --- combinations of
+ \item A unique multiple robustness property --- combinations of
     $(g_0(L), \overline{Q}_0(A,L)) \times (\pi_0(Y, L), \E(D^F(P^X_0)(x) \mid
     C = 1, Y, L))$.
-  \item We now have a semiparametric-efficient and robust procedure for
-    assessing the effect of the intervention $d(a,l) = a + \delta$.
-  \item Due to the construction of the IPCW-TMLE, the resultant estimator is
-    robust and efficient under two-phase sampling.
-  \item This allows us to assess how posited shifts in the assayed immune
-    responses would have affected HIV-1 infection risk.
 \end{itemize}
 \end{center}
-
-\note{
-}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}[c]{Finding the best efficient estimator}
-
-%\vspace{-1.5em}
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.22]{simple_effect_panel_delta_upshift}
-  \caption{
-    Relative performance of reweighted and augmented estimators.
-  }
-\end{figure}
 
 \note{
 }
@@ -452,10 +413,10 @@
 
 \begin{frame}[c]{Helping to fight the HIV-1 epidemic}
 
-\vspace{-1.5em}
+%\vspace{-1.5em}
 \begin{figure}[H]
   \centering
-  \includegraphics[scale=0.17]{cd8_msm_tmle_summary}
+  \includegraphics[scale=0.19]{cd8_msm_tmle_summary}
   \caption{
     Analysis of HIV-1 risk as a function of CD8+ immunogenicity, using
     \texttt{R} package \texttt{txshift}
@@ -495,7 +456,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Thank you}
+\begin{frame}[c]{Thank you!}
 
 \includegraphics[scale=0.14]{homepage.png} \url{https://nimahejazi.org}
 
@@ -506,6 +467,9 @@
 \vspace{2mm}
 \includegraphics[scale=0.14]{twitter-icon.png}
   \url{https://twitter.com/nshejazi}
+
+\vspace{2mm}
+  \url{https://arxiv.org/abs/2003.13771}
 
 \end{frame}
 
@@ -1042,6 +1006,24 @@ nonparametric model $\M$ by solving the efficient influence function.
     \end{align*}
 \end{itemize}
 \end{center}
+
+\note{
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{Identifying the best efficient estimator}
+
+%\vspace{-1.5em}
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.22]{simple_effect_panel_delta_upshift}
+  \caption{
+    Relative performance of reweighted and augmented estimators.
+  }
+\end{figure}
 
 \note{
 }
