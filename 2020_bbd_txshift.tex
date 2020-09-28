@@ -74,8 +74,8 @@
 \usepackage{bibentry}
 
 % title info
-\title{\normalsize Efficient non-parametric inference on the causal effects of
-  stochastic interventions in two-phased vaccine efficacy trials}
+\title{\normalsize Evaluating the causal impacts of vaccine-induced immune
+  responses in two-phase vaccine efficacy trials}
 
 \author{\href{https://nimahejazi.org}{Nima Hejazi}\\[-10pt]}
 
@@ -93,7 +93,7 @@
         \includegraphics[scale=0.12]{homepage.png}
           \href{https://nimahejazi.org}{nimahejazi.org} \\
       with M.~van der Laan, H.~Janes, P.~Gilbert, D.~Benkeser \\
-      WNAR student paper competition presentation
+     Biomedical Big Data Seminar, UC Berkeley, Fall 2020
     \end{minipage}%
     \begin{minipage}{0.35\textwidth}
       \centering
@@ -102,7 +102,7 @@
   \end{figure}
 }
 
-\date{\today}
+\date{Thursday, 15 October 2020}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -411,6 +411,24 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\begin{frame}[c]{Identifying the best efficient estimator}
+
+%\vspace{-1.5em}
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.22]{simple_effect_panel_delta_upshift}
+  \caption{
+    Relative performance of reweighted and augmented estimators.
+  }
+\end{figure}
+
+\note{
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{frame}[c]{Helping to fight the HIV-1 epidemic}
 
 %\vspace{-1.5em}
@@ -461,15 +479,16 @@
 \includegraphics[scale=0.14]{homepage.png} \url{https://nimahejazi.org}
 
 \vspace{2mm}
-\includegraphics[scale=0.11]{github-icon.png}
-  \url{https://github.com/nhejazi}
-
-\vspace{2mm}
 \includegraphics[scale=0.14]{twitter-icon.png}
   \url{https://twitter.com/nshejazi}
 
 \vspace{2mm}
-  \url{https://arxiv.org/abs/2003.13771}
+\includegraphics[scale=0.11]{github-icon.png}
+  \url{https://github.com/nhejazi}
+
+\vspace{2mm}
+\includegraphics[scale=0.14]{paper-icon.png}
+  \url{https://doi.org/10.1111/biom.13375}
 
 \end{frame}
 
@@ -877,7 +896,7 @@ nonparametric model $\M$ by solving the efficient influence function.
   \itemsep8pt
   \item Using all observed units ($X$), estimate sampling mechanism
     $\pi(Y, L)$, perhaps using data-adaptive regression methods.
-  \item Using only observed units in the second-stage sample $\Delta = 1$,
+  \item Using only observed units in the second-stage sample $C = 1$,
     construct initial estimators $g_n(A,L)$ and $\overline{Q}_n(A,L)$,
     weighting by the sampling mechanism estimate $\pi_n(Y,L)$.
   \item With the approach described for the full data case, compute
@@ -1006,24 +1025,6 @@ nonparametric model $\M$ by solving the efficient influence function.
     \end{align*}
 \end{itemize}
 \end{center}
-
-\note{
-}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}[c]{Identifying the best efficient estimator}
-
-%\vspace{-1.5em}
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.22]{simple_effect_panel_delta_upshift}
-  \caption{
-    Relative performance of reweighted and augmented estimators.
-  }
-\end{figure}
 
 \note{
 }

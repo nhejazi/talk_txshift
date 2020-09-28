@@ -1,4 +1,4 @@
-TITLE = 2020_wnar_txshift
+TITLE = 2020_bbd_txshift
 
 .PHONY : all
 minimal: $(TITLE).pdf clean
