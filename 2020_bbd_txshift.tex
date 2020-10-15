@@ -429,7 +429,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Helping to fight the HIV-1 epidemic}
+\begin{frame}[c]{Fighting the HIV-1 epidemic with preventive vaccines}
 
 %\vspace{-1.5em}
 \begin{figure}[H]
@@ -472,7 +472,7 @@
 
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[c]{Thank you!}
 
@@ -489,6 +489,204 @@
 \vspace{2mm}
 \includegraphics[scale=0.14]{paper-icon.png}
   \url{https://doi.org/10.1111/biom.13375}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[standout]
+  At ``Warp Speed'' -- COVID-19 Vaccine Trials
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{COVID-19 Vaccine Development}
+
+\begin{center}
+\begin{itemize}
+  \itemsep10pt
+  \item \textit{Nucleic acid vaccines}: Moderna (mRNA), Pfizer (mRNA)
+  \item \textit{Viral-vectored vaccines}: AstraZeneca (chimpanzee adenovirus),
+     Janssen (human adenovirus)
+  \item \textit{Subunit vaccines}: NovaVax, Sanofi / GlaxoSmithKline
+  \item \textit{Weakened/inactivated vaccines}: Sinopharm, Sinovac
+\end{itemize}
+\end{center}
+
+\note{
+  \begin{itemize}
+    \item Nucleic acid vaccines have never been approved before, but are quick
+      to manufacture.
+    \item Viral-vectored vaccines are also quick to manufacture but can develop
+      immunity against vector.
+  \item Subunit vaccines are a construct of several effective vaccines, but are
+      slower to manufacture and often require an adjuvant.
+  \end{itemize}
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{``Operation Warp Speed'' (OWS)}
+
+\begin{center}
+\begin{itemize}
+  \itemsep10pt
+  \item Do we have the time? Polio (7 years), Measles (9 years), Chickenpox (34
+     years), Mumps (4 years), HPV (15 years).
+  \item OWS: ``300M doses of safe, effective vaccine by 01 Jan.~2021''.
+  \item How? Typical process timeline (73 months) replaced by an
+      \textit{accelerated} process of 14 months.
+  \item COVID-19 Prevention Network (CoVPN):
+      \begin{itemize}
+          \item formed by NIAID to establish a unified clinical trial network
+              for evaluating vaccines and monoclonal antibodies.
+          \item Statisticians: primary trial design/analysis,
+          sequential efficacy monitoring, safety monitoring, immune correlates.
+      \end{itemize}
+\end{itemize}
+\end{center}
+
+\note{
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{Immune Correlates of
+  Protection~\citep{plotkin2012nomenclature}}
+
+\begin{center}
+\begin{itemize}
+  \itemsep10pt
+  \item Correlate of Protection (CoP): immune marker statistically predictive
+    of vaccine efficacy, not necessarily mechanistic.
+  \item Mechanistic CoP (mCoP): immune marker that is mechanistically and
+    causally responsible for protection.
+  \item Nonmechanistic CoP (nCoP): immune marker that is predictive but not a
+    causal agent of protection.
+  \item A CoP is a \textit{candidate surrogate}
+      endpoint~\citep{prentice1989surrogate} --- primary
+      endpoint in future trials if reliably predictive.
+\end{itemize}
+\end{center}
+
+\note{
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{Measuring Correlates: Two-Phase Designs}
+
+\begin{center}
+\begin{itemize}
+  \itemsep10pt
+    \item Running assays on $>30,000$ blood draws is timely, expensive, and,
+      as it turns out, statistically unnecessary.
+    \item Instead we measure immune responses via a case-cohort
+      design~\citep{prentice1986case}:
+      \begin{itemize}
+          \item a stratified random subcohort ($\approx 1600$ individuals)
+          \item all SARS-CoV-2 and COVID endpoints
+      \end{itemize}
+    \item Case-cohort designs are a special case of two-phase
+      sampling~\citep{breslow2003large,breslow2009improved}:
+      \begin{itemize}
+          \item Phase 1: measure baseline, vaccine, endpoint on everyone
+          \item Phase 2: given baseline, vaccine, endpoint, select members of
+            immune response subcohort with (possibly known) probability
+      \end{itemize}
+\end{itemize}
+\end{center}
+
+\note{
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{Estimation in Two-Phase Designs}
+
+\begin{center}
+\begin{itemize}
+  \itemsep10pt
+  \item Observed data structure: $O = (L, A, Z, CM, Y, C)$
+      \begin{itemize}
+          \item $A \in \{0, 1\}$: randomized vaccination assignment
+          \item $Z$: post-vaccination confounder (e.g., unblinded risky behavior)
+          \item $M$: candidate mCoPs (causal mediators)
+          \item $Y$: symptomatic SARS-CoV-2 infection
+          \item $C \coloneqq f(Y, L)$: selection into second-phase sample
+      \end{itemize}
+  \item But what about $O = (L, A, Z, CM, \Delta, \widetilde{T}, C)$?
+      \begin{itemize}
+          \item $\widetilde{T} = min(T,C)$: possibly right-censored time to
+              symptomatic SARS-CoV-2 infection
+          \item $\Delta = \mathbb{I}(T < C)$: observed symptomatic SARS-CoV-2
+              infection
+          \item Can $C$ still be a function of $\widetilde{T}$?
+      \end{itemize}
+\end{itemize}
+\end{center}
+
+\note{
+  \begin{itemize}
+  \item Goal: assess \textit{indirect} effect of vaccination through mCoPs.
+  \item Define/identify new mCoPs to be used as surrogate endpoints.
+  \item Could also have missing outcome in the binary endpoint case.
+  \end{itemize}
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{Causal Mediation Analysis: Explanation and Mechanism}
+
+\begin{center}
+\begin{itemize}
+  \itemsep 10pt
+  \item Identification assumptions:
+      \begin{itemize}
+          \item A1: No unmeasured confounding of $\{A, Y\}$ relationship.
+          \item A2: No unmeasured confounding of $\{M, Y\}$ relationship.
+          \item A3: No unmeasured confounding of $\{A, M\}$ relationship.
+        \item A4: No $\{M, Y\}$ confounder affected by $A$, i.e., no $Z$.
+      \end{itemize}
+  \item \textit{Indirect} effects: thru pathways involving candidate mCoPs.
+      \begin{itemize}
+          \item Natural (in)direct effects~\citep{robins1992identifiability,
+              pearl2013direct}: binary $A$ and $M$, no $Z$, ``cross-world''
+              independence.
+          \item Stochastic (in)direct effects~\citep{diaz2020causal}:
+          continuous $A$ and $M$, no $Z$; no ``cross-world'' exclusion.
+          \item Interventional (in)direct effects~\citep{diaz2020nonparametric}:
+          binary $A$, continuous $M$, $Z$ ok, no ``cross-world'' exclusion.
+          \item Stochastic interventional (in)direct
+            effects~\citep{hejazi2020nonparametric}:
+          continuous $A$ and $M$, $Z$ ok, no ``cross-world'' exclusion.
+      \end{itemize}
+
+\end{itemize}
+\end{center}
+
+\note{
+  \begin{itemize}
+  \item A1, A3 hold in randomized trials.
+  \item A2 may not hold: include all mutual $\{M, Y\}$ predictors, then perform
+      sensitivity analysis.
+  \item A4 usually doesn't hold: either measure $M$ right after $A$ or develop
+      more flexible effect definitions.
+  \item ``Cross-world'' independence: $Y(a, m) \perp M(a') \quad \forall m$;
+     un-testable in RCTs
+  \item Extensions for two-phase sampling???
+  \end{itemize}
+}
 
 \end{frame}
 
