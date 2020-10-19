@@ -24,9 +24,9 @@ $(TITLE)_withnotes.pdf: $(TITLE)_withnotes.tex header.tex
 	bibtex $(TITLE)_withnotes
 	xelatex $(TITLE)_withnotes
 	xelatex $(TITLE)_withnotes
-	pdfnup $(TITLE)_withnotes.pdf \
+	pdfjam $(TITLE)_withnotes.pdf \
 		--nup 1x2 --no-landscape --paper letterpaper --frame true --scale 0.9
-	mv $(TITLE)_withnotes-nup.pdf $(TITLE)_withnotes.pdf
+	mv $(TITLE)_withnotes-pdfjam.pdf $(TITLE)_withnotes.pdf
 
 $(TITLE)_withnotes.tex: $(TITLE).tex Ruby/createVersionWithNotes.rb
 	Ruby/createVersionWithNotes.rb $(TITLE).tex $(TITLE)_withnotes.tex
