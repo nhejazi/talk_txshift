@@ -93,7 +93,7 @@
         \includegraphics[scale=0.12]{homepage.png}
           \href{https://nimahejazi.org}{nimahejazi.org} \\
       with M.~van der Laan, H.~Janes, P.~Gilbert, D.~Benkeser \\
-     Biomedical Big Data Seminar, UC Berkeley, Fall 2020
+     Causal Inference Seminar, UC Berkeley, Fall 2020
     \end{minipage}%
     \begin{minipage}{0.35\textwidth}
       \centering
@@ -102,7 +102,7 @@
   \end{figure}
 }
 
-\date{Thursday, 15 October 2020}
+\date{Wednesday, 04 November 2020}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -311,6 +311,108 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\begin{frame}[c]{From the causal to the statistical target parameter}
+
+\begin{center}
+\begin{tcolorbox}
+\begin{assumption}{1}{\textit{Consistency}}\label{consistency}
+  $Y^{d(a_i, l_i)}_i = Y_i$ in the event $A_i = d(a_i, l_i)$, for
+  $i = 1, \ldots, n$
+\end{assumption}
+\end{tcolorbox}
+
+\begin{tcolorbox}
+\begin{assumption}{2}{\textit{SUTVA}}\label{sutva}
+  $Y^{d(a_i, l_i)}_i$ does not depend on $d(a_j, l_j)$ for $i = 1,
+  \ldots, n$ and $j \neq i$, or lack of interference
+  \citep{rubin1978bayesian, rubin1980randomization}
+\end{assumption}
+\end{tcolorbox}
+
+\begin{tcolorbox}
+\begin{assumption}{3}{\textit{Strong ignorability}}\label{ignorability}
+  $A_i \indep Y^{d(a_i, l_i)}_i \mid L_i$, for $i = 1, \ldots, n$
+\end{assumption}
+\end{tcolorbox}
+\end{center}
+
+\note{
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{From the causal to the statistical target parameter}
+
+\begin{center}
+\begin{tcolorbox}
+\begin{assumption}{4}{\textit{Positivity (or overlap)}}\label{positivity}
+  $a_i \in \mathcal{A} \implies d(a_i, l_i) \in \mathcal{A}$ for all
+  $l \in \mathcal{L}$, where $\mathcal{A}$ denotes the support of $A$
+  conditional on $L = l_i$ for all $i = 1, \ldots n$
+\end{assumption}
+\end{tcolorbox}
+
+\begin{itemize}
+  \itemsep4pt
+  \item This positivity assumption is not quite the same as that required for
+    categorical interventions.
+  \item In particular, we do not require that the intervention density place
+    mass across all strata defined by $L$.
+  \item Rather, we merely require the post-intervention quantity be seen in the
+    observed data for given $a_i \in \mathcal{A}$ and $l_i \in \mathcal{L}$.
+\end{itemize}
+\end{center}
+
+\note{
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{Literature: \cite{diaz2012population}}
+
+\begin{center}
+\begin{itemize}
+  \itemsep10pt
+  \item \textit{Proposal:} Evaluate outcome under an altered
+    \textit{intervention distribution} --- e.g.,
+    $P_{\delta}(g_0)(A = a \mid L) = g_0(a - \delta(L) \mid L)$.
+  \item Identification conditions for a statistical parameter of the
+    counterfactual outcome $\psi_{0,d}$ under such an intervention.
+  \item Show that the causal quantity of interest $\E_0 \{Y_{d(A, L)}\}$ is
+    identified by a functional of the distribution of $X$:
+    \begin{align*}\label{eqn:identification2012}
+      \psi_{0,d} = \int_{\mathcal{L}} \int_{\mathcal{A}} &\E_{P_0^X} \{Y \mid
+        A = d(a, l), L = l\} \cdot \\ &q_{0, A}^X(a \mid L = l) \cdot
+        q_{0, L}^X(l) d\mu(a)d\nu(l)
+    \end{align*}
+  \item Provides a derivation based on the efficient influence function (EIF)
+    with respect to the nonparametric model $\mathcal{M}$.
+\end{itemize}
+\end{center}
+
+\note{
+  \begin{itemize}
+    \item The identification result allows us to write down the causal quantity
+      of interest in terms of a functional of the observed data.
+    \item Key innovation: loosening standard assumptions through a change in
+      the observed intervention mechanism.
+    \item Problem: globally altering an intervention mechanism does not
+      necessarily respect individual characteristics.
+    \item The authors build IPW, A-IPW, and TML estimators, comparing the three
+      different approaches.
+    \item IMPORTANT: gives the g-computation formula for identification of this
+      estimator from the observed data structure.
+  \end{itemize}
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{frame}[c]{Flexible, efficient estimation}
 
 \begin{center}
@@ -403,24 +505,6 @@
     C = 1, Y, L))$.
 \end{itemize}
 \end{center}
-
-\note{
-}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}[c]{Identifying the best efficient estimator}
-
-%\vspace{-1.5em}
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.22]{simple_effect_panel_delta_upshift}
-  \caption{
-    Relative performance of reweighted and augmented estimators.
-  }
-\end{figure}
 
 \note{
 }
@@ -625,9 +709,9 @@
       \end{itemize}
   \item But what about $O = (L, A, Z, CM, \Delta, \widetilde{T}, C)$?
       \begin{itemize}
-          \item $\widetilde{T} = min(T,C)$: possibly right-censored time to
-              symptomatic SARS-CoV-2 infection
-          \item $\Delta = \mathbb{I}(T < C)$: observed symptomatic SARS-CoV-2
+          \item $\widetilde{T} = min(T_F, T_C)$: possibly right-censored time
+              to symptomatic SARS-CoV-2 infection
+          \item $\Delta = \mathbb{I}(T_F < T_C)$: observed symptomatic SARS-CoV-2
               infection
           \item Can $C$ still be a function of $\widetilde{T}$?
       \end{itemize}
@@ -695,108 +779,6 @@
 \appendix
 \begin{frame}[standout]
   Appendix
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}[c]{From the causal to the statistical target parameter}
-
-\begin{center}
-\begin{tcolorbox}
-\begin{assumption}{1}{\textit{Consistency}}\label{consistency}
-  $Y^{d(a_i, l_i)}_i = Y_i$ in the event $A_i = d(a_i, l_i)$, for
-  $i = 1, \ldots, n$
-\end{assumption}
-\end{tcolorbox}
-
-\begin{tcolorbox}
-\begin{assumption}{2}{\textit{SUTVA}}\label{sutva}
-  $Y^{d(a_i, l_i)}_i$ does not depend on $d(a_j, l_j)$ for $i = 1,
-  \ldots, n$ and $j \neq i$, or lack of interference
-  \citep{rubin1978bayesian, rubin1980randomization}
-\end{assumption}
-\end{tcolorbox}
-
-\begin{tcolorbox}
-\begin{assumption}{3}{\textit{Strong ignorability}}\label{ignorability}
-  $A_i \indep Y^{d(a_i, l_i)}_i \mid L_i$, for $i = 1, \ldots, n$
-\end{assumption}
-\end{tcolorbox}
-\end{center}
-
-\note{
-}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}[c]{From the causal to the statistical target parameter}
-
-\begin{center}
-\begin{tcolorbox}
-\begin{assumption}{4}{\textit{Positivity (or overlap)}}\label{positivity}
-  $a_i \in \mathcal{A} \implies d(a_i, l_i) \in \mathcal{A}$ for all
-  $l \in \mathcal{L}$, where $\mathcal{A}$ denotes the support of $A$
-  conditional on $L = l_i$ for all $i = 1, \ldots n$
-\end{assumption}
-\end{tcolorbox}
-
-\begin{itemize}
-  \itemsep4pt
-  \item This positivity assumption is not quite the same as that required for
-    categorical interventions.
-  \item In particular, we do not require that the intervention density place
-    mass across all strata defined by $L$.
-  \item Rather, we merely require the post-intervention quantity be seen in the
-    observed data for given $a_i \in \mathcal{A}$ and $l_i \in \mathcal{L}$.
-\end{itemize}
-\end{center}
-
-\note{
-}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}[c]{Literature: \cite{diaz2012population}}
-
-\begin{center}
-\begin{itemize}
-  \itemsep10pt
-  \item \textit{Proposal:} Evaluate outcome under an altered
-    \textit{intervention distribution} --- e.g.,
-    $P_{\delta}(g_0)(A = a \mid L) = g_0(a - \delta(L) \mid L)$.
-  \item Identification conditions for a statistical parameter of the
-    counterfactual outcome $\psi_{0,d}$ under such an intervention.
-  \item Show that the causal quantity of interest $\E_0 \{Y_{d(A, L)}\}$ is
-    identified by a functional of the distribution of $X$:
-    \begin{align*}\label{eqn:identification2012}
-      \psi_{0,d} = \int_{\mathcal{L}} \int_{\mathcal{A}} &\E_{P_0^X} \{Y \mid
-        A = d(a, l), L = l\} \cdot \\ &q_{0, A}^X(a \mid L = l) \cdot
-        q_{0, L}^X(l) d\mu(a)d\nu(l)
-    \end{align*}
-  \item Provides a derivation based on the efficient influence function (EIF)
-    with respect to the nonparametric model $\mathcal{M}$.
-\end{itemize}
-\end{center}
-
-\note{
-  \begin{itemize}
-    \item The identification result allows us to write down the causal quantity
-      of interest in terms of a functional of the observed data.
-    \item Key innovation: loosening standard assumptions through a change in
-      the observed intervention mechanism.
-    \item Problem: globally altering an intervention mechanism does not
-      necessarily respect individual characteristics.
-    \item The authors build IPW, A-IPW, and TML estimators, comparing the three
-      different approaches.
-    \item IMPORTANT: gives the g-computation formula for identification of this
-      estimator from the observed data structure.
-  \end{itemize}
-}
-
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1116,6 +1098,24 @@ nonparametric model $\M$ by solving the efficient influence function.
     \item This process includes the use of HAL to fit the regression of the EIF
       contributions on the sampling node $\{Y, L\}$.
   \end{itemize}
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{Identifying the best efficient estimator}
+
+%\vspace{-1.5em}
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.22]{simple_effect_panel_delta_upshift}
+  \caption{
+    Relative performance of reweighted and augmented estimators.
+  }
+\end{figure}
+
+\note{
 }
 
 \end{frame}
