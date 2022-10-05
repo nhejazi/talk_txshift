@@ -1,0 +1,80 @@
+% specifications for presenter mode
+%\beamerdefaultoverlayspecification{<+->}
+%\setbeamercovered{transparent}
+
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+
+%\usepackage{coloremoji}
+\usepackage{layout}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{graphicx}
+\graphicspath{ {figs/} }
+
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+\usepackage{datetime}
+\usepackage{url}
+\usepackage{tcolorbox}
+\usepackage{appendixnumberbeamer}
+\usepackage[normalem]{ulem}
+
+\usepackage{tikz}
+\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;}
+
+% math shorthand
+\usepackage{bm}
+\usepackage{amsthm}
+\usepackage{amstext}
+\usepackage[font=small]{caption}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\DeclareMathOperator{\logit}{logit}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\pr}{\mathbb{P}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\X}{\mathcal{X}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\lik}{\mathcal{L}}
+
+\newtheorem*{assumption*}{\assumptionnumber}
+\providecommand{\assumptionnumber}{}
+\makeatletter
+\newenvironment{assumption}[2]
+ {%
+  \renewcommand{\assumptionnumber}{Assumption #1: $\mathcal{#2}$}%
+  \begin{assumption*}%
+  \protected@edef\@currentlabel{#1: $\mathcal{#2}$}%
+ }
+ {%
+  \end{assumption*}
+ }
+\makeatother
+
+\DeclarePairedDelimiterX{\infdivx}[2]{(}{)}{%
+  #1\;\delimsize\|\;#2%
+}
+\newcommand{\infdiv}{D\infdivx}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+% indepndence notation macro
+\newcommand\indep{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+
+% Bibliography
+\usepackage{natbib}
+\bibpunct{(}{)}{,}{a}{}{;}
+%\usepackage{bibentry}
+
+% highlight name in bibliography
+\usepackage{xstring}
+\def\FormatName#1{%
+  \IfSubStr{#1}{Hejazi}{\underline{\textbf{#1}}}{#1}%
+}
