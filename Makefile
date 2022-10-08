@@ -1,4 +1,4 @@
-TITLE = 2022_iqss_txshift
+TITLE = 2022_causalab_txshift
 
 all: $(TITLE).pdf notes clean
 minimal: $(TITLE).pdf clean
