@@ -19,7 +19,7 @@
           \href{https://github.com/nhejazi}{nhejazi} \\
         \includegraphics[scale=0.12]{homepage.png}
           \href{https://nimahejazi.org}{nimahejazi.org} \\
-     Causal Inference Seminar at \textit{CAUSALab},\\
+     Causal Inference Lunch at \textit{CAUSALab},\\
      Harvard T.H.~Chan School of Public Health\\
      \textit{Joint work with P.B.~Gilbert (Fred Hutch \& UW)}
     \end{minipage}%
@@ -83,7 +83,7 @@
   \item The COVID-19 \sout{epi}~\sout{pan}~endemic~\citep{antia2021transition}:
     \begin{itemize}
       \itemsep4pt
-      \item \sout{270} \sout{331} 619 million total cases have been detected
+      \item \sout{270} \sout{331} 624 million total cases have been detected
         globally;
       \item new variants emerging, with vaccine uptake globally slowing;
       %\item $\sim$95\% efficacy rate for \textit{most efficacious} vaccine(s).
@@ -285,6 +285,35 @@ Assaying >30k samples is expensive, statistically unnecessary.
 }
 
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{Controlled Vaccine Efficacy}
+
+\begin{center}
+\begin{itemize}
+  \itemsep8pt
+  \item For a hypothetical value $s \in \mathcal{S}$, the controlled direct
+    effect quantifies the effect of $A$ on $Y$ while fixing $S = s$.
+  \item The hypothetical value $S = s$ must be chosen carefully --- to
+    be scientifically informative and to avoid positivity violations.
+  \item For two hypothetical values $s_0, s_1 \in \mathcal{S}$,
+    \textit{Controlled Vaccine Efficacy} (CVE)~\citep{gilbert2022controlled} is
+  \begin{equation*}
+    \text{CVE}(s_0, s_1) = 1 -
+      \frac{\E[\pr(Y = 1 \mid S = s_1, A = 1, L = l)]}
+      {\E[\pr(Y = 1 \mid S = s_0, A = 0, L = l)]} \ ,
+  \end{equation*}
+  contrasting counterfactual risk under vaccine and $S = s_1$ against placebo
+  and $S = s_0$.
+\end{itemize}
+\end{center}
+
+\note{
+}
+
+\end{frame}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -701,7 +730,7 @@ collaboration with Dr.~Lindsay Carpp.}
 
 \begin{frame}[c]{Comparison of SVE Predictions and TND Estimates of VE}
 
-\hspace*{-0.5cm}\includegraphics[scale=0.285]{tnd_sve_calib}
+\hspace*{-0.5cm}\includegraphics[scale=0.285]{tnd_sve_calib_pfizer_rescaled}
 
 \note{
 }
