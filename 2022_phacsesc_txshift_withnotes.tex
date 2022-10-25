@@ -1,10 +1,11 @@
 \documentclass{beamer}
 \usetheme[numbering=none]{metropolis}
+\def\notescolors{1}
 \input{_preamble.tex}
 
 % title info
-\title{\normalsize Evaluating treatment efficacy in vaccine clinical trials
-  with two-phase designs via stochastic-interventional causal effects}
+\title{\normalsize Evaluating and dissecting treatment efficacy in clinical
+  trials using stochastic-interventional and mediational causal effects}
 \author{\href{https://nimahejazi.org}{Nima Hejazi}\\[-10pt]}
 \institute{
   \begin{figure}[!htb]
@@ -19,9 +20,9 @@
           \href{https://github.com/nhejazi}{nhejazi} \\
         \includegraphics[scale=0.12]{homepage.png}
           \href{https://nimahejazi.org}{nimahejazi.org} \\
-     Causal Inference Lunch at \textit{CAUSALab},\\
-     Harvard T.H.~Chan School of Public Health\\
-     \textit{Joint work with P.B.~Gilbert (Fred Hutch \& UW)}
+     PHACS ESC Meeting,\\
+     Harvard T.H.~Chan School of Public Health
+     %\textit{Joint work with P.B.~Gilbert (Fred Hutch \& UW)}
     \end{minipage}%
     \begin{minipage}{0.3\textwidth}
       \centering
@@ -65,7 +66,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{The Fights Against HIV-1 and COVID-19}
+\begin{frame}[c]{Wars on Two Fronts: Fighting HIV-1 and COVID-19}
 
 \begin{center}
 \begin{itemize}
@@ -83,13 +84,15 @@
   \item The COVID-19 \sout{epi}~\sout{pan}~endemic~\citep{antia2021transition}:
     \begin{itemize}
       \itemsep4pt
-      \item \sout{270} \sout{331} 624 million total cases have been detected
+      \item \sout{270} \sout{331} 628 million total cases have been detected
         globally;
       \item new variants emerging, with vaccine uptake globally slowing;
       %\item $\sim$95\% efficacy rate for \textit{most efficacious} vaccine(s).
       \item COVID-19 Prevention Network's (CoVPN) \textit{COVE} trial focused
         on Moderna's (mRNA-1273) vaccine~\citep{baden2021efficacy}.
     \end{itemize}
+  \item Ongoing: HVTN/CoVPN P3008/\textit{Ubuntu} trial examining how COVID-19
+    reinfection impacted by HIV-1/AIDS status.
 \end{itemize}
 \end{center}
 
@@ -128,8 +131,10 @@
     the boost vaccine modulated immunogenic responses differently?
   \item \textit{COVE}: How would COVID-19 disease rate have differed for
     alternative vaccine-induced immunogenic response profiles?
-  \item \textbf{Question}: How can [HIV-1, COVID-19] vaccines be improved
-    through modulating immunogenic response profiles?
+  \item \textit{P3008}: How would COVID-19 disease rate have differed in the
+    vaccinated due to HIV-1/AIDS immune system impact?
+  \item \textbf{Question}: How can [HIV-1, COVID-19] vaccines be improved by
+    the modulation of immunogenic response profiles?
 \end{itemize}
 \end{center}
 
@@ -160,6 +165,9 @@
       \item existing vaccines in different populations (e.g., in children);
       \item new vaccines within the same class.
     \end{itemize}
+  \item If an immune correlate is determined to be a causative agent in the
+    vaccine's protection mechanism, it may be a biological target for future
+    or next-generation therapeutics.
 \end{itemize}
 \end{center}
 
@@ -187,6 +195,7 @@
           matching of non-cases~\citep[$n = 189$ per][]{janes2017higher}).
         \item \textit{COVE}: stratified random subcohort ($n \approx 1600$) and
           all SARS-CoV-2 infection and COVID-19 disease endpoints.
+        \item \textit{P3008}: stratified random subcohort, like \textit{COVE}.
       \end{itemize}
 \end{itemize}
 \end{center}
@@ -224,14 +233,16 @@ Assaying >30k samples is expensive, statistically unnecessary.
 \begin{center}
 \begin{itemize}
   \itemsep8pt
-  \item Complete (unobserved) data $X = (L, A, S, Y) \sim P_0^X \in
+  \item Complete (unobserved) data $X = (V, L, A, S, Y) \sim P_0^X \in
     \mathcal{M}$:
     \begin{itemize}
       \itemsep4pt
-      \item $L$ (baseline covariates): sex, age, BMI, behavioral HIV risk,
-      \item $A$ (treatment): randomized assignment to vaccine/placebo,
-      \item $S$ (exposure): immune response profile for relevant markers,
-      \item $Y$ (outcome of interest): infection status at trial's end.
+      \item $V$ (unobserved confounder): prior infection status (pre-trial),
+      \item $L$ (baseline covariates): sex, age, BMI, behavioral risk,
+      \item $A$ (treatment): vaccine assignment or HIV-1/AIDS status,
+      \item $S$ (mediator): immune response profile for relevant markers,
+      \item $Y$ (outcome): infection status, time-to-infection at trial's
+        end.
     \end{itemize}
   \item Observed data $O = (B, BX) = (L, B, BS, Y) \sim P_0 \in \mathcal{M}$.
     \begin{itemize}
@@ -239,7 +250,8 @@ Assaying >30k samples is expensive, statistically unnecessary.
       \item $B \in \{0,1\}$ indicates inclusion in the second-phase sample.
       \item $\pi_0 \coloneqq \pr(B = 1 \mid Y, L)$ must be \textit{known by
         design} or estimated.
-      \item Implicitly conditioning on the vaccine arm: $O = \{X \mid A = 1\}$.
+      \item Implicitly conditioning on the vaccine arm: $O = \{X \mid A = 1\}$
+      in \textit{505} and \textit{COVE} but not in \textit{P3008}.
     \end{itemize}
 \end{itemize}
 \end{center}
@@ -314,51 +326,6 @@ Assaying >30k samples is expensive, statistically unnecessary.
 
 \end{frame}
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}[c]{Disease Risk Under Shifted Immunogenic Responses}
-
-\hspace*{-1cm}\includegraphics[scale=0.41]{shift-1}
-
-\note{
-}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}[c]{Disease Risk Under Shifted Immunogenic Responses}
-
-\hspace*{-1cm}\includegraphics[scale=0.41]{shift-2}
-
-\note{
-}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}[c]{Disease Risk Under Shifted Immunogenic Responses}
-
-\hspace*{-1cm}\includegraphics[scale=0.41]{shift-3}
-
-\note{
-}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}[c]{Disease Risk Under Shifted Immunogenic Responses}
-
-\hspace*{-1cm}\includegraphics[scale=0.41]{shift-4}
-
-\note{
-}
-
-\end{frame}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[c]{Stochastic Interventions Define the Causal Effects of Shifts}
@@ -410,39 +377,83 @@ policies.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Interpreting the Causal Effects of Shift Interventions}
+\begin{frame}[c]{Disease Risk Under Shifted Immunogenic Responses}
 
-\begin{center}
-\begin{itemize}
-  \itemsep6pt
-  \item Consider a data structure: $(Y_s, s \in \mathcal{S})$.
-  \item Let $Y_s = \beta_0 + \beta_1 s + \epsilon_s$, with error $\epsilon_s
-    \sim N(0, \sigma^2_s)$ $\forall s \in S$.
-  \item For the counterfactual outcomes $(Y_{s' + \delta}, Y_{s'})$, their
-    difference $Y_{s' + \delta} - Y_{s'}$ may be expressed (for some
-    $s' \in \mathcal{S}$)
-    \begin{align*}
-      \E Y_{s' + \delta} - \E Y_{s'} &= [\beta_0 + \beta_1 (s' + \delta) +
-          \E \epsilon_{s' + \delta}] - [\beta_0 + \beta_1 s' +
-          \E \epsilon_{s'}] \\
-        &= \beta_1 \delta
-    \end{align*}
-  \item A \textit{unit shift} for $s' \in S$ (i.e., $\delta = 1$) causes a
-    counterfactual difference in $Y$ of magnitude $\beta_1$.
-\end{itemize}
-\end{center}
+\hspace*{-1cm}\includegraphics[scale=0.41]{shift-1}
 
 \note{
-  \begin{itemize}
-    \item Note that this analysis is exactly what we're told we \textbf{cannot}
-      do in ``linear models 101'' --- that is, the slope of a regression line
-      cannot be interpreted as \textit{causing} a change in the outcome.
-    \item We extend this result to the mean counterfactual outcomes under the
-      nonparametric model $\M$.
-  \end{itemize}
 }
 
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{Disease Risk Under Shifted Immunogenic Responses}
+
+\hspace*{-1cm}\includegraphics[scale=0.41]{shift-2}
+
+\note{
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{Disease Risk Under Shifted Immunogenic Responses}
+
+\hspace*{-1cm}\includegraphics[scale=0.41]{shift-3}
+
+\note{
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{Disease Risk Under Shifted Immunogenic Responses}
+
+\hspace*{-1cm}\includegraphics[scale=0.41]{shift-4}
+
+\note{
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\begin{frame}[c]{Interpreting the Causal Effects of Shift Interventions}
+
+%\begin{center}
+%\begin{itemize}
+  %\itemsep6pt
+  %\item Consider a data structure: $(Y_s, s \in \mathcal{S})$.
+  %\item Let $Y_s = \beta_0 + \beta_1 s + \epsilon_s$, with error $\epsilon_s
+    %\sim N(0, \sigma^2_s)$ $\forall s \in S$.
+  %\item For the counterfactual outcomes $(Y_{s' + \delta}, Y_{s'})$, their
+    %difference $Y_{s' + \delta} - Y_{s'}$ may be expressed (for some
+    %$s' \in \mathcal{S}$)
+    %\begin{align*}
+      %\E Y_{s' + \delta} - \E Y_{s'} &= [\beta_0 + \beta_1 (s' + \delta) +
+          %\E \epsilon_{s' + \delta}] - [\beta_0 + \beta_1 s' +
+          %\E \epsilon_{s'}] \\
+        %&= \beta_1 \delta
+    %\end{align*}
+  %\item A \textit{unit shift} for $s' \in S$ (i.e., $\delta = 1$) causes a
+    %counterfactual difference in $Y$ of magnitude $\beta_1$.
+%\end{itemize}
+%\end{center}
+
+%\note{
+  %\begin{itemize}
+    %\item Note that this analysis is exactly what we're told we \textbf{cannot}
+      %do in ``linear models 101'' --- that is, the slope of a regression line
+      %cannot be interpreted as \textit{causing} a change in the outcome.
+    %\item We extend this result to the mean counterfactual outcomes under the
+      %nonparametric model $\M$.
+  %\end{itemize}
+%}
+
+%\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -470,159 +481,6 @@ policies.}
 
 \footnotetext[2]{SAP published at
 \url{https://doi.org/10.6084/m9.figshare.13198595}.}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}[standout]
-  Efficient Estimation in Two-Phase Designs
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}{Estimation of the Counterfactual Mean $\psi_{0,\delta}$}
-An \textit{estimator} $\psi_{n,\delta}$ of $\psi_{0,\delta} \coloneqq \Psi(P_0)$
-is \textit{efficient} if and only if
-\[
-  \psi_{n,\delta} - \psi_{0, \delta} = n^{-1} \sum\limits_{i=1}^n
-  D^{\star}(P_0)(O_i) + o_P(n^{-1/2}) \ ,
-\]
-where $D^{\star}(P)$ is the \textit{efficient influence function} (EIF) of
-$\psi_{0,\delta}$ with respect to the nonparametric model $\mathcal{M}$ at a
-distribution $P$.
-\vspace{0.25cm}
-
-The EIF of $\psi_{0,\delta}$ is indexed by two key \textit{nuisance parameters}
-\begin{align*}
-  \overline{Q}_{Y}(S,L) &\coloneqq \E_{P}(Y \mid S, L) &
-      \mbox{\textit{outcome mechanism}} \\
-  g_{S}(S \mid L) &\coloneqq p(S \mid L) &
-    \mbox{\textit{generalized propensity score}}
-\end{align*}
-
-\note{
-}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}[c]{Flexible, Efficient, Doubly Robust Estimation}
-
-\begin{center}
-\begin{itemize}
-  \itemsep8pt
-  \item The efficient influence function of $\psi_{0, \delta}$ with respect to
-    $\mathcal{M}$ is
-    \begin{equation*}
-      D^{\star}_{F}(P_0)(o) = \frac{g_{0,S}(d^{-1}(s,l) \mid l)}
-      {g_{0,S}(s \mid l)} ({y - \overline{Q}_{0,Y}(s,l)}) +
-      \overline{Q}_{0,Y}(d(s,l), l) - \psi_{0,\delta}.
-    \end{equation*}
-  \item The one-step bias-corrected estimator:
-    \begin{equation*}\label{tmle}
-        \psi_n^{+} = \frac{1}{n} \sum_{i = 1}^n \overline{Q}_{n,Y}(d(S_i, L_i),
-        L_i) + D^{\star}_n(O_i).
-      \end{equation*}
-  \item The TML estimator updates initial estimates of $\overline{Q}_n$ by
-      tilting:
-    \begin{equation*}\label{tmle}
-      \psi_n^{\star} = \frac{1}{n} \sum_{i = 1}^n
-      \overline{Q}_{n,Y}^{\star}(d(S_i, L_i), L_i).
-      \end{equation*}
-  \item Both doubly robust: flexible modeling for nuisance estimation.
-\end{itemize}
-\end{center}
-
-\note{
-  \begin{itemize}
-    \item Both estimators are CAN even when nuisance parameters are estimated
-      via flexible, machine learning techniques.
-    \item Semiparametric-efficient estimation thru solving efficient influence
-      function estimating equation wrt the model $\M$.
-    \item The auxiliary covariate simplifies when the treatment is in the limits
-      (conditional on $W$) --- i.e., for $S_i \in (u(l) - \delta, u(l))$, then
-      we have $H(s,l) = \frac{g_0(s - \delta \mid l)}{g_0(s \mid l)} + 1$.
-    \item Need to explicitly remind the audience what $u(l)$ is again. It's only
-      appeared once at this point, and only been mentioned in passing.
-  \end{itemize}
-}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}[c]{Augmented Estimators for Two-Phase Sampling Designs}
-
-\begin{center}
-\begin{itemize}
-  \itemsep8pt
-  \item \cite{rose2011targeted2sd} suggested inverse probability of censoring
-    weighted (IPCW) loss functions:
-    \begin{equation*}
-      \lik(P_0^X)(O) = \frac{B}{\pi_0(Y, L)}\lik(P_0^X)(X)
-    \end{equation*}
-  \item When the sampling mechanism $\pi_0(Y,L)$ is known by design, this
-    procedure yields a reasonably reliable estimator.
-  \item When data-adaptive regression must be used --- that is, when
-    $\pi_0(Y,L)$ is not known by design\footnotemark --- this is insufficient.
-\end{itemize}
-\end{center}
-
-\note{
-}
-
-\footnotetext[3]{Sampling of non-cases in HVTN 505 used
-matching~\citep{janes2017higher}.}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}[c]{Efficiency and Multiple Robustness~\citep{hejazi2020efficient}}
-
-\begin{center}
-\begin{itemize}
-  \itemsep8pt
-  \item Then, the IPCW augmentation must be applied to the EIF\footnotemark:
-    \begin{align*}
-      D^{\star}(P_0^X)(o) = &\frac{b}{\pi_0(y, l)} D^{\star}_F(P_0^X)(x) -
-        \left(1 - \frac{b}{\pi_0(y, l)}\right) \\
-        &\E(D^{\star}_F(P_0^X)(x) \mid B = 1, Y = y, L = l).
-    \end{align*}
-  \item Expresses observed data EIF $D^{\star}(P_0^X)(o)$ via complete data
-     EIF $D^{\star}_F(P_0^X)(x)$; inclusion of second term improves efficiency.
- \item An emergent multiple robustness property --- combinations of
-    $\{g_0(S \mid L), \overline{Q}_0(S,L)\} \times \{\pi_0(Y, L),
-    \E(D^{\star}_F(P^X_0)(x) \mid B = 1, Y, L)\}$.
-  \item Our \texttt{txshift} \texttt{R} package implements our estimators of
-    $\psi_{0,\delta}$.
-\end{itemize}
-\end{center}
-
-\note{
-\begin{itemize}
-  \itemsep6pt
-  \item The expectation of the full data EIF $D^{\star}_F(P_0^X)(x)$, taken
-    only over units selected by the sampling mechanism (i.e., $B = 1$).
-\end{itemize}
-}
-
-\footnotetext[4]{A very general version appears to have been presented
-in~\citet{robins1994estimation}.}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\begin{frame}[c]{Comparing Reweighted and Augmented Estimators}
-
-\hspace*{-0.75cm}\includegraphics[scale=0.255]{simple_effect_panel_delta_upshift}
-
-\note{
-}
 
 \end{frame}
 
@@ -658,6 +516,214 @@ in~\citet{robins1994estimation}.}
 }
 
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{Causal Mediation Analysis}
+
+\begin{center}
+\begin{itemize}
+  \itemsep8pt
+  \item The natural direct and indirect effect decompose the ATE:
+    \begin{align*}
+      \psi_{\text{ATE}} &= \E[Y(1) - Y(0)] \nonumber \\
+      &= \underbrace{\E[Y(1, S(1)) - Y(1, S(0))]}_{\text{NIE}} +
+      \underbrace{\E[Y(1, S(0)) - Y(0, S(0))]}_{\text{NDE}},
+    \end{align*}
+  \item The NIE is the effect of $A$ through $S$ on $Y$ while the NDE is its
+     additive complement, i.e., the remainder of the ATE.
+  \item \citet{boileau2022identifying} show that the NDE may be learned under
+    unmeasured baseline confounding if said confounding mechanism does not
+    directly impact the outcome.
+   \item In \textit{P3008}, the NIE captures the effect of HIV-1/AIDS status
+       on COVID-19 reinfection through immune CoPs.
+\end{itemize}
+\end{center}
+
+\note{
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{Mediational Vaccine Efficacy}
+
+\begin{center}
+\begin{itemize}
+  \itemsep8pt
+  \item VE estimands of the form, $\psi_{\text{VE}} = 1 - \psi_{\text{RR}}$
+  \item Analogous decompositions are possible for the risk ratio (RR):
+  \begin{equation*}
+    \psi_{\text{RR}} = \frac{\pr(Y(1, S(1)) = 1)}{\pr(Y(0, S(0)) = 1)} =
+      \underbrace{\frac{\pr(Y(1, S(0)) = 1)}{\pr(Y(0, S(0)) = 1)}}_{\text{NDE}}
+      \underbrace{\frac{\pr(Y(1, S(1)) = 1)}{\pr(Y(1, S(0)) = 1)}}_{\text{NIE}} \ .
+  \end{equation*}
+  \item Mediational causal parameter based on the VE estimand scale
+     $\psi_{\text{PM}} = 1 - \log(\psi_{\text{RR}_{\text{NDE}}})
+     / \log(\psi_{\text{RR}})$
+  \item Summarizes the mechanism of VE through immune CoPs $S$, including effect
+  modification by treatment status $A$.
+\end{itemize}
+\end{center}
+
+\note{
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\begin{frame}[standout]
+  %Efficient Estimation in Two-Phase Designs
+%\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\begin{frame}{Estimation of the Counterfactual Mean $\psi_{0,\delta}$}
+%An \textit{estimator} $\psi_{n,\delta}$ of $\psi_{0,\delta} \coloneqq \Psi(P_0)$
+%is \textit{efficient} if and only if
+%\[
+  %\psi_{n,\delta} - \psi_{0, \delta} = n^{-1} \sum\limits_{i=1}^n
+  %D^{\star}(P_0)(O_i) + o_P(n^{-1/2}) \ ,
+%\]
+%where $D^{\star}(P)$ is the \textit{efficient influence function} (EIF) of
+%$\psi_{0,\delta}$ with respect to the nonparametric model $\mathcal{M}$ at a
+%distribution $P$.
+%\vspace{0.25cm}
+
+%The EIF of $\psi_{0,\delta}$ is indexed by two key \textit{nuisance parameters}
+%\begin{align*}
+  %\overline{Q}_{Y}(S,L) &\coloneqq \E_{P}(Y \mid S, L) &
+      %\mbox{\textit{outcome mechanism}} \\
+  %g_{S}(S \mid L) &\coloneqq p(S \mid L) &
+    %\mbox{\textit{generalized propensity score}}
+%\end{align*}
+
+%\note{
+%}
+
+%\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\begin{frame}[c]{Flexible, Efficient, Doubly Robust Estimation}
+
+%\begin{center}
+%\begin{itemize}
+  %\itemsep8pt
+  %\item The efficient influence function of $\psi_{0, \delta}$ with respect to
+    %$\mathcal{M}$ is
+    %\begin{equation*}
+      %D^{\star}_{F}(P_0)(o) = \frac{g_{0,S}(d^{-1}(s,l) \mid l)}
+      %{g_{0,S}(s \mid l)} ({y - \overline{Q}_{0,Y}(s,l)}) +
+      %\overline{Q}_{0,Y}(d(s,l), l) - \psi_{0,\delta}.
+    %\end{equation*}
+  %\item The one-step bias-corrected estimator:
+    %\begin{equation*}\label{tmle}
+        %\psi_n^{+} = \frac{1}{n} \sum_{i = 1}^n \overline{Q}_{n,Y}(d(S_i, L_i),
+        %L_i) + D^{\star}_n(O_i).
+      %\end{equation*}
+  %\item The TML estimator updates initial estimates of $\overline{Q}_n$ by
+      %tilting:
+    %\begin{equation*}\label{tmle}
+      %\psi_n^{\star} = \frac{1}{n} \sum_{i = 1}^n
+      %\overline{Q}_{n,Y}^{\star}(d(S_i, L_i), L_i).
+      %\end{equation*}
+  %\item Both doubly robust: flexible modeling for nuisance estimation.
+%\end{itemize}
+%\end{center}
+
+%\note{
+  %\begin{itemize}
+    %\item Both estimators are CAN even when nuisance parameters are estimated
+      %via flexible, machine learning techniques.
+    %\item Semiparametric-efficient estimation thru solving efficient influence
+      %function estimating equation wrt the model $\M$.
+    %\item The auxiliary covariate simplifies when the treatment is in the limits
+      %(conditional on $W$) --- i.e., for $S_i \in (u(l) - \delta, u(l))$, then
+      %we have $H(s,l) = \frac{g_0(s - \delta \mid l)}{g_0(s \mid l)} + 1$.
+    %\item Need to explicitly remind the audience what $u(l)$ is again. It's only
+      %appeared once at this point, and only been mentioned in passing.
+  %\end{itemize}
+%}
+
+%\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\begin{frame}[c]{Augmented Estimators for Two-Phase Sampling Designs}
+
+%\begin{center}
+%\begin{itemize}
+  %\itemsep8pt
+  %\item \cite{rose2011targeted2sd} suggested inverse probability of censoring
+    %weighted (IPCW) loss functions:
+    %\begin{equation*}
+      %\lik(P_0^X)(O) = \frac{B}{\pi_0(Y, L)}\lik(P_0^X)(X)
+    %\end{equation*}
+  %\item When the sampling mechanism $\pi_0(Y,L)$ is known by design, this
+    %procedure yields a reasonably reliable estimator.
+  %\item When data-adaptive regression must be used --- that is, when
+    %$\pi_0(Y,L)$ is not known by design\footnotemark --- this is insufficient.
+%\end{itemize}
+%\end{center}
+
+%\note{
+%}
+
+%\footnotetext[3]{Sampling of non-cases in HVTN 505 used
+%matching~\citep{janes2017higher}.}
+
+%\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\begin{frame}[c]{Efficiency and Multiple Robustness~\citep{hejazi2020efficient}}
+
+%\begin{center}
+%\begin{itemize}
+  %\itemsep8pt
+  %\item Then, the IPCW augmentation must be applied to the EIF\footnotemark:
+    %\begin{align*}
+      %D^{\star}(P_0^X)(o) = &\frac{b}{\pi_0(y, l)} D^{\star}_F(P_0^X)(x) -
+        %\left(1 - \frac{b}{\pi_0(y, l)}\right) \\
+        %&\E(D^{\star}_F(P_0^X)(x) \mid B = 1, Y = y, L = l).
+    %\end{align*}
+  %\item Expresses observed data EIF $D^{\star}(P_0^X)(o)$ via complete data
+     %EIF $D^{\star}_F(P_0^X)(x)$; inclusion of second term improves efficiency.
+ %\item An emergent multiple robustness property --- combinations of
+    %$\{g_0(S \mid L), \overline{Q}_0(S,L)\} \times \{\pi_0(Y, L),
+    %\E(D^{\star}_F(P^X_0)(x) \mid B = 1, Y, L)\}$.
+  %\item Our \texttt{txshift} \texttt{R} package implements our estimators of
+    %$\psi_{0,\delta}$.
+%\end{itemize}
+%\end{center}
+
+%\note{
+%\begin{itemize}
+  %\itemsep6pt
+  %\item The expectation of the full data EIF $D^{\star}_F(P_0^X)(x)$, taken
+    %only over units selected by the sampling mechanism (i.e., $B = 1$).
+%\end{itemize}
+%}
+
+%\footnotetext[4]{A very general version appears to have been presented
+%in~\citet{robins1994estimation}.}
+
+%\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%\begin{frame}[c]{Comparing Reweighted and Augmented Estimators}
+
+%\hspace*{-0.75cm}\includegraphics[scale=0.255]{simple_effect_panel_delta_upshift}
+
+%\note{
+%}
+
+%\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -803,7 +869,7 @@ collaboration with Dr.~Lindsay Carpp.}
   \item We considered the case of $O = (L, A, BS, Y, B)$, but what about $O =
     (V, L, A, BS, Y, B)$ or $O = (L, A, Z, BS, Y, B)$?
     \begin{itemize}
-      \item $Z$: \textit{unmeasured} baseline confounder (e.g., prior
+      \item $V$: \textit{unmeasured} baseline confounder (e.g., prior
         infection)
       \item $A \in \{0, 1\}$: randomized treatment assignment
       \item $Z$: post-treatment confounder (e.g., unblinded risky
@@ -973,7 +1039,7 @@ collaboration with Dr.~Lindsay Carpp.}
   \item Show that the causal quantity of interest $\E_{P_0^{\delta}}
     \{Y_{d(S, L)}\}$ is identified by a functional of the distribution of $O$,
     i.e.,
-    \begin{align*}\label{eqn:identification2012}
+    \begin{align*}
       \psi_{0,\delta} = \int_{\mathcal{L}} \int_{\mathcal{S}} &\E_{P_0}
         \{Y \mid S = d(s, l), L = l\} \\ &g_{0, S}(s \mid L = l) \cdot
         q_{0, L}(l) d\mu(s)d\nu(l)
@@ -1209,172 +1275,172 @@ mukherjee2017semiparametric, liu2021adaptive}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}{A Useful Class of Functions}
-\vspace{0.75cm}
+%\begin{frame}{A Useful Class of Functions}
+%\vspace{0.75cm}
 
-Consider space of \textit{cadlag} functions with \textit{finite variation
-norm}.
+%Consider space of \textit{cadlag} functions with \textit{finite variation
+%norm}.
 
-\textbf{Def.} cadlag = \textit{left-hand continuous} with
-\textit{right-hand limits}
-\vspace{0.25cm}
+%\textbf{Def.} cadlag = \textit{left-hand continuous} with
+%\textit{right-hand limits}
+%\vspace{0.25cm}
 
-\textbf{Variation norm}
-Let $\theta_s(u)=\theta(u_s,0_{s^c})$ be the \textit{section} of $\theta$ that
-sets the coordinates in $s$ \textit{equal to zero}.
-\vspace{0.15cm}
+%\textbf{Variation norm}
+%Let $\theta_s(u)=\theta(u_s,0_{s^c})$ be the \textit{section} of $\theta$ that
+%sets the coordinates in $s$ \textit{equal to zero}.
+%\vspace{0.15cm}
 
-The \textit{variation norm} of $\theta$ can be written:
-\[
-  \lvert \theta \rvert_v=\sum_{s\subset\{1,\dots,d\}}\int \mid
-  d\theta_s(u_s)\mid ,
-\]
-where $x_s=(x(j):j\in s)$ and the sum is over all subsets.
+%The \textit{variation norm} of $\theta$ can be written:
+%\[
+  %\lvert \theta \rvert_v=\sum_{s\subset\{1,\dots,d\}}\int \mid
+  %d\theta_s(u_s)\mid ,
+%\]
+%where $x_s=(x(j):j\in s)$ and the sum is over all subsets.
 
-\note{
-}
+%\note{
+%}
 
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}{Variation Norm}
-
-We can represent the function $\theta$ as
-\begin{eqnarray*}
-\theta(x)&=&\theta(0) + \sum_{s\subset\{1,\ldots,d\}}
-  \int \I(x_s\geq u_s)d\theta_s(u_s),
-\end{eqnarray*}
-
-For discrete measures $d\theta_s$ with \textit{support points} $\{u_{s,j}:j\}$
-we get a \textit{linear combination} of indicator \textit{basis functions}:
-\[
-  \theta(x) = \theta(0) + \sum_{s\subset\{1,\ldots,d\}}\sum_{j} \beta_{s,j}
-    \theta_{u_{s,j}}(x),
-\]
-where $\beta_{s,j}=d\theta_s(u_{s,j})$,
-$\theta_{u_{s,j}}(x) = \I(x_s \ge u_{s,j})$,
-and
-\begin{equation*}
-\lvert \theta \rvert_v = \theta(0) + \sum_{s\subset\{1,\ldots,d\}}
-  \sum_j \lvert \beta_{s,j} \rvert.
-\end{equation*}
-
-\note{
-}
-
-\end{frame}
+%\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}{Convergence Rate of HAL}
-\vspace{0.25cm}
+%\begin{frame}{Variation Norm}
 
-We have, for $\alpha(d)=1/(d+1)$,
-\[
-  \lvert \theta_{n,M} - \theta_{0,M} \rvert_{P_0}=o_P(n^{-(1/4+\alpha(d)/8)}).
-\]
+%We can represent the function $\theta$ as
+%\begin{eqnarray*}
+%\theta(x)&=&\theta(0) + \sum_{s\subset\{1,\ldots,d\}}
+  %\int \I(x_s\geq u_s)d\theta_s(u_s),
+%\end{eqnarray*}
 
-Thus, if we select $M> \lvert \theta_0 \rvert_v$, then
-\[
-  \lvert \theta_{n,M} - \theta_{0} \rvert_{P_0} =
-  o_P(n^{-(1/4+\alpha(d)/8)})\ .
-\]
+%For discrete measures $d\theta_s$ with \textit{support points} $\{u_{s,j}:j\}$
+%we get a \textit{linear combination} of indicator \textit{basis functions}:
+%\[
+  %\theta(x) = \theta(0) + \sum_{s\subset\{1,\ldots,d\}}\sum_{j} \beta_{s,j}
+    %\theta_{u_{s,j}}(x),
+%\]
+%where $\beta_{s,j}=d\theta_s(u_{s,j})$,
+%$\theta_{u_{s,j}}(x) = \I(x_s \ge u_{s,j})$,
+%and
+%\begin{equation*}
+%\lvert \theta \rvert_v = \theta(0) + \sum_{s\subset\{1,\ldots,d\}}
+  %\sum_j \lvert \beta_{s,j} \rvert.
+%\end{equation*}
 
-Due to oracle inequality for the cross-validation selector $M_n$,
-\[
-  \lvert \theta_{n,M_n} - \theta_{0} \rvert_{P_0} =
-  o_P(n^{-(1/4+\alpha(d)/8)}) \ .
-\]
+%\note{
+%}
 
-Improved convergence rate~\citep{bibaut2019fast}:
-\[
-  \lvert \theta_{n,M_n} - \theta_{0} \rvert_{P_0} =
-  o_P(n^{-1/3} \log(n)^{d/2}) \ .
-\]
+%\end{frame}
 
-\note{
-  \begin{itemize}
-  \item The goal was to construct nuisance parameter estimators that are
-    \textit{consistent} and \textit{converge faster} than $n^{-1/4}$ under
-    \textit{minimal assumptions}.
-  \item We have assumed enough \textit{smoothness} that HAL will
-    \textit{converge faster} than $n^{-1/4}$, but retain enough flexibility
-    that \textit{consistency} is also preserved.
-  \end{itemize}
-}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\end{frame}
+%\begin{frame}{Convergence Rate of HAL}
+%\vspace{0.25cm}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%We have, for $\alpha(d)=1/(d+1)$,
+%\[
+  %\lvert \theta_{n,M} - \theta_{0,M} \rvert_{P_0}=o_P(n^{-(1/4+\alpha(d)/8)}).
+%\]
 
-\begin{frame}[c]{Algorithm for TML Estimation}
+%Thus, if we select $M> \lvert \theta_0 \rvert_v$, then
+%\[
+  %\lvert \theta_{n,M} - \theta_{0} \rvert_{P_0} =
+  %o_P(n^{-(1/4+\alpha(d)/8)})\ .
+%\]
 
-\begin{center}
-\begin{enumerate}\label{tmle_algo}
-  \itemsep6pt
-  \item Construct initial estimators $g_n$ of $g_0(S, L)$ and $Q_n$ of
-    $\overline{Q}_0(S, L)$, perhaps using data-adaptive regression techniques.
-  \item For each observation $i$, compute an estimate $H_n(s_i, l_i)$ of the
-    auxiliary covariate $H(s_i, l_i)$.
-  \item Estimate the parameter $\epsilon$ in the logistic regression model
-    $$\text{logit}\overline{Q}_{\epsilon, n}(s, l) =
-    \text{logit}\overline{Q}_n(s, l) + \epsilon H_n(s, l),$$
-    or an alternative regression model incorporating weights.
-  \item Compute TML estimator $\Psi_n$ of the target parameter, defining update
-    $\overline{Q}_n^{\star}$ of the initial estimate
-    $\overline{Q}_{n, \epsilon_n}$:
-    \begin{equation*}\label{tmle}
-      \Psi_n = \Psi(P_n^{\star}) = \frac{1}{n} \sum_{i = 1}^n
-        \overline{Q}_n^{\star}(d(S_i, L_i), L_i).
-      \end{equation*}
-\end{enumerate}
-\end{center}
+%Due to oracle inequality for the cross-validation selector $M_n$,
+%\[
+  %\lvert \theta_{n,M_n} - \theta_{0} \rvert_{P_0} =
+  %o_P(n^{-(1/4+\alpha(d)/8)}) \ .
+%\]
 
-\note{
-  \begin{itemize}
-    \item We recommend using nonparametric methods for the initial estimators,
-      as consistent estimation is necessary for efficiency of the estimator
-      $\Psi_n$.
-    \item Intuition for the submodel fluctuation?
-  \end{itemize}
-}
+%Improved convergence rate~\citep{bibaut2019fast}:
+%\[
+  %\lvert \theta_{n,M_n} - \theta_{0} \rvert_{P_0} =
+  %o_P(n^{-1/3} \log(n)^{d/2}) \ .
+%\]
 
-\end{frame}
+%\note{
+  %\begin{itemize}
+  %\item The goal was to construct nuisance parameter estimators that are
+    %\textit{consistent} and \textit{converge faster} than $n^{-1/4}$ under
+    %\textit{minimal assumptions}.
+  %\item We have assumed enough \textit{smoothness} that HAL will
+    %\textit{converge faster} than $n^{-1/4}$, but retain enough flexibility
+    %that \textit{consistency} is also preserved.
+  %\end{itemize}
+%}
+
+%\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Algorithm for IPCW-TML Estimation}
+%\begin{frame}[c]{Algorithm for TML Estimation}
 
-\begin{center}
-\begin{enumerate}\label{ipcwtmle_algo}
-  \itemsep8pt
-  \item Using all observed units ($X$), estimate sampling mechanism
-    $\pi(Y, L)$, perhaps using data-adaptive regression methods.
-  \item Using only observed units in the second-stage sample $C = 1$,
-    construct initial estimators $g_n(S,L)$ and $\overline{Q}_n(S,L)$,
-    weighting by the sampling mechanism estimate $\pi_n(Y,L)$.
-  \item With the approach described for the full data case, compute
-    $H_n(s_i,l_i)$, and fluctuate submodel via logistic regression.
-  \item Compute IPCW-TML estimator $\Psi_n$ of the target parameter, by solving
-    the IPCW-augmented EIF estimating equation.
-  \item Iteratively update estimated sampling weights $\pi_n(Y,L)$ and
-    IPCW-augmented EIF, updating TMLE in each iteration.
-\end{enumerate}
-\end{center}
+%\begin{center}
+%\begin{enumerate}\label{tmle_algo}
+  %\itemsep6pt
+  %\item Construct initial estimators $g_n$ of $g_0(S, L)$ and $Q_n$ of
+    %$\overline{Q}_0(S, L)$, perhaps using data-adaptive regression techniques.
+  %\item For each observation $i$, compute an estimate $H_n(s_i, l_i)$ of the
+    %auxiliary covariate $H(s_i, l_i)$.
+  %\item Estimate the parameter $\epsilon$ in the logistic regression model
+    %$$\text{logit}\overline{Q}_{\epsilon, n}(s, l) =
+    %\text{logit}\overline{Q}_n(s, l) + \epsilon H_n(s, l),$$
+    %or an alternative regression model incorporating weights.
+  %\item Compute TML estimator $\Psi_n$ of the target parameter, defining update
+    %$\overline{Q}_n^{\star}$ of the initial estimate
+    %$\overline{Q}_{n, \epsilon_n}$:
+    %\begin{equation*}\label{tmle}
+      %\Psi_n = \Psi(P_n^{\star}) = \frac{1}{n} \sum_{i = 1}^n
+        %\overline{Q}_n^{\star}(d(S_i, L_i), L_i).
+      %\end{equation*}
+%\end{enumerate}
+%\end{center}
 
-\note{
-  \begin{itemize}
-    \item We recommend using nonparametric methods for the initial estimators,
-      as consistent estimation is necessary for efficiency of the estimator
-      $\Psi_n$.
-    \item Intuition for the submodel fluctuation?
-    \item This process includes the use of HAL to fit the regression of the EIF
-      contributions on the sampling node $\{Y, L\}$.
-  \end{itemize}
-}
+%\note{
+  %\begin{itemize}
+    %\item We recommend using nonparametric methods for the initial estimators,
+      %as consistent estimation is necessary for efficiency of the estimator
+      %$\Psi_n$.
+    %\item Intuition for the submodel fluctuation?
+  %\end{itemize}
+%}
 
-\end{frame}
+%\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\begin{frame}[c]{Algorithm for IPCW-TML Estimation}
+
+%\begin{center}
+%\begin{enumerate}\label{ipcwtmle_algo}
+  %\itemsep8pt
+  %\item Using all observed units ($X$), estimate sampling mechanism
+    %$\pi(Y, L)$, perhaps using data-adaptive regression methods.
+  %\item Using only observed units in the second-stage sample $C = 1$,
+    %construct initial estimators $g_n(S,L)$ and $\overline{Q}_n(S,L)$,
+    %weighting by the sampling mechanism estimate $\pi_n(Y,L)$.
+  %\item With the approach described for the full data case, compute
+    %$H_n(s_i,l_i)$, and fluctuate submodel via logistic regression.
+  %\item Compute IPCW-TML estimator $\Psi_n$ of the target parameter, by solving
+    %the IPCW-augmented EIF estimating equation.
+  %\item Iteratively update estimated sampling weights $\pi_n(Y,L)$ and
+    %IPCW-augmented EIF, updating TMLE in each iteration.
+%\end{enumerate}
+%\end{center}
+
+%\note{
+  %\begin{itemize}
+    %\item We recommend using nonparametric methods for the initial estimators,
+      %as consistent estimation is necessary for efficiency of the estimator
+      %$\Psi_n$.
+    %\item Intuition for the submodel fluctuation?
+    %\item This process includes the use of HAL to fit the regression of the EIF
+      %contributions on the sampling node $\{Y, L\}$.
+  %\end{itemize}
+%}
+
+%\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
