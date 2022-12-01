@@ -5,7 +5,7 @@
 
 % title info
 \title{\normalsize Evaluating treatment efficacy in vaccine clinical trials
-  with two-phase designs via stochastic-interventional causal effects}
+  with two-phase designs using stochastic-interventional effects}
 \author{\href{https://nimahejazi.org}{Nima Hejazi}\\[-10pt]}
 \institute{
   \begin{figure}[!htb]
@@ -84,7 +84,7 @@
   \item The COVID-19 \sout{epi}~\sout{pan}~endemic~\citep{antia2021transition}:
     \begin{itemize}
       \itemsep4pt
-      \item \sout{270} \sout{331} 619 million total cases have been detected
+      \item \sout{270} \sout{331} \sout{619} 643 million total cases detected
         globally;
       \item new variants emerging, with vaccine uptake globally slowing;
       %\item $\sim$95\% efficacy rate for \textit{most efficacious} vaccine(s).
@@ -624,7 +624,7 @@ in~\citet{robins1994estimation}.}
 \begin{frame}[c]{SVE Prediction of mRNA-1273 VE thru PsV nAb Correlate}
 
 \vspace*{-0.1cm}
-\hspace*{-0.3cm}\includegraphics[scale=0.21]{sve_pseudoneutid50_simplified}
+\hspace*{-0.3cm}\includegraphics[scale=0.21]{sve_pseudoneutid50_simplified_talksonly}
 
 \note{
 }
@@ -654,7 +654,7 @@ in~\citet{robins1994estimation}.}
 \begin{frame}[c]{SVE Bridging of mRNA-1273 VE thru PsV nAb Correlate}
 
 \vspace*{-0.1cm}
-\hspace*{-0.3cm}\includegraphics[scale=0.21]{sve_pseudoneutid50_immunobridging}
+\hspace*{-0.3cm}\includegraphics[scale=0.21]{sve_pseudoneutid50_immunobridging_2dose}
 
 \note{
 SVE is being measured for COVID-19 from 7-100 days post-4 weeks following
@@ -667,26 +667,24 @@ paper.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{SVE Predictions vs.~Test-Negative Designs (TND) Estimates}
+\begin{frame}[c]{SVE Predictions vs.~Real-World Reported Estimates}
 
 \begin{center}
 \begin{itemize}
   \itemsep6pt
-  \item Compared $\delta$-calibrated SVE predictions to TND VE estimates.
+  \item Compared $\delta$-calibrated SVE predictions to reported VE estimates,
+      from TND studies or RCTs.
   \item Inclusion/exclusion criteria for TND-based VE estimates\footnotemark:
     \begin{itemize}
       \itemsep2pt
       \item VE estimated by direct measurement of SARS-CoV-2 variants.
       \item Reported VE estimates for mRNA vaccines (BNT162b2 or mRNA-1273),
-        studying VE 2--6 months post-2\textsuperscript{nd} or
-        3\textsuperscript{rd} dose.
-      \item Flexible in choice of dosing interval (for 2\textsuperscript{nd} or
-        3\textsuperscript{rd} dose), with some studies extending to 12 weeks
-        between doses.
+        studying VE 2--6 months post-2\textsuperscript{nd} dose.
+      \item Allowed flexibility in choice of dosing interval, with some studies
+        extending to 12 weeks between doses.
     \end{itemize}
-  \item Aimed to study concordance of SVE predictions and TND estimates of VE
-    following most recent vaccine dose.
-  \item TND-based estimates established as biased (overestimating).
+  \item Studied concordance of SVE predictions and reported (TND or RCT)
+      estimates of VE following most recent vaccine dose.
 \end{itemize}
 \end{center}
 
@@ -700,9 +698,20 @@ collaboration with Dr.~Lindsay Carpp.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Comparison of SVE Predictions and TND Estimates of VE}
+%\begin{frame}[c]{Comparison of SVE Predictions and Reported VE Estimates}
 
-\hspace*{-0.5cm}\includegraphics[scale=0.285]{tnd_sve_calib}
+%\hspace*{-0.5cm}\includegraphics[scale=0.285]{tnd_sve_calib_pfizer_rescaled}
+
+%\note{
+%}
+
+%\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{Concordance of SVE Predictions and Reported VE Estimates}
+
+\hspace*{-0.5cm}\includegraphics[scale=0.285]{tnd_sve_scatter_2dose}
 
 \note{
 }
@@ -711,18 +720,7 @@ collaboration with Dr.~Lindsay Carpp.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Concordance of SVE Predictions and TND Estimates of VE}
-
-\hspace*{-0.5cm}\includegraphics[scale=0.285]{tnd_sve_scatter}
-
-\note{
-}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}[c]{Summary of SVE for Prediction and Immunobridging}
+\begin{frame}[c]{Summary of SVE Prediction for Immunobridging}
 
 \begin{center}
 \begin{itemize}
@@ -736,21 +734,23 @@ collaboration with Dr.~Lindsay Carpp.}
     %\end{itemize}
   \item Bridging VE across variants indicates VE drops but stabilizes at 50\%,
     if the model based on ancestral D614G strain holds.
-    \begin{itemize}
-      \itemsep2pt
-      \item Post-2\textsuperscript{nd} dose: For most variants (excepting
-        omicron), the VE estimate ranges from 50\% (mu) to 80\% (epsilon).
-      \item Post-3\textsuperscript{rd} dose: For omicron lineages, VE estimate
-        lies within 80\%--92\% across five subvariants (lowest VE
-        vs.~BA.2.12.1).
-    \end{itemize}
-  \item SVE predictions and TND estimates of VE well-correlated.
-    \begin{itemize}
-      \itemsep2pt
-      \item TND studies are prone to bias, tending to overestimate VE.
-      \item SVE predictions may be underestimates, since the PsV nAb correlate
-        is an \textit{imperfect} causal \textit{mediator} of the total VE.
-    \end{itemize}
+    %\begin{itemize}
+      %\itemsep2pt
+  \item Post-2\textsuperscript{nd} dose: For most variants (excepting
+    omicron), the VE estimate ranges from 50\% (mu) to 80\% (epsilon).
+      %\item Post-3\textsuperscript{rd} dose: For omicron lineages, VE estimate
+        %lies within 80\%--92\% across five subvariants (lowest VE
+        %vs.~BA.2.12.1).
+    %\end{itemize}
+  \item SVE predictions and real-world VE estimates well-correlated, but
+      SVE predictions may be underestimates, as PsV nAb correlate is an
+      \textit{imperfect} causal \textit{mediator} of total VE.
+    %\begin{itemize}
+      %\itemsep2pt
+      %\item TND studies are prone to bias, tending to overestimate VE.
+      %\item SVE predictions may be underestimates, since the PsV nAb correlate
+        %is an \textit{imperfect} causal \textit{mediator} of the total VE.
+    %\end{itemize}
 \end{itemize}
 \end{center}
 
@@ -761,51 +761,51 @@ collaboration with Dr.~Lindsay Carpp.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[standout]
-  Zooming Out
-\end{frame}
+%\begin{frame}[standout]
+  %Zooming Out
+%\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Going ``Off-Road'': Real-World Complexities}
+%\begin{frame}[c]{Going ``Off-Road'': Real-World Complexities}
 
-\begin{center}
-\begin{itemize}
-  \itemsep8pt
-  \item We considered the case of $O = (L, A, BS, Y, B)$, but what about $O =
-    (V, L, A, BS, Y, B)$ or $O = (L, A, Z, BS, Y, B)$?
-    \begin{itemize}
-      \item $Z$: \textit{unmeasured} baseline confounder (e.g., prior
-        infection)
-      \item $A \in \{0, 1\}$: randomized treatment assignment
-      \item $Z$: post-treatment confounder (e.g., unblinded risky
-        behavior)
-      \item $S$: candidate immune correlates (causal mediators)
-      \item $Y$: symptomatic SARS-CoV-2 (or HIV-1) infection
-      \item $B \coloneqq f(Y, L)$: selection into two-phase sample
-    \end{itemize}
-  \item And what about survival endpoints, $O = (L, A, BS, \Delta,
-    \widetilde{T}, B)$?
-    \begin{itemize}
-      \item $\widetilde{T} = \min(T_F, T_C)$: possibly right-censored time
-        to failure
-      \item $\Delta = \mathbb{I}(T_F < T_C)$: indicator of failure
-        endpoint occurrence
-      \item Could making $B$ a function of $\widetilde{T}$ improve sampling
-        efficiency?
-    \end{itemize}
-\end{itemize}
-\end{center}
+%\begin{center}
+%\begin{itemize}
+  %\itemsep8pt
+  %\item We considered the case of $O = (L, A, BS, Y, B)$, but what about $O =
+    %(V, L, A, BS, Y, B)$ or $O = (L, A, Z, BS, Y, B)$?
+    %\begin{itemize}
+      %\item $Z$: \textit{unmeasured} baseline confounder (e.g., prior
+        %infection)
+      %\item $A \in \{0, 1\}$: randomized treatment assignment
+      %\item $Z$: post-treatment confounder (e.g., unblinded risky
+        %behavior)
+      %\item $S$: candidate immune correlates (causal mediators)
+      %\item $Y$: symptomatic SARS-CoV-2 (or HIV-1) infection
+      %\item $B \coloneqq f(Y, L)$: selection into two-phase sample
+    %\end{itemize}
+  %\item And what about survival endpoints, $O = (L, A, BS, \Delta,
+    %\widetilde{T}, B)$?
+    %\begin{itemize}
+      %\item $\widetilde{T} = \min(T_F, T_C)$: possibly right-censored time
+        %to failure
+      %\item $\Delta = \mathbb{I}(T_F < T_C)$: indicator of failure
+        %endpoint occurrence
+      %\item Could making $B$ a function of $\widetilde{T}$ improve sampling
+        %efficiency?
+    %\end{itemize}
+%\end{itemize}
+%\end{center}
 
-\note{
-  \begin{itemize}
-  \item Goal: assess \textit{indirect} effect of vaccination through mCoPs.
-  \item Define/identify new mCoPs to be used as surrogate endpoints.
-  \item Could also have missing outcome in the binary endpoint case.
-  \end{itemize}
-}
+%\note{
+  %\begin{itemize}
+  %\item Goal: assess \textit{indirect} effect of vaccination through mCoPs.
+  %\item Define/identify new mCoPs to be used as surrogate endpoints.
+  %\item Could also have missing outcome in the binary endpoint case.
+  %\end{itemize}
+%}
 
-\end{frame}
+%\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
