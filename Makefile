@@ -1,4 +1,4 @@
-TITLE = 2022_mgh_txshift
+TITLE = 2022_cmstats_txshift
 
 all: $(TITLE).pdf notes clean
 minimal: $(TITLE).pdf clean
