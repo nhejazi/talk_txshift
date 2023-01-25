@@ -1,4 +1,4 @@
-TITLE = 2023_hsph_visitday
+TITLE = 2023_ccdd_txshift
 
 all: $(TITLE).pdf notes clean
 minimal: $(TITLE).pdf clean
