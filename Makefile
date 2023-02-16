@@ -1,6 +1,6 @@
-TITLE = 2023_ccdd_txshift
+TITLE = 2023_hivwg_txshift
 
-all: $(TITLE).pdf notes clean
+all: $(TITLE).pdf web clean
 minimal: $(TITLE).pdf clean
 
 $(TITLE).pdf: $(TITLE).tex header.tex
@@ -27,8 +27,6 @@ $(TITLE)_withnotes.tex: $(TITLE).tex Ruby/createVersionWithNotes.rb
 web: $(TITLE).pdf $(TITLE)_withnotes.pdf
 	rsync --chmod=go+r $(TITLE).pdf \
 		nhejazi@arwen.berkeley.edu:/mirror/data/pub/users/nhejazi/present/$(TITLE).pdf
-	rsync --chmod=go+r $(TITLE)_withnotes.pdf \
-		nhejazi@arwen.berkeley.edu:/mirror/data/pub/users/nhejazi/present/$(TITLE)_withnotes.pdf
 
 clean:
 	rm -f $(addprefix $(TITLE), .aux .log .nav .out .snm .toc .vrb .bbl .blg)

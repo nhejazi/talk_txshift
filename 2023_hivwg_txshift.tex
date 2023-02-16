@@ -1,11 +1,12 @@
 \documentclass{beamer}
 \usetheme[numbering=none]{metropolis}
-\def\notescolors{1}
 \input{_preamble.tex}
 
 % title info
-\title{\normalsize Characterizing immune correlates of protection in vaccine
-  efficacy trials using stochastic-interventional causal effects}
+\title{\normalsize Stochastic-interventional causal effects to evaluate
+  vaccine efficacy in clinical trials with outcome-dependent sampling}
+%Characterizing immune correlates of protection in vaccine
+  %efficacy trials using stochastic-interventional causal effects
 \author{\href{https://nimahejazi.org}{Nima Hejazi}\\[-10pt]}
 \institute{
   \begin{figure}[!htb]
@@ -20,8 +21,8 @@
           \href{https://github.com/nhejazi}{nhejazi} \\
         \includegraphics[scale=0.12]{homepage.png}
           \href{https://nimahejazi.org}{nimahejazi.org} \\
-     Center for Communicable Disease Dynamics\\
-     \textit{Joint work with P.B.~Gilbert (Fred Hutch)}
+     HIV Working Group at HSPH\\
+     \textit{Joint work with P.B.~Gilbert (Fred Hutch \& UW)}
     \end{minipage}%
     \begin{minipage}{0.3\textwidth}
       \centering
@@ -31,7 +32,7 @@
   \end{figure}
 }
 
-\date{Thursday, January 26, 2023}
+\date{Friday, February 17, 2023}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -78,13 +79,13 @@
       %\item $<$40\% efficacy rate for \textit{most efficacious} preventive
         %vaccine.
       \item HIV Vaccine Trials Network's (HVTN) \textit{505} trial evaluated a
-        novel antibody boost vaccine~\citep{hammer2013efficacy}.
+        novel antibody boost vaccine for HIV-1~\citep{hammer2013efficacy}.
     \end{itemize}
   \item The COVID-19 \sout{epi}~\sout{pan}~endemic~\citep{antia2021transition}:
     \begin{itemize}
       \itemsep4pt
-      \item \sout{270} \sout{331} \sout{619} \sout{643} 668 million total cases
-        detected globally;
+      \item \sout{270} \sout{331} \sout{619} \sout{643} \sout{668} 673 million
+        total cases detected globally;
       \item new variants emerging, with vaccine uptake globally slowing;
       %\item $\sim$95\% efficacy rate for \textit{most efficacious} vaccine(s).
       \item COVID-19 Prevention Network's (CoVPN) \textit{COVE} trial focused
@@ -124,12 +125,12 @@
 \begin{center}
 \begin{itemize}
   \itemsep8pt
-  \item \textit{505}: How would HIV infection risk have differed had
+  \item \textit{505}: How would HIV-1 infection risk have differed had
     the boost vaccine modulated immune responses differently?
   \item \textit{COVE}: How would COVID-19 disease rate have differed for
     alternative vaccine-induced immune response profiles?
   \item \textbf{Question}: How can [HIV, COVID-19] vaccines be improved
-    through modulating immune response profiles?
+    through the modulation of immune response profiles?
 \end{itemize}
 \end{center}
 
@@ -150,16 +151,16 @@
       \itemsep0pt
       \item identify/validate possible \textit{surrogate
         endpoints}~\citep{prentice1989surrogate};
-      \item understand \textit{protective mechanisms} of vaccines.
+      \item understand/dissect \textit{protective mechanisms} of vaccines.
     \end{itemize}
-  \item If an immune correlate is established to reliably predict VE,
-    subsequent efficacy trials may use it as a primary endpoint.
+  \item If an immune correlate is shown to be reliably predictive of
+    vaccine efficacy (VE), used as primary endpoint in later trials.
   \item Validated immune correlates may accelerate the approval of
     \begin{itemize}
       \itemsep0pt
       \item existing vaccines in different populations (e.g., in children);
       \item new vaccines within the same class (e.g., mRNA vaccines);
-      \item variant-adapted vaccines based on clinical immunobridging.
+      \item variant-adapted vaccines only via clinical immunobridging.
     \end{itemize}
 \end{itemize}
 \end{center}
@@ -175,19 +176,23 @@
 
 \begin{center}
 \begin{itemize}
-  \itemsep8pt
-    \item Often, use case-cohort design~\citep{prentice1986case}, a special
-      case of two-phase sampling~\citep{breslow2003large}.
+  \itemsep6pt
+    \item Two-phase sampling designs~\citep{breslow2003large} (e.g.,
+    \citet{prentice1986case}'s case-cohort) are standard practice for measuring
+    candidate immune correlates~\citep{follmann2006augmented}.
+    \item ``Phase 0'': random sampling from the target population.
     \item Phase 1: measure baseline, vaccination, endpoint on everyone.
     \item Phase 2: given baseline, vaccine, endpoint, select members of
       immune response subcohort with (possibly known) probability.
       \vspace{-1em}
       \begin{itemize}
         \itemsep4pt
-        \item \textit{505}: second-phase sample with 100\% of HIV cases and
-          matching of non-cases~\citep[$n = 189$ per][]{janes2017higher}).
-        \item \textit{COVE}: stratified random subcohort ($n \approx 1600$) and
-          all SARS-CoV-2 infection and COVID-19 disease endpoints.
+        \item \textit{505}: phase-two sample with 100\% of HIV-1 cases and
+          post-hoc matching of
+          non-cases~\citep[$n = 189$ per][]{janes2017higher}.
+        \item \textit{COVE}: pre-specified stratified random subcohort ($n
+        \approx 1600$), plus all SARS-CoV-2 infection, COVID-19 disease
+        endpoints.
       \end{itemize}
 \end{itemize}
 \end{center}
@@ -229,18 +234,19 @@ Assaying >30k samples is expensive, \textit{statistically unnecessary}.
     \mathcal{M}$:
     \begin{itemize}
       \itemsep4pt
-      \item $L$ (baseline covariates): sex, age, BMI, behavioral HIV risk,
+      \item $L$ (baseline covariates): sex, age, BMI, behavioral risk score,
       \item $A$ (treatment): randomized assignment to vaccine/placebo,
-      \item $S$ (exposure): immune response profile for relevant markers,
-      \item $Y$ (outcome of interest): infection status at trial's end.
+      \item $S$ (mediator): immune response profile for relevant markers,
+      \item $Y$ (outcome): infection/disease endpoint at end of follow-up.
     \end{itemize}
-  \item Observed data $O = (B, BX) = (L, B, BS, Y) \sim P_0 \in \mathcal{M}$.
+  \item Observed data $O = (R, RX) = (L, A, RS, Y, R) \sim P_0 \in \mathcal{M}$.
     \begin{itemize}
       \itemsep4pt
-      \item $B \in \{0,1\}$ indicates inclusion in the second-phase sample.
-      \item $\pi_0 \coloneqq \pr(B = 1 \mid Y, L)$ must be \textit{known by
+      \item $R \in \{0,1\}$ is an indicator of inclusion in the phase-two
+      sample.
+      \item $g_{0,R} \coloneqq \pr(R = 1 \mid Y, L)$ must be \textit{known by
         design} or estimated.
-      \item Implicitly conditioning on the vaccine arm: $O = \{X \mid A = 1\}$.
+      %\item Implicitly conditioning on the vaccine arm: $O = \{X \mid A = 1\}$.
     \end{itemize}
 \end{itemize}
 \end{center}
@@ -257,7 +263,7 @@ Assaying >30k samples is expensive, \textit{statistically unnecessary}.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[standout]
-  Causal Effects for Quantitative Exposures
+  Causal Effects for ``Quantitative'' Variables
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -267,8 +273,8 @@ Assaying >30k samples is expensive, \textit{statistically unnecessary}.
 \begin{center}
 \begin{itemize}
   \itemsep8pt
-  \item Describe the manner in which $X$ is hypothetically generated by a
-    nonparametric structural equation model~\citep{pearl2009causality}:
+  \item Describe the manner in which $X$ is hypothetically generated using a
+    structural causal model~\citep{pearl2009causality}:
     \begin{equation*}
       L = f_L(U_L); A \sim \text{Bern}(0.5);
       S = f_S(A, L, U_S); Y = f_Y(S, A, L, U_Y)
@@ -276,9 +282,9 @@ Assaying >30k samples is expensive, \textit{statistically unnecessary}.
   \item Implies a model for the distribution of counterfactual random variables
     induced by interventions on the system.
   \item A \textit{static} (deterministic) intervention replaces $f_S$ with a
-    specific value $s$ in its conditional support $S \mid L$.
-  \item This requires specifying \textit{a priori} a particular value of
-    exposure under which to evaluate the outcome --- but what value?
+    specific value $s$ in its conditional support $S \mid A, L$.
+  \item This requires specifying a particular value of $S$ \textit{a priori}
+    under which to evaluate the outcome --- but what value?
 \end{itemize}
 \end{center}
 
@@ -294,19 +300,20 @@ Assaying >30k samples is expensive, \textit{statistically unnecessary}.
 \begin{center}
 \begin{itemize}
   \itemsep8pt
-  \item For a hypothetical value $s \in \mathcal{S}$, the controlled direct
-    effect quantifies the effect of $A$ on $Y$ while fixing $S = s$.
+  \item For a hypothetical value $s \in \mathcal{S}$, the \textit{controlled
+    direct effect} (CDE) quantifies the effect of $A$ on $Y$ while fixing
+    $S = s$.
   \item The hypothetical value $S = s$ must be chosen carefully --- to
-    be scientifically informative and to avoid positivity violations.
+    be scientifically informative \textit{and} to avoid positivity violations.
   \item For two hypothetical values $s_0, s_1 \in \mathcal{S}$,
     \textit{Controlled Vaccine Efficacy} (CVE)~\citep{gilbert2022controlled} is
   \begin{equation*}
     \text{CVE}(s_0, s_1) = 1 -
       \frac{\E[\pr(Y = 1 \mid S = s_1, A = 1, L = l)]}
-      {\E[\pr(Y = 1 \mid S = s_0, A = 0, L = l)]} \ ,
+      {\E[\pr(Y = 1 \mid \cancel{S = s_0}, A = 0, L = l)]} \ ,
   \end{equation*}
-  contrasting counterfactual risk under vaccine and $S = s_1$ against placebo
-  and $S = s_0$ (usually assuming $s_0 = 0$).
+  which contrasts counterfactual risk for vaccine and $S = s_1$ vs.~placebo
+  and $S = s_0$, where $s_0 = 0$ can be shown to hold.
 \end{itemize}
 \end{center}
 
@@ -328,20 +335,31 @@ Assaying >30k samples is expensive, \textit{statistically unnecessary}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Disease risk under \textit{shifted} immune response}
+%\begin{frame}[c]{Disease risk under \textit{shifted} immune response}
 
-\hspace*{-1cm}\includegraphics[scale=0.41]{shift-1}
+%\hspace*{-1cm}\includegraphics[scale=0.41]{shift-1}
 
-\note{
-}
+%\note{
+%}
 
-\end{frame}
+%\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\begin{frame}[c]{Disease risk under \textit{shifted} immune response}
+
+%\hspace*{-1cm}\includegraphics[scale=0.41]{shift-2}
+
+%\note{
+%}
+
+%\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[c]{Disease risk under \textit{shifted} immune response}
 
-\hspace*{-1cm}\includegraphics[scale=0.41]{shift-2}
+\hspace*{-1cm}\includegraphics[scale=0.41]{shift-4}
 
 \note{
 }
@@ -361,9 +379,31 @@ Assaying >30k samples is expensive, \textit{statistically unnecessary}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\begin{frame}[c]{Disease risk under observed immune response}
+
+\hspace*{-1cm}\includegraphics[scale=0.41]{shift-5}
+
+\note{
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{frame}[c]{Disease risk under \textit{shifted} immune response}
 
-\hspace*{-1cm}\includegraphics[scale=0.41]{shift-4}
+\hspace*{-1cm}\includegraphics[scale=0.41]{shift-6}
+
+\note{
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{Disease risk under \textit{shifted} immune response}
+
+\hspace*{-1cm}\includegraphics[scale=0.41]{shift-7}
 
 \note{
 }
@@ -388,7 +428,8 @@ Assaying >30k samples is expensive, \textit{statistically unnecessary}.
 \begin{center}
 \begin{itemize}
   \itemsep6pt
-  \item Consider a data structure: $(Y_s, s \in \mathcal{S})$.
+  \item Consider a data structure: $(Y_s, s \in
+    \mathcal{S})$~\citep{gill2001causal}.
   \item Let $Y_s = \beta_0 + \beta_1 s + \epsilon_s$, with error $\epsilon_s
     \sim N(0, \sigma^2_s)$ $\forall s \in S$.
   \item For the counterfactual outcomes $(Y_{s' + \delta}, Y_{s'})$, their
@@ -425,16 +466,16 @@ Assaying >30k samples is expensive, \textit{statistically unnecessary}.
 \begin{itemize}
   \itemsep8pt
   \item Stochastic interventions modify the value $S$ would ``naturally''
-    assume by \textit{shifting} the natural (observed) distribution of $S$.
+    assume by \textit{shifting} the ``natural'' (observed) distribution of $S$.
   %\item Consider the post-intervention value $S_{\delta} \sim g_{\delta}(\cdot
     %\mid L)$; static interventions are a special case (degenerate distribution).
   \item \cite{diaz2012population, diaz2018stochastic}'s shift
     interventions\footnotemark
      \begin{equation*}\label{shift_intervention}
-       d(s, l) =
+       d(s, l; \delta) =
          \begin{cases}
-           s + \delta, & s + \delta < u(l) \quad (\text{if plausible}) \\
-           s, & s + \delta \geq u(l) \quad (\text{otherwise})
+           s + \delta, & s + \delta < u(l) \quad \text{if plausible} \\
+           s, & s + \delta \geq u(l) \quad \text{otherwise}
          \end{cases}
      \end{equation*}
   %\item Such an intervention generates a counterfactual random variable
@@ -544,84 +585,162 @@ policies (MTPs).}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%\begin{frame}[standout]
-  %Efficient Estimation in Two-Phase Designs
-%\end{frame}
+\begin{frame}[standout]
+  Efficient Estimation in Two-Phase Designs
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Estimation of the Counterfactual Mean $\psi_{0,\delta}$}
+
+An \textit{estimator} $\psi_{n,\delta}$ of $\psi_{0,\delta} \coloneqq \Psi(P_0)$
+is \textit{efficient} if and only if
+\[
+  \psi_{n,\delta} - \psi_{0, \delta} = n^{-1} \sum\limits_{i=1}^n
+  D^{\star}(P_0)(X_i) + o_P(n^{-1/2}) \ ,
+\]
+where $D^{\star}(P)$ is the \textit{efficient influence function} (EIF) of
+$\psi_{0,\delta}$ with respect to the nonparametric model $\mathcal{M}$ at a
+distribution $P$.
+\vspace{0.25cm}
+
+The EIF of $\psi_{0,\delta}$ is indexed by two key \textit{nuisance parameters}
+\begin{align*}
+  \overline{Q}_{Y}(S,L) &\coloneqq \E_{P}(Y \mid S, L) &
+      \mbox{\textit{outcome mechanism}} \\
+  g_{S}(S \mid L) &\coloneqq p(S \mid L) &
+    \mbox{\textit{generalized propensity score}}
+\end{align*}
+
+\note{
+}
+
+\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%\begin{frame}[c]{Augmented Estimators for Two-Phase Sampling Designs}
+\begin{frame}[c]{Flexible, Efficient, Doubly Robust Estimation}
 
-%\begin{center}
-%\begin{itemize}
-  %\itemsep8pt
-  %\item \cite{rose2011targeted2sd} suggested inverse probability of censoring
-    %weighted (IPCW) loss functions:
-    %\begin{equation*}
-      %\lik(P_0^X)(O) = \frac{B}{\pi_0(Y, L)}\lik(P_0^X)(X)
-    %\end{equation*}
-  %\item When the sampling mechanism $\pi_0(Y,L)$ is known by design, this
-    %procedure yields a reasonably reliable estimator.
-  %\item When data-adaptive regression must be used --- that is, when
-    %$\pi_0(Y,L)$ is not known by design\footnotemark --- this is insufficient.
-%\end{itemize}
-%\end{center}
+\begin{center}
+\begin{itemize}
+  \itemsep8pt
+  \item The efficient influence function of $\psi_{0, \delta}$ with respect to
+    $\mathcal{M}$ is
+    \begin{equation*}
+      D^{\star}(P_0)(x) = \frac{g_{0,S}(d^{-1}(s,l) \mid l)}
+      {g_{0,S}(s \mid l)} ({y - \overline{Q}_{0,Y}(s,l)}) +
+      \overline{Q}_{0,Y}(d(s,l), l) - \psi_{0,\delta}.
+    \end{equation*}
+  \item The one-step bias-corrected estimator:
+    \begin{equation*}\label{tmle}
+        \psi_n^{+} = \frac{1}{n} \sum_{i = 1}^n \overline{Q}_{n,Y}(d(S_i, L_i),
+        L_i) + D^{\star}_n(X_i).
+      \end{equation*}
+  \item The TML estimator updates initial estimates of $\overline{Q}_n$ by
+      tilting:
+    \begin{equation*}\label{tmle}
+      \psi_n^{\star} = \frac{1}{n} \sum_{i = 1}^n
+      \overline{Q}_{n,Y}^{\star}(d(S_i, L_i), L_i).
+      \end{equation*}
+  \item Both doubly robust: flexible modeling for nuisance estimation.
+\end{itemize}
+\end{center}
 
-%\note{
-%}
+\note{
+  \begin{itemize}
+    \item Both estimators are CAN even when nuisance parameters are estimated
+      via flexible, machine learning techniques.
+    \item Semiparametric-efficient estimation thru solving efficient influence
+      function estimating equation wrt the model $\M$.
+    \item The auxiliary covariate simplifies when the treatment is in the limits
+      (conditional on $W$) --- i.e., for $S_i \in (u(l) - \delta, u(l))$, then
+      we have $H(s,l) = \frac{g_0(s - \delta \mid l)}{g_0(s \mid l)} + 1$.
+    \item Need to explicitly remind the audience what $u(l)$ is again. It's only
+      appeared once at this point, and only been mentioned in passing.
+  \end{itemize}
+}
 
-%\footnotetext[3]{Sampling of non-cases in HVTN 505 used
-%matching~\citep{janes2017higher}.}
+\end{frame}
 
-%\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%\begin{frame}[c]{Efficiency and Multiple Robustness~\citep{hejazi2020efficient}}
+\begin{frame}[c]{Augmented Estimators for Two-Phase Sampling Designs}
 
-%\begin{center}
-%\begin{itemize}
-  %\itemsep8pt
-  %\item Then, the IPCW augmentation must be applied to the EIF\footnotemark:
-    %\begin{align*}
-      %D^{\star}(P_0^X)(o) = &\frac{b}{\pi_0(y, l)} D^{\star}_F(P_0^X)(x) -
-        %\left(1 - \frac{b}{\pi_0(y, l)}\right) \\
-        %&\E(D^{\star}_F(P_0^X)(x) \mid B = 1, Y = y, L = l).
-    %\end{align*}
-  %\item Expresses observed data EIF $D^{\star}(P_0^X)(o)$ via complete data
-     %EIF $D^{\star}_F(P_0^X)(x)$; inclusion of second term improves efficiency.
- %\item An emergent multiple robustness property --- combinations of
-    %$\{g_0(S \mid L), \overline{Q}_0(S,L)\} \times \{\pi_0(Y, L),
-    %\E(D^{\star}_F(P^X_0)(x) \mid B = 1, Y, L)\}$.
-  %\item Our \texttt{txshift} \texttt{R} package implements our estimators of
-    %$\psi_{0,\delta}$.
-%\end{itemize}
-%\end{center}
+\begin{center}
+\begin{itemize}
+  \itemsep8pt
+  \item \cite{rose2011targeted2sd} suggested inverse probability of censoring
+    weighted (IPCW) loss functions:
+    \begin{equation*}
+      \lik(P_0^X)(O) = \frac{R}{g_{0,R}(Y, L)}\lik(P_0^X)(X)
+    \end{equation*}
+  \item When the sampling mechanism $g_{0,R}(Y,L)$ is known by design, this
+    procedure yields a reasonably reliable estimator.
+  \item When data-adaptive regression must be used --- that is, when
+    $g_{0,R}(Y,L)$ is not known by design\footnotemark --- this is insufficient.
+\end{itemize}
+\end{center}
 
-%\note{
-%\begin{itemize}
-  %\itemsep6pt
-  %\item The expectation of the full data EIF $D^{\star}_F(P_0^X)(x)$, taken
-    %only over units selected by the sampling mechanism (i.e., $B = 1$).
-%\end{itemize}
-%}
+\note{
+}
 
-%\footnotetext[4]{A very general version appears to have been presented
-%in~\citet{robins1994estimation}.}
+\footnotetext[3]{Sampling of non-cases in HVTN 505 used
+matching~\citep{janes2017higher}.}
 
-%\end{frame}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{Efficiency and Multiple Robustness~\citep{hejazi2020efficient}}
+
+\begin{center}
+\begin{itemize}
+  \itemsep6pt
+  \item Then, the IPCW augmentation must be applied to the EIF\footnotemark:
+    \begin{align*}
+      D^{\star}(P_0^X)(o) = &\frac{r}{g_{0,R}(y, l)} D^{\star}(P_0^X)(x) -
+        \left(1 - \frac{r}{g_{0,R}(y, l)}\right) \\
+        &\E(D^{\star}(P_0^X)(x) \mid R = 1, Y = y, L = l).
+    \end{align*}
+  \item Expresses observed data EIF $D^{\star}(P_0^X)(o)$ via complete data
+     EIF $D^{\star}(P_0^X)(x)$; inclusion of second term improves efficiency.
+ \item An emergent multiple robustness property --- combinations of
+   \begin{itemize}
+       \item $\{g_{0,S}(S \mid L), \overline{Q}_{0,Y}(S,L)\}$, due to choice
+       of target parameter;
+       \item $\{g_{0,R}(Y, L), \E(D^{\star}(P^X_0)(x) \mid R = 1, Y, L)\}$, due
+       to sampling.
+   \end{itemize}
+  \item Our \texttt{txshift} \texttt{R} package implements our estimators of
+    $\psi_{0,\delta}$.
+\end{itemize}
+\end{center}
+
+\note{
+\begin{itemize}
+  \itemsep6pt
+  \item The expectation of the full data EIF $D^{\star}(P_0^X)(x)$, taken
+    only over units selected by the sampling mechanism (i.e., $R = 1$).
+\end{itemize}
+}
+
+\footnotetext[4]{A very general version appears to have been presented
+in~\citet{robins1994estimation}.}
+
+\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-%\begin{frame}[c]{Comparing Reweighted and Augmented Estimators}
+\begin{frame}[c]{Comparing Reweighted and Augmented Estimators}
 
-%\hspace*{-0.75cm}\includegraphics[scale=0.255]{simple_effect_panel_delta_upshift}
+\hspace*{-0.75cm}\includegraphics[scale=0.255]{simple_effect_panel_delta_upshift}
 
-%\note{
-%}
+\note{
+}
 
-%\end{frame}
+\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -776,8 +895,8 @@ paper.
         %vs.~BA.2.12.1).
     %\end{itemize}
   \item SVE predictions and TND-based VE estimates well-correlated, but
-      SVE predictions likely to be underestimates---PsV nAb correlate is an
-      \textit{imperfect} (partial) causal \textit{mediator} of VE.
+      SVE predictions are likely underestimates, since PsV nAb correlate is an
+      \textit{imperfect} (i.e., partial) causal \textit{mediator} of VE.
     %\begin{itemize}
       %\itemsep2pt
       %\item TND studies are prone to bias, tending to overestimate VE.
@@ -794,51 +913,51 @@ paper.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%\begin{frame}[standout]
-  %Zooming Out
-%\end{frame}
+\begin{frame}[standout]
+  Zooming Out
+\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%\begin{frame}[c]{Going ``Off-Road'': Real-World Complexities}
+\begin{frame}[c]{Going ``Off-Road'': Real-World Complexities}
 
-%\begin{center}
-%\begin{itemize}
-  %\itemsep8pt
-  %\item We considered the case of $O = (L, A, BS, Y, B)$, but what about $O =
-    %(V, L, A, BS, Y, B)$ or $O = (L, A, Z, BS, Y, B)$?
-    %\begin{itemize}
-      %\item $Z$: \textit{unmeasured} baseline confounder (e.g., prior
-        %infection)
-      %\item $A \in \{0, 1\}$: randomized treatment assignment
-      %\item $Z$: post-treatment confounder (e.g., unblinded risky
-        %behavior)
-      %\item $S$: candidate immune correlates (causal mediators)
-      %\item $Y$: symptomatic SARS-CoV-2 (or HIV) infection
-      %\item $B \coloneqq f(Y, L)$: selection into two-phase sample
-    %\end{itemize}
-  %\item And what about survival endpoints, $O = (L, A, BS, \Delta,
-    %\widetilde{T}, B)$?
-    %\begin{itemize}
-      %\item $\widetilde{T} = \min(T_F, T_C)$: possibly right-censored time
-        %to failure
-      %\item $\Delta = \mathbb{I}(T_F < T_C)$: indicator of failure
-        %endpoint occurrence
-      %\item Could making $B$ a function of $\widetilde{T}$ improve sampling
-        %efficiency?
-    %\end{itemize}
-%\end{itemize}
-%\end{center}
+\begin{center}
+\begin{itemize}
+  \itemsep8pt
+  \item We considered the case of $O = (L, A, RS, Y, R)$, but what about $O =
+    (V, L, A, RS, Y, R)$ or $O = (L, A, Z, RS, Y, R)$?
+    \begin{itemize}
+      \item $Z$: \textit{unmeasured} baseline confounder (e.g., prior
+        infection)
+      \item $A \in \{0, 1\}$: randomized treatment assignment
+      \item $Z$: post-treatment confounder (e.g., unblinded risky
+        behavior)
+      \item $S$: candidate immune correlates (causal mediators)
+      \item $Y$: symptomatic SARS-CoV-2 (or HIV) infection
+      \item $R \coloneqq f(Y, L)$: selection into phase-two sample
+    \end{itemize}
+  \item And what about survival endpoints, $O = (L, A, RS, \Delta,
+    \widetilde{T}, R)$?
+    \begin{itemize}
+      \item $\widetilde{T} = \min(T_F, T_C)$: possibly right-censored failure
+        time.
+      \item $\Delta = \mathbb{I}(T_F < T_C)$: indicator of failure
+        endpoint occurrence.
+      \item Could making $R$ a function of $\widetilde{T}$ improve sampling
+        efficiency? (Considered for the Cox model by~\cite{borgan1995methods}.)
+    \end{itemize}
+\end{itemize}
+\end{center}
 
-%\note{
-  %\begin{itemize}
-  %\item Goal: assess \textit{indirect} effect of vaccination through mCoPs.
-  %\item Define/identify new mCoPs to be used as surrogate endpoints.
-  %\item Could also have missing outcome in the binary endpoint case.
-  %\end{itemize}
-%}
+\note{
+  \begin{itemize}
+  \item Goal: assess \textit{indirect} effect of vaccination through mCoPs.
+  \item Define/identify new mCoPs to be used as surrogate endpoints.
+  \item Could also have missing outcome in the binary endpoint case.
+  \end{itemize}
+}
 
-%\end{frame}
+\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -846,17 +965,17 @@ paper.
 
 \begin{center}
 \begin{itemize}
-  \itemsep8pt
-  \item Stochastic interventions provide a framework for guiding novel policies
-    that induce changes to ``natural'' exposure patterns.
-  \item Modified treatment policies consider causal questions about
-    \textit{realistic} interventions on quantitative exposure variables.
+  \itemsep6pt
+  %\item Stochastic interventions provide a framework for guiding novel policies
+    %that induce changes to ``natural'' (treatment) patterns.
+  \item Modified treatment policies help to formulate causal questions about
+    \textit{realistic} interventions on quantitative variables.
   \item Large-scale vaccine trials rely upon two-phase designs --- but need to
-    (very carefully!) adjust for the resultant sampling bias.
+    (very carefully!) adjust for resultant sampling bias.
   \item Efficient estimators with double/multiple robustness can safely answer
     such questions \textit{while} incorporating machine learning.
   \item Open source software for the SVE approach is freely available and
-    already in use for analyses of large-scale VE trials.
+    already in use for analyses of several large-scale VE trials.
 \end{itemize}
 \end{center}
 
@@ -1015,39 +1134,6 @@ paper.
 }
 
 \end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%\begin{frame}[c]{A Linear Modeling Perspective}
-
-%\begin{center}
-%\begin{itemize}
-  %\itemsep6pt
-  %\item Briefly consider a simple data structure: $X = (Y, S)$; we seek to model
-    %the outcome $Y$ as a function of $S$.
-  %\item Linear model: consider $Y_i = \beta_0 + \beta_1 S_i + \epsilon_i$, with
-    %error $\epsilon_i \sim N(0, 1)$.
-  %\item Letting $\delta$ be a change in $S$, $Y_{S + \delta} - Y_S$ may be
-    %expressed
-    %\begin{align*}
-      %\E Y_{S + \delta} - \E Y_S &= [\beta_0 + \beta_1 (\E S + \delta)] -
-        %[\beta_0 + \beta_1 (\E S)] \\
-        %&= \beta_0 - \beta_0 + \beta_1 \E S - \beta_1 \E S + \beta_1 \delta \\
-        %&= \beta_1 \delta
-    %\end{align*}
-  %\item So, a \textit{unit shift} in $S$ (i.e., $\delta = 1$) induces a
-    %change in the difference in outcomes of magnitude $\beta_1$.
-%\end{itemize}
-%\end{center}
-
-%\note{
-  %\begin{itemize}
-    %\item We extend this result to the mean counterfactual outcomes under the
-      %nonparametric model $\M$.
-  %\end{itemize}
-%}
-
-%\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -1263,79 +1349,6 @@ paper.
 %}
 
 %\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}{Estimation of the Counterfactual Mean $\psi_{0,\delta}$}
-
-An \textit{estimator} $\psi_{n,\delta}$ of $\psi_{0,\delta} \coloneqq \Psi(P_0)$
-is \textit{efficient} if and only if
-\[
-  \psi_{n,\delta} - \psi_{0, \delta} = n^{-1} \sum\limits_{i=1}^n
-  D^{\star}(P_0)(O_i) + o_P(n^{-1/2}) \ ,
-\]
-where $D^{\star}(P)$ is the \textit{efficient influence function} (EIF) of
-$\psi_{0,\delta}$ with respect to the nonparametric model $\mathcal{M}$ at a
-distribution $P$.
-\vspace{0.25cm}
-
-The EIF of $\psi_{0,\delta}$ is indexed by two key \textit{nuisance parameters}
-\begin{align*}
-  \overline{Q}_{Y}(S,L) &\coloneqq \E_{P}(Y \mid S, L) &
-      \mbox{\textit{outcome mechanism}} \\
-  g_{S}(S \mid L) &\coloneqq p(S \mid L) &
-    \mbox{\textit{generalized propensity score}}
-\end{align*}
-
-\note{
-}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}[c]{Flexible, Efficient, Doubly Robust Estimation}
-
-\begin{center}
-\begin{itemize}
-  \itemsep8pt
-  \item The efficient influence function of $\psi_{0, \delta}$ with respect to
-    $\mathcal{M}$ is
-    \begin{equation*}
-      D^{\star}_{F}(P_0)(o) = \frac{g_{0,S}(d^{-1}(s,l) \mid l)}
-      {g_{0,S}(s \mid l)} ({y - \overline{Q}_{0,Y}(s,l)}) +
-      \overline{Q}_{0,Y}(d(s,l), l) - \psi_{0,\delta}.
-    \end{equation*}
-  \item The one-step bias-corrected estimator:
-    \begin{equation*}\label{tmle}
-        \psi_n^{+} = \frac{1}{n} \sum_{i = 1}^n \overline{Q}_{n,Y}(d(S_i, L_i),
-        L_i) + D^{\star}_n(O_i).
-      \end{equation*}
-  \item The TML estimator updates initial estimates of $\overline{Q}_n$ by
-      tilting:
-    \begin{equation*}\label{tmle}
-      \psi_n^{\star} = \frac{1}{n} \sum_{i = 1}^n
-      \overline{Q}_{n,Y}^{\star}(d(S_i, L_i), L_i).
-      \end{equation*}
-  \item Both doubly robust: flexible modeling for nuisance estimation.
-\end{itemize}
-\end{center}
-
-\note{
-  \begin{itemize}
-    \item Both estimators are CAN even when nuisance parameters are estimated
-      via flexible, machine learning techniques.
-    \item Semiparametric-efficient estimation thru solving efficient influence
-      function estimating equation wrt the model $\M$.
-    \item The auxiliary covariate simplifies when the treatment is in the limits
-      (conditional on $W$) --- i.e., for $S_i \in (u(l) - \delta, u(l))$, then
-      we have $H(s,l) = \frac{g_0(s - \delta \mid l)}{g_0(s \mid l)} + 1$.
-    \item Need to explicitly remind the audience what $u(l)$ is again. It's only
-      appeared once at this point, and only been mentioned in passing.
-  \end{itemize}
-}
-
-\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
