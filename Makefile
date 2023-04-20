@@ -1,4 +1,4 @@
-TITLE = 2023_eurocim_txshift
+TITLE = 2023_ness_txshift
 
 all: $(TITLE).pdf notes clean
 minimal: $(TITLE).pdf clean
