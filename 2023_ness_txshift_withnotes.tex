@@ -6,7 +6,7 @@
 % title info
 \title{\normalsize Evaluating treatment efficacy with stochastic-interventional
   causal effects in clinical trials with two-phase designs}
-\subtitle{or \textit{using} nonparametric causal inference for science}
+%\subtitle{or \textit{using} nonparametric causal inference for science}
 \author{\href{https://nimahejazi.org}{Nima Hejazi}\\[-10pt]}
 \institute{
   \begin{figure}[!htb]
@@ -22,7 +22,7 @@
         \includegraphics[scale=0.12]{homepage.png}
           \href{https://nimahejazi.org}{nimahejazi.org} \\
      Session on \textit{Nonparametric Methods in Causal Inference}\\
-     36\textsuperscript{th} New England Statistics Symposium\\
+     36\textsuperscript{th} New England Statistics Symposium; Boston, MA\\
      \textit{Joint work with P.B.~Gilbert (Fred Hutch \& UW)}
     \end{minipage}%
     \begin{minipage}{0.3\textwidth}
@@ -33,7 +33,7 @@
   \end{figure}
 }
 
-\date{[TBA]day, June [TBA]\textsuperscript{th}, 2023}
+\date{Monday, June 5\textsuperscript{th}, 2023}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -432,12 +432,12 @@ policies.}
 \vspace{-0.7em}
 \begin{tcolorbox}
 \begin{assumption}{2}{\textit{No Unmeasured Confounding}}\label{ignorability}
-  $S \indep Y^{d(s, l)} \mid L = l$, for $i = 1, \ldots, n$
+  $Y^{d(s, l)} \indep S \mid L = l$, for $i = 1, \ldots, n$
 \end{assumption}
 \end{tcolorbox}
 \vspace{-0.7em}
 \begin{tcolorbox}
-\begin{assumption}{3}{\textit{Positivity}}\label{positivity}
+\begin{assumption}{3}{\textit{Structural positivity}}\label{positivity}
   $s \in \mathcal{S} \implies d(s, l) \in \mathcal{S}$ for all
   $l \in \mathcal{L}$, where $\mathcal{S}$ denotes the support of $S$
   conditional on $L = l$ for all $i = 1, \ldots n$
@@ -548,7 +548,7 @@ The EIF of $\psi_{0,\delta}$ is indexed by two key \textit{nuisance parameters}
 \begin{align*}
   \overline{Q}_{Y}(S,L) &\coloneqq \E_{P}(Y \mid S, L) &
       \mbox{\textit{outcome mechanism}} \\
-  g_{S}(S \mid L) &\coloneqq p(S \mid L) &
+  g_{S}(S \mid L) &\coloneqq f_P(S \mid L) &
     \mbox{\textit{generalized propensity score}}
 \end{align*}
 
@@ -660,8 +660,8 @@ matching~\citep{janes2017higher}.}
 \end{itemize}
 }
 
-\footnotetext[4]{If you squint hard, a very general version appears
-in~\citet{robins1994estimation}.}
+\footnotetext[4]{\citet{robins1994estimation} explored a similar correction for
+such designs.}
 
 \end{frame}
 
