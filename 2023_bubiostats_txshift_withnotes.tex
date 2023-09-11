@@ -1,10 +1,11 @@
 \documentclass{beamer}
 \usetheme[numbering=none]{metropolis}
+\def\notescolors{1}
 \input{_preamble.tex}
 
 % title info
-\title{\normalsize Evaluating treatment efficacy in vaccine clinical trials
-  with two-phase designs using stochastic-interventional effects}
+\title{\normalsize Characterizing immune correlates of protection in vaccine
+  eﬀicacy trials with stochastic-interventional causal effects}
 \author{\href{https://nimahejazi.org}{Nima Hejazi}\\[-10pt]}
 \institute{
   \begin{figure}[!htb]
@@ -19,8 +20,7 @@
           \href{https://github.com/nhejazi}{nhejazi} \\
         \includegraphics[scale=0.12]{homepage.png}
           \href{https://nimahejazi.org}{nimahejazi.org} \\
-     Applied Biostatistics Seminar, \\
-     Massachusetts General Hospital\\
+       Biostatistics Seminar, Boston University\\
      \textit{Joint work with P.B.~Gilbert (Fred Hutch \& UW)}
     \end{minipage}%
     \begin{minipage}{0.3\textwidth}
@@ -31,7 +31,7 @@
   \end{figure}
 }
 
-\date{Thursday, December 01, 2022}
+\date{Thursday, 14\textsuperscript{th} September, 2023}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -60,12 +60,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[standout]
-  Immune Correlates of HIV-1 and COVID-19
+  Identifying immune correlates of vaccination for HIV-1 and COVID-19
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{The Fights Against HIV-1 and COVID-19}
+\begin{frame}[c]{The fights against HIV-1 and COVID-19}
 
 \begin{center}
 \begin{itemize}
@@ -83,9 +83,10 @@
   \item The COVID-19 \sout{epi}~\sout{pan}~endemic~\citep{antia2021transition}:
     \begin{itemize}
       \itemsep4pt
-      \item \sout{270} \sout{331} \sout{619} 643 million total cases detected
-        globally;
-      \item new variants emerging, with vaccine uptake globally slowing;
+      \item \sout{270} \sout{331} \sout{619} \sout{643} 770 million total cases
+        detected globally;
+      \item new variants emerging, with continued formulation of targeted
+        vaccines and annual roll-outs expected;
       %\item $\sim$95\% efficacy rate for \textit{most efficacious} vaccine(s).
       \item COVID-19 Prevention Network's (CoVPN) \textit{COVE} trial focused
         on Moderna's (mRNA-1273) vaccine~\citep{baden2021efficacy}.
@@ -119,17 +120,17 @@
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}[c]{Evaluating Vaccines for HIV-1 and COVID-19}
+\begin{frame}[c]{Evaluating vaccines for HIV-1 and COVID-19}
 
 \begin{center}
 \begin{itemize}
   \itemsep8pt
   \item \textit{505}: How would HIV-1 infection risk have differed had
-    the boost vaccine modulated immunogenic responses differently?
-  \item \textit{COVE}: How would COVID-19 disease rate have differed for
+    the boost vaccine modulated antibody responses differently?
+  \item \textit{COVE}: How would COVID-19 disease risk have differed for
     alternative vaccine-induced immunogenic response profiles?
   \item \textbf{Question}: How can [HIV-1, COVID-19] vaccines be improved
-    through modulating immunogenic response profiles?
+    through the modulation of immunogenic response profiles?
 \end{itemize}
 \end{center}
 
@@ -140,17 +141,17 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Why Measure and Analyze Immune Correlates?}
+\begin{frame}[c]{Why measure and analyze immune correlates?}
 
 \begin{center}
 \begin{itemize}
   \itemsep8pt
-  \item Two, interrelated goals of vaccine correlates analyses are to
+  \item Two, interrelated goals of immune correlates analyses are to
     \begin{itemize}
       \itemsep0pt
       \item identify/validate possible \textit{surrogate
         endpoints}~\citep{prentice1989surrogate};
-      \item understand \textit{protective mechanisms} of vaccines.
+      \item understand/delineate \textit{protective mechanisms} of vaccines.
     \end{itemize}
   \item If an immune correlate is established to reliably predict VE,
     subsequent efficacy trials may use it as a primary endpoint.
@@ -158,7 +159,8 @@
     \begin{itemize}
       \itemsep0pt
       \item existing vaccines in different populations (e.g., in children);
-      \item new vaccines within the same class.
+      \item new vaccines within the same class (e.g., bivalent mRNA);
+      \item inform the development of ``next-generation'' vaccines.
     \end{itemize}
 \end{itemize}
 \end{center}
@@ -170,7 +172,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Measuring Correlates: Two-Phase Designs}
+\begin{frame}[c]{Measuring correlates: Two-phase designs}
 
 \begin{center}
 \begin{itemize}
@@ -183,8 +185,8 @@
       \vspace{-1em}
       \begin{itemize}
         \itemsep4pt
-        \item \textit{505}: second-phase sample with 100\% of HIV-1 cases and
-          matching of non-cases~\citep[$n = 189$ per][]{janes2017higher}).
+        \item \textit{505}: phase-two sample with 100\% of HIV-1 cases and
+          matching of non-cases~\citep[$n = 189$ per][]{janes2017higher}.
         \item \textit{COVE}: stratified random subcohort ($n \approx 1600$) and
           all SARS-CoV-2 infection and COVID-19 disease endpoints.
       \end{itemize}
@@ -198,7 +200,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{A Simple Two-Phase Design: Case-Cohort}
+\begin{frame}[c]{A simple two-phase design: Case-cohort}
 
 Assaying >30k samples is expensive, statistically unnecessary.
 \vspace{-1em}
@@ -219,7 +221,7 @@ Assaying >30k samples is expensive, statistically unnecessary.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Two-phase Sampling Masks the Complete Data Structure}
+\begin{frame}[c]{Two-phase sampling masks the complete data structure}
 
 \begin{center}
 \begin{itemize}
@@ -233,13 +235,17 @@ Assaying >30k samples is expensive, statistically unnecessary.
       \item $S$ (exposure): immune response profile for relevant markers,
       \item $Y$ (outcome of interest): infection status at trial's end.
     \end{itemize}
-  \item Observed data $O = (B, BX) = (L, B, BS, Y) \sim P_0 \in \mathcal{M}$.
+  \item Observed data $O = (V, B, BX) = (L, A, B, BS, Y) \sim P_0 \in
+    \mathcal{M}$.
     \begin{itemize}
       \itemsep4pt
-      \item $B \in \{0,1\}$ indicates inclusion in the second-phase sample.
-      \item $\pi_0 \coloneqq \pr(B = 1 \mid Y, L)$ must be \textit{known by
+      \item $V \equiv (L, Y)$ are used in defining \textit{outcome-dependent}
+        two-phase sampling mechanism $g_{0,B} \coloneqq \pr(B = 1 \mid V)$.
+      \item $B \in \{0,1\}$ is an indicator of inclusion in the phase-two
+        sample.
+      \item $g_{0,B} \coloneqq \pr(B = 1 \mid Y, L)$ must be \textit{known by
         design} or estimated.
-      \item Implicitly conditioning on the vaccine arm: $O = \{X \mid A = 1\}$.
+      %\item Implicitly conditioning on the vaccine arm: $O = \{X \mid A = 1\}$.
     \end{itemize}
 \end{itemize}
 \end{center}
@@ -256,12 +262,12 @@ Assaying >30k samples is expensive, statistically unnecessary.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[standout]
-  Causal Effects for Quantitative Exposures
+  Causal effects for quantitative exposures
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Static Interventions Aren't Enough}
+\begin{frame}[c]{Static interventions aren't enough}
 
 \begin{center}
 \begin{itemize}
@@ -272,10 +278,10 @@ Assaying >30k samples is expensive, statistically unnecessary.
       L = f_L(U_L); A \sim \text{Bern}(0.5);
       S = f_S(A, L, U_S); Y = f_Y(S, A, L, U_Y)
     \end{equation*}
-  \item Implies a model for the distribution of counterfactual random variables
-    induced by interventions on the system.
+  \item Utility: Implies a model for the distribution of counterfactual RVs
+    induced by interventions on the system under study.
   \item A \textit{static} intervention replaces $f_S$ with a specific value $s$
-    in its conditional support $S \mid L$.
+    in its conditional support, i.e., $S \mid L$.
   \item This requires specifying \textit{a priori} a particular value of
     exposure under which to evaluate the outcome --- but what value?
 \end{itemize}
@@ -288,7 +294,36 @@ Assaying >30k samples is expensive, statistically unnecessary.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Disease Risk Under Shifted Immunogenic Responses}
+\begin{frame}[c]{Controlled vaccine efficacy (CVE)}
+
+\begin{center}
+\begin{itemize}
+  \itemsep8pt
+  \item For a hypothetical value $s \in \mathcal{S}$, the \textit{controlled
+    direct effect} (CDE) quantifies the effect of $A$ on $Y$ while fixing
+    $S = s$.
+  \item The hypothetical value $S = s$ must be chosen carefully --- to
+    be scientifically informative \textit{and} to avoid positivity violations.
+  \item For two hypothetical values $s_0, s_1 \in \mathcal{S}$,
+    \textit{Controlled Vaccine Efficacy} (CVE)~\citep{gilbert2022controlled} is
+  \begin{equation*}
+    \text{CVE}(s_0, s_1) = 1 -
+      \frac{\E[\pr(Y = 1 \mid S = s_1, A = 1, L = l)]}
+      {\E[\pr(Y = 1 \mid \cancel{S = s_0}, A = 0, L = l)]} \ ,
+  \end{equation*}
+  which contrasts counterfactual risk for vaccine and $S = s_1$ vs.~placebo
+  and $S = s_0$, where $s_0 = 0$ by construction.
+\end{itemize}
+\end{center}
+
+\note{
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{Disease risk under shifted immunogenic responses}
 
 \hspace*{-1cm}\includegraphics[scale=0.41]{shift-1}
 
@@ -299,7 +334,7 @@ Assaying >30k samples is expensive, statistically unnecessary.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Disease Risk Under Shifted Immunogenic Responses}
+\begin{frame}[c]{Disease risk under shifted immunogenic responses}
 
 \hspace*{-1cm}\includegraphics[scale=0.41]{shift-2}
 
@@ -310,7 +345,7 @@ Assaying >30k samples is expensive, statistically unnecessary.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Disease Risk Under Shifted Immunogenic Responses}
+\begin{frame}[c]{Disease risk under shifted immunogenic responses}
 
 \hspace*{-1cm}\includegraphics[scale=0.41]{shift-3}
 
@@ -321,7 +356,7 @@ Assaying >30k samples is expensive, statistically unnecessary.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Disease Risk Under Shifted Immunogenic Responses}
+\begin{frame}[c]{Disease risk under shifted immunogenic responses}
 
 \hspace*{-1cm}\includegraphics[scale=0.41]{shift-4}
 
@@ -332,7 +367,7 @@ Assaying >30k samples is expensive, statistically unnecessary.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Stochastic Interventions Define the Causal Effects of Shifts}
+\begin{frame}[c]{Stochastic interventions define the causal effects of shifts}
 
 \begin{center}
 \begin{itemize}
@@ -357,7 +392,7 @@ Assaying >30k samples is expensive, statistically unnecessary.
     %\{Y_{g_{\delta}}\}$, the counterfactual mean under the post-intervention
     %exposure distribution $g_{\delta}$.
   \item Our estimand is $\psi_{0,\delta} \coloneqq
-    \E_{P_0^{\delta}}\{Y_{d(S,L)}\}$, which is identified by
+    \E_{P_{\delta,0}}\{Y^{d(S,L)}\}$, which is identified by
     \begin{align*}\label{eqn:identification2012}
       \psi_{0,\delta} = \int_{\mathcal{L}} \int_{\mathcal{S}} &\E_{P_0}
         \{Y \mid S = d(s, l), L = l\} \\ &g_{0, S}(s \mid L = l)
@@ -381,25 +416,74 @@ policies.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Interpreting the Causal Effects of Shift Interventions}
+\begin{frame}[c]{Causal interpretation of statistical target parameter}
+
+\begin{center}
+\begin{tcolorbox}
+\begin{assumption}{1}{\textit{Stable unit treatment value (SUTVA)}}\label{sutva}
+  \begin{itemize}
+    \itemsep2pt
+    \item $Y^{d(s_i, l_i)}_i$ does not depend on $d(s_j, l_j)$ for
+        $i = 1, \ldots, n$ and $j \neq i$, or lack of
+        interference~\citep{cox1958planning, rubin1974estimating}
+     \item $Y^{d(s, l)} = Y$ in the event $S = d(s, l)$, for $i = 1, \ldots, n$
+  \end{itemize}
+\end{assumption}
+\end{tcolorbox}
+\vspace{-0.7em}
+\begin{tcolorbox}
+\begin{assumption}{2}{\textit{No unmeasured confounding}}\label{ignorability}
+  $Y^{d(s, l)} \indep S \mid L = l$, for $i = 1, \ldots, n$
+\end{assumption}
+\end{tcolorbox}
+\vspace{-0.7em}
+\begin{tcolorbox}
+\begin{assumption}{3}{\textit{Structural positivity}}\label{positivity}
+  $s \in \mathcal{S} \implies d(s, l) \in \mathcal{S}$ for all
+  $l \in \mathcal{L}$, where $\mathcal{S}$ denotes the support of $S$
+  conditional on $L = l$ for all $i = 1, \ldots, n$
+\end{assumption}
+\end{tcolorbox}
+\end{center}
+
+\note{
+\begin{itemize}
+  \itemsep4pt
+  \item This positivity assumption is not the same as that required for
+    interventions on binary/categorical exposures.
+  \item In particular, we do not require that the intervention density place
+    mass across all strata defined by $L$.
+  \item Rather, we merely require the post-intervention quantity be seen in the
+    observed data for given $s_i \in \mathcal{S}$ and $l_i \in \mathcal{L}$.
+\end{itemize}
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[c]{Interpreting the causal effects of shift interventions}
 
 \begin{center}
 \begin{itemize}
   \itemsep6pt
   \item Consider a data structure: $(Y_s, s \in \mathcal{S})$.
   \item Let $Y_s = \beta_0 + \beta_1 s + \epsilon_s$, with error $\epsilon_s
-    \sim N(0, \sigma^2_s)$ $\forall s \in S$.
+    \sim \text{N}(0, \sigma^2_s) \,\, \forall \,\, s \in S$.
   \item For the counterfactual outcomes $(Y_{s' + \delta}, Y_{s'})$, their
     difference $Y_{s' + \delta} - Y_{s'}$ may be expressed (for some
     $s' \in \mathcal{S}$)
     \begin{align*}
       \E Y_{s' + \delta} - \E Y_{s'} &= [\beta_0 + \beta_1 (s' + \delta) +
-          \E \epsilon_{s' + \delta}] - [\beta_0 + \beta_1 s' +
-          \E \epsilon_{s'}] \\
+          \cancel{\E \epsilon_{s' + \delta}}] - [\beta_0 + \beta_1 s' +
+          \cancel{\E \epsilon_{s'}}] \\
+        &= \cancel{\beta_0 - \beta_0} + \cancel{\beta_1 s' - \beta_1 s'} +
+           \beta_1 \delta \\
         &= \beta_1 \delta
     \end{align*}
-  \item A \textit{unit shift} for $s' \in S$ (i.e., $\delta = 1$) causes a
-    counterfactual difference in $Y$ of magnitude $\beta_1$.
+  \item A \textit{unit shift} for $s' \in S$ (i.e., for $\delta = 1$)
+     \textit{causes} a counterfactual difference in $Y$ of magnitude $\beta_1$
+     in this simple schematic.
 \end{itemize}
 \end{center}
 
@@ -417,19 +501,19 @@ policies.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Stochastic--Interventional Vaccine Efficacy}
+\begin{frame}[c]{Stochastic--interventional vaccine efficacy (SVE)}
 
 \begin{center}
 \begin{itemize}
   \itemsep8pt
-  \item Causal parameter based on vaccine efficacy (VE) estimands:
+  \item Statistical parameter for vaccine efficacy (VE) estimands:
   \begin{align*}
     \text{SVE}(\delta) &= 1 - \frac{\E[\pr(Y = 1 \mid S = d(s, l), A = 1,
-                                    L = l)]}{\pr(Y(0)=1)} \\
-                       &= 1 - \frac{\psi_{0, \delta}}{\pr(Y(0)=1)}
+                                    L = l)]}{\pr(Y=1 \mid A=0)} \\
+                       &= 1 - \frac{\psi_{0, \delta}}{\pr(Y=1 \mid A=0)}
   \end{align*}
-  \item $\pr(Y(0)=1)$: counterfactual infection risk in the placebo arm ---
-    under randomization, $\pr(Y(0)=1) \equiv \pr(Y=1 \mid A=0)$.
+  \item $\pr(Y=1 \mid A=0)$: counterfactual risk in the placebo arm --- i.e.,
+     under randomization, $\pr(Y=1 \mid A=0) \equiv \pr(Y(0)=1)$.
   \item Summarizes VE via stochastic interventions across $\delta$, per the
     CoVPN immune correlates SAP\footnotemark~\citep{gilbert2021covpn,
     gilbert2021immune}.
@@ -447,28 +531,29 @@ policies.}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[standout]
-  Efficient Estimation in Two-Phase Designs
+  Efficient estimation in two-phase designs
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}{Estimation of the Counterfactual Mean $\psi_{0,\delta}$}
-An \textit{estimator} $\psi_{n,\delta}$ of $\psi_{0,\delta} \coloneqq \Psi(P_0)$
-is \textit{efficient} if and only if
+\begin{frame}{Estimation of the counterfactual mean $\psi_{0,\delta}$}
+
+A \textit{RAL estimator} $\psi_{n,\delta}$ of $\psi_{0,\delta} \coloneqq
+\Psi(P_0)$ is \textit{efficient} if and only if
 \[
-  \psi_{n,\delta} - \psi_{0, \delta} = n^{-1} \sum\limits_{i=1}^n
+  \psi_{n,\delta} - \psi_{0, \delta} = \frac{1}{n} \sum\limits_{i=1}^n
   D^{\star}(P_0)(O_i) + o_P(n^{-1/2}) \ ,
 \]
 where $D^{\star}(P)$ is the \textit{efficient influence function} (EIF) of
 $\psi_{0,\delta}$ with respect to the nonparametric model $\mathcal{M}$ at a
-distribution $P$.
+distribution $P \in \mathcal{M}$.
 \vspace{0.25cm}
 
 The EIF of $\psi_{0,\delta}$ is indexed by two key \textit{nuisance parameters}
 \begin{align*}
-  \overline{Q}_{Y}(S,L) &\coloneqq \E_{P}(Y \mid S, L) &
+  \overline{Q}_{Y}(S,L) &\coloneqq \E_{P}(Y \mid S, A = 1, L) &
       \mbox{\textit{outcome mechanism}} \\
-  g_{S}(S \mid L) &\coloneqq p(S \mid L) &
+  g_{S}(S \mid L) &\coloneqq f_P(S \mid A = 1, L) &
     \mbox{\textit{generalized propensity score}}
 \end{align*}
 
@@ -479,7 +564,7 @@ The EIF of $\psi_{0,\delta}$ is indexed by two key \textit{nuisance parameters}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Flexible, Efficient, Doubly Robust Estimation}
+\begin{frame}[c]{Flexible, efficient, doubly robust estimation}
 
 \begin{center}
 \begin{itemize}
@@ -494,15 +579,16 @@ The EIF of $\psi_{0,\delta}$ is indexed by two key \textit{nuisance parameters}
   \item The one-step bias-corrected estimator:
     \begin{equation*}\label{tmle}
         \psi_n^{+} = \frac{1}{n} \sum_{i = 1}^n \overline{Q}_{n,Y}(d(S_i, L_i),
-        L_i) + D^{\star}_n(O_i).
+        L_i) + D^{\star}_{F,n}(O_i) \,\, .
       \end{equation*}
-  \item The TML estimator updates initial estimates of $\overline{Q}_n$ by
-      tilting:
+  \item The TML estimator updates initial estimates of $\overline{Q}_{n,Y}$ to
+    $\overline{Q}_{n,Y}^{\star}$ via a tilting procedure that sets
+    $\E_P D^{\star}_{F,n}(P_0)(O) \approx 0$:
     \begin{equation*}\label{tmle}
       \psi_n^{\star} = \frac{1}{n} \sum_{i = 1}^n
-      \overline{Q}_{n,Y}^{\star}(d(S_i, L_i), L_i).
+      \overline{Q}_{n,Y}^{\star}(d(S_i, L_i), L_i) \,\, .
       \end{equation*}
-  \item Both doubly robust: flexible modeling for nuisance estimation.
+  \item ``Double robust'' -- flexible modeling of nuisance parameters.
 \end{itemize}
 \end{center}
 
@@ -524,7 +610,7 @@ The EIF of $\psi_{0,\delta}$ is indexed by two key \textit{nuisance parameters}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Augmented Estimators for Two-Phase Sampling Designs}
+\begin{frame}[c]{Augmented estimators for two-phase sampling designs}
 
 \begin{center}
 \begin{itemize}
@@ -532,12 +618,12 @@ The EIF of $\psi_{0,\delta}$ is indexed by two key \textit{nuisance parameters}
   \item \cite{rose2011targeted2sd} suggested inverse probability of censoring
     weighted (IPCW) loss functions:
     \begin{equation*}
-      \lik(P_0^X)(O) = \frac{B}{\pi_0(Y, L)}\lik(P_0^X)(X)
+      \lik(P_0^X)(O) = \frac{B}{g_{0,B}(Y, L)}\lik(P_0^X)(X)
     \end{equation*}
-  \item When the sampling mechanism $\pi_0(Y,L)$ is known by design, this
+  \item When the sampling mechanism $g_{0,B}(Y,L)$ is known by design, this
     procedure yields a reasonably reliable estimator.
-  \item When data-adaptive regression must be used --- that is, when
-    $\pi_0(Y,L)$ is not known by design\footnotemark --- this is insufficient.
+  \item When data-adaptive regression is warranted --- that is, when
+    $g_{0,B}(Y,L)$ is not known by design\footnotemark --- this is inefficient.
 \end{itemize}
 \end{center}
 
@@ -551,22 +637,22 @@ matching~\citep{janes2017higher}.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Efficiency and Multiple Robustness~\citep{hejazi2020efficient}}
+\begin{frame}[c]{Efficiency and multiple robustness~\citep{hejazi2020efficient}}
 
 \begin{center}
 \begin{itemize}
   \itemsep8pt
   \item Then, the IPCW augmentation must be applied to the EIF\footnotemark:
     \begin{align*}
-      D^{\star}(P_0^X)(o) = &\frac{b}{\pi_0(y, l)} D^{\star}_F(P_0^X)(x) -
-        \left(1 - \frac{b}{\pi_0(y, l)}\right) \\
-        &\E(D^{\star}_F(P_0^X)(x) \mid B = 1, Y = y, L = l).
+      D^{\star}(P_0^X)(o) = &\frac{b}{g_{0,B}(y, l)} D^{\star}_F(P_0^X)(x) -
+        \left(1 - \frac{b}{g_{0,B}(y, l)}\right) \\
+        &\E(D^{\star}_F(P_0^X)(x) \mid B = 1, Y = y, L = l) \,\, .
     \end{align*}
   \item Expresses observed data EIF $D^{\star}(P_0^X)(o)$ via complete data
      EIF $D^{\star}_F(P_0^X)(x)$; inclusion of second term improves efficiency.
- \item An emergent multiple robustness property --- combinations of
-    $\{g_0(S \mid L), \overline{Q}_0(S,L)\} \times \{\pi_0(Y, L),
-    \E(D^{\star}_F(P^X_0)(x) \mid B = 1, Y, L)\}$.
+ \item An emergent robustness property --- one each of
+    $g_{0,S}(S \mid L)$, $\overline{Q}_{0,Y}(S,L)$ and $g_{0,B}(Y, L)$,
+    $\E(D^{\star}_F(P^X_0)(x) \mid B = 1, Y, L)$.
   \item Our \texttt{txshift} \texttt{R} package implements our estimators of
     $\psi_{0,\delta}$.
 \end{itemize}
@@ -580,15 +666,15 @@ matching~\citep{janes2017higher}.}
 \end{itemize}
 }
 
-\footnotetext[4]{A very general version appears to have been presented
-in~\citet{robins1994estimation}.}
+\footnotetext[4]{\citet{robins1994estimation} explored a similar correction for
+related sampling designs.}
 
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\begin{frame}[c]{Comparing Reweighted and Augmented Estimators}
+\begin{frame}[c]{Comparing reweighted and augmented estimators}
 
 \hspace*{-0.75cm}\includegraphics[scale=0.255]{simple_effect_panel_delta_upshift}
 
@@ -597,9 +683,15 @@ in~\citet{robins1994estimation}.}
 
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[standout]
+  Predicting and bridging vaccine efficacy
+\end{frame}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{SVE Prediction of HIV-1 Risk thru CD8+ Immune Response}
+\begin{frame}[c]{SVE \textit{prediction} of HIV-1 risk in the HVTN 505 trial}
 
 \vspace{-0.3in}
 \begin{figure}[H]
@@ -608,7 +700,7 @@ in~\citet{robins1994estimation}.}
   \captionsetup{labelformat=empty}
   \vspace{-1.5em}
   \caption{
-    HIV-1 risk change across CD8+ response (\texttt{txshift} \texttt{R}
+    HIV-1 risk change across CD8+ score (\texttt{txshift} \texttt{R}
     package).
   }
 \end{figure}
@@ -620,27 +712,22 @@ in~\citet{robins1994estimation}.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{SVE Prediction of mRNA-1273 VE thru PsV nAb Correlate}
+\begin{frame}[c]{SVE \textit{prediction} of mRNA-1273 VE in the CoVPN COVE
+trial}
 
 \vspace*{-0.1cm}
-\hspace*{-0.3cm}\includegraphics[scale=0.21]{sve_pseudoneutid50_simplified_talksonly}
+\hspace*{-0.5cm}\includegraphics[scale=0.24]{sve_pseudoneutid50_simplified_talksonly}
 
 \note{
 }
 
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}[standout]
-  Bridging VE Using Immune Correlates
-\end{frame}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Pooled Phase 1 Studies: PsV nAb Responses Across Variants}
+\begin{frame}[c]{Pooled phase 1 studies: PsV nAb responses across variants}
 
-\vspace*{0.15cm}
+\vspace*{0.2cm}
 \hspace*{-0.8cm}\includegraphics[scale=0.31]{variant_id50_eda}
 
 \note{
@@ -650,7 +737,8 @@ in~\citet{robins1994estimation}.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{SVE Bridging of mRNA-1273 VE thru PsV nAb Correlate}
+\begin{frame}[c]{SVE \textit{bridging} of mRNA-1273
+VE~\citep{hejazi2023stochastic}}
 
 \vspace*{-0.1cm}
 \hspace*{-0.3cm}\includegraphics[scale=0.21]{sve_pseudoneutid50_immunobridging_2dose}
@@ -666,34 +754,34 @@ paper.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{SVE Predictions vs.~Real-World Reported Estimates}
+%\begin{frame}[c]{SVE Predictions vs.~Real-World Reported Estimates}
 
-\begin{center}
-\begin{itemize}
-  \itemsep6pt
-  \item Compared $\delta$-calibrated SVE predictions to reported VE estimates,
-      from TND studies or RCTs.
-  \item Inclusion/exclusion criteria for TND-based VE estimates\footnotemark:
-    \begin{itemize}
-      \itemsep2pt
-      \item VE estimated by direct measurement of SARS-CoV-2 variants.
-      \item Reported VE estimates for mRNA vaccines (BNT162b2 or mRNA-1273),
-        studying VE 2--6 months post-2\textsuperscript{nd} dose.
-      \item Allowed flexibility in choice of dosing interval, with some studies
-        extending to 12 weeks between doses.
-    \end{itemize}
-  \item Studied concordance of SVE predictions and reported (TND or RCT)
-      estimates of VE following most recent vaccine dose.
-\end{itemize}
-\end{center}
+%\begin{center}
+%\begin{itemize}
+  %\itemsep6pt
+  %\item Compared $\delta$-calibrated SVE predictions to reported VE estimates,
+      %from TND studies or RCTs.
+  %\item Inclusion/exclusion criteria for TND-based VE estimates\footnotemark:
+    %\begin{itemize}
+      %\itemsep2pt
+      %\item VE estimated by direct measurement of SARS-CoV-2 variants.
+      %\item Reported VE estimates for mRNA vaccines (BNT162b2 or mRNA-1273),
+        %studying VE 2--6 months post-2\textsuperscript{nd} dose.
+      %\item Allowed flexibility in choice of dosing interval, with some studies
+        %extending to 12 weeks between doses.
+    %\end{itemize}
+  %\item Studied concordance of SVE predictions and reported (TND or RCT)
+      %estimates of VE following most recent vaccine dose.
+%\end{itemize}
+%\end{center}
 
-\footnotetext[5]{\scriptsize Comparison of TND studies performed in
-collaboration with Dr.~Lindsay Carpp.}
+%\footnotetext[5]{\scriptsize Comparison of TND studies performed in
+%collaboration with Dr.~Lindsay Carpp.}
 
-\note{
-}
+%\note{
+%}
 
-\end{frame}
+%\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -708,55 +796,55 @@ collaboration with Dr.~Lindsay Carpp.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Concordance of SVE Predictions and Reported VE Estimates}
+%\begin{frame}[c]{Concordance of SVE Predictions and Reported VE Estimates}
 
-\hspace*{-0.5cm}\includegraphics[scale=0.285]{tnd_sve_scatter_2dose}
+%\hspace*{-0.5cm}\includegraphics[scale=0.285]{tnd_sve_scatter_2dose}
 
-\note{
-}
+%\note{
+%}
 
-\end{frame}
+%\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Summary of SVE Prediction for Immunobridging}
+%\begin{frame}[c]{Summary of SVE Prediction for Immunobridging}
 
-\begin{center}
-\begin{itemize}
-  \itemsep6pt
-  \item SVE prediction shows sharp changes in VE with shifts to the GM titer of
-    the PsV nAb correlate in vaccinees.
-    %\begin{itemize}
-      %\itemsep2pt
-      %\item Positive $\delta$: saturates at $\approx$100\%.
-      %\item Negative $\delta$: large range, from -20\%--92\%.
-    %\end{itemize}
-  \item Bridging VE across variants indicates VE drops but stabilizes at 50\%,
-    if the model based on ancestral D614G strain holds.
-    %\begin{itemize}
-      %\itemsep2pt
-  \item Post-2\textsuperscript{nd} dose: For most variants (excepting
-    omicron), the VE estimate ranges from 50\% (mu) to 80\% (epsilon).
-      %\item Post-3\textsuperscript{rd} dose: For omicron lineages, VE estimate
-        %lies within 80\%--92\% across five subvariants (lowest VE
-        %vs.~BA.2.12.1).
-    %\end{itemize}
-  \item SVE predictions and real-world VE estimates well-correlated, but
-      SVE predictions may be underestimates, as PsV nAb correlate is an
-      \textit{imperfect} causal \textit{mediator} of total VE.
-    %\begin{itemize}
-      %\itemsep2pt
-      %\item TND studies are prone to bias, tending to overestimate VE.
-      %\item SVE predictions may be underestimates, since the PsV nAb correlate
-        %is an \textit{imperfect} causal \textit{mediator} of the total VE.
-    %\end{itemize}
-\end{itemize}
-\end{center}
+%\begin{center}
+%\begin{itemize}
+  %\itemsep6pt
+  %\item SVE prediction shows sharp changes in VE with shifts to the GM titer of
+    %the PsV nAb correlate in vaccinees.
+    %%\begin{itemize}
+      %%\itemsep2pt
+      %%\item Positive $\delta$: saturates at $\approx$100\%.
+      %%\item Negative $\delta$: large range, from -20\%--92\%.
+    %%\end{itemize}
+  %\item Bridging VE across variants indicates VE drops but stabilizes at 50\%,
+    %if the model based on ancestral D614G strain holds.
+    %%\begin{itemize}
+      %%\itemsep2pt
+  %\item Post-2\textsuperscript{nd} dose: For most variants (excepting
+    %omicron), the VE estimate ranges from 50\% (mu) to 80\% (epsilon).
+      %%\item Post-3\textsuperscript{rd} dose: For omicron lineages, VE estimate
+        %%lies within 80\%--92\% across five subvariants (lowest VE
+        %%vs.~BA.2.12.1).
+    %%\end{itemize}
+  %\item SVE predictions and real-world VE estimates well-correlated, but
+      %SVE predictions may be underestimates, as PsV nAb correlate is an
+      %\textit{imperfect} causal \textit{mediator} of total VE.
+    %%\begin{itemize}
+      %%\itemsep2pt
+      %%\item TND studies are prone to bias, tending to overestimate VE.
+      %%\item SVE predictions may be underestimates, since the PsV nAb correlate
+        %%is an \textit{imperfect} causal \textit{mediator} of the total VE.
+    %%\end{itemize}
+%\end{itemize}
+%\end{center}
 
-\note{
-}
+%\note{
+%}
 
-\end{frame}
+%\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -813,12 +901,12 @@ collaboration with Dr.~Lindsay Carpp.}
 \begin{center}
 \begin{itemize}
   \itemsep8pt
-  \item Stochastic interventions provide a framework for formulating novel
-    policies based on natural treatment conditions.
-  \item These modified treatment policies address causal questions about
-    \textit{realistic} interventions on quantitative treatments.
-  \item Large-scale vaccine trials rely upon two-phase designs --- but need to
-    (very carefully!) adjust for the resultant sampling bias.
+  \item Flexible stochastic interventions help to formulate novel modified
+    treatment policies (based on ``natural'' treatment conditions).
+  \item \textit{Modified treatment policies} address causal questions about
+    \textit{realistic} manipulations of quantitative intervention variables.
+  \item Large-scale vaccine trials routinely use two-phase designs --- but need
+    to adjust (carefully!) for resultant sampling bias.
   \item Efficient estimators with double/multiple robustness can safely answer
     such questions \textit{while} incorporating machine learning.
   \item Open source software for such statistical analyses is critical for the
@@ -833,7 +921,7 @@ collaboration with Dr.~Lindsay Carpp.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Thank you}
+\begin{frame}[c]{Thank you!}
 
 \Large{Thanks for listening. Any questions?}
 
@@ -848,6 +936,14 @@ collaboration with Dr.~Lindsay Carpp.}
 \includegraphics[scale=0.14]{twitter-icon.png}
   \url{https://twitter.com/nshejazi}
 
+\vspace{2mm}
+\includegraphics[scale=0.14]{paper-icon.png}
+  \url{https://doi.org/10.1111/biom.13375}
+
+\vspace{2mm}
+\includegraphics[scale=0.14]{paper-icon.png}
+  \citet{hejazi2023stochastic} to appear in \textit{IJID}
+
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -859,8 +955,8 @@ collaboration with Dr.~Lindsay Carpp.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Immune Correlates of
-  Protection~\citep{plotkin2012nomenclature}}
+\begin{frame}[c]{Immune correlates of
+  protection~\citep{plotkin2012nomenclature}}
 
 \begin{center}
 \begin{itemize}
@@ -878,53 +974,6 @@ collaboration with Dr.~Lindsay Carpp.}
 \end{center}
 
 \note{
-}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}[c]{From the Causal to the Statistical Target Parameter}
-
-\begin{center}
-\begin{tcolorbox}
-\begin{assumption}{1}{\textit{Stable Unit Treatment Value (SUTVA)}}\label{sutva}
-  \begin{itemize}
-    \itemsep2pt
-    \item $Y^{d(s_i, l_i)}_i$ does not depend on $d(s_j, l_j)$ for
-        $i = 1, \ldots, n$ and $j \neq i$, or lack of
-        interference~\citep{cox1958planning}
-        %\citep{rubin1978bayesian, rubin1980randomization}
-     \item $Y^{d(s, l)} = Y$ in the event $S = d(s, l)$, for $i = 1, \ldots, n$
-  \end{itemize}
-\end{assumption}
-\end{tcolorbox}
-\vspace{-0.7em}
-\begin{tcolorbox}
-\begin{assumption}{2}{\textit{No Unmeasured Confounding}}\label{ignorability}
-  $S \indep Y^{d(s, l)} \mid L = l$, for $i = 1, \ldots, n$
-\end{assumption}
-\end{tcolorbox}
-\vspace{-0.7em}
-\begin{tcolorbox}
-\begin{assumption}{3}{\textit{Positivity}}\label{positivity}
-  $s \in \mathcal{S} \implies d(s, l) \in \mathcal{S}$ for all
-  $l \in \mathcal{L}$, where $\mathcal{S}$ denotes the support of $S$
-  conditional on $L = l$ for all $i = 1, \ldots n$
-\end{assumption}
-\end{tcolorbox}
-\end{center}
-
-\note{
-\begin{itemize}
-  \itemsep4pt
-  \item This positivity assumption is not quite the same as that required for
-    categorical interventions.
-  \item In particular, we do not require that the intervention density place
-    mass across all strata defined by $L$.
-  \item Rather, we merely require the post-intervention quantity be seen in the
-    observed data for given $s_i \in \mathcal{S}$ and $l_i \in \mathcal{L}$.
-\end{itemize}
 }
 
 \end{frame}
@@ -980,7 +1029,7 @@ collaboration with Dr.~Lindsay Carpp.}
     post-intervention distribution of any MTP to be recovered:
     \begin{equation*}
       g_{0, S}(s \mid l; \delta) = \sum_{j = 1}^{J(l)} \mathbb{I}_{\delta, j}
-      \{h_j(s, l), l\} g_0\{h_j(s, l) \mid l\} h^{'}_j(s, l)
+      \{h_j(s, l), l\} g_{0,S}\{h_j(s, l) \mid l\} h^{'}_j(s, l)
     \end{equation*}
   \item MTPs account for the natural value of exposure $S$ yet may be
     interpreted as imposing an altered intervention mechanism.
@@ -1031,40 +1080,7 @@ collaboration with Dr.~Lindsay Carpp.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{A Linear Modeling Perspective}
-
-\begin{center}
-\begin{itemize}
-  \itemsep6pt
-  \item Briefly consider a simple data structure: $X = (Y, S)$; we seek to model
-    the outcome $Y$ as a function of $S$.
-  \item Linear model: consider $Y_i = \beta_0 + \beta_1 S_i + \epsilon_i$, with
-    error $\epsilon_i \sim N(0, 1)$.
-  \item Letting $\delta$ be a change in $S$, $Y_{S + \delta} - Y_S$ may be
-    expressed
-    \begin{align*}
-      \E Y_{S + \delta} - \E Y_S &= [\beta_0 + \beta_1 (\E S + \delta)] -
-        [\beta_0 + \beta_1 (\E S)] \\
-        &= \beta_0 - \beta_0 + \beta_1 \E S - \beta_1 \E S + \beta_1 \delta \\
-        &= \beta_1 \delta
-    \end{align*}
-  \item So, a \textit{unit shift} in $S$ (i.e., $\delta = 1$) induces a
-    change in the difference in outcomes of magnitude $\beta_1$.
-\end{itemize}
-\end{center}
-
-\note{
-  \begin{itemize}
-    \item We extend this result to the mean counterfactual outcomes under the
-      nonparametric model $\M$.
-  \end{itemize}
-}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}[c]{Slope in a Semiparametric Model}
+\begin{frame}[c]{Slope in a semiparametric model}
 
 \begin{center}
 \begin{itemize}
@@ -1097,7 +1113,7 @@ collaboration with Dr.~Lindsay Carpp.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Flexible Conditional Density Estimation of $g_{0,S}$}
+\begin{frame}[c]{Flexible conditional density estimation of $g_{0,S}$}
 
 \begin{center}
 \begin{itemize}
@@ -1134,7 +1150,7 @@ collaboration with Dr.~Lindsay Carpp.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Flexible Conditional Density Estimation of $g_{0,S}$}
+\begin{frame}[c]{Flexible conditional density estimation of $g_{0,S}$}
 
 \begin{center}
 \begin{itemize}
@@ -1180,7 +1196,7 @@ mukherjee2017semiparametric, liu2021adaptive}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}{A Useful Class of Functions}
+\begin{frame}{A useful class of functions}
 \vspace{0.75cm}
 
 Consider space of \textit{cadlag} functions with \textit{finite variation
@@ -1209,7 +1225,7 @@ where $x_s=(x(j):j\in s)$ and the sum is over all subsets.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}{Variation Norm}
+\begin{frame}{Sectional variation norm}
 
 We can represent the function $\theta$ as
 \begin{eqnarray*}
@@ -1238,7 +1254,7 @@ and
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}{Convergence Rate of HAL}
+\begin{frame}{Convergence rate for HAL estimators}
 \vspace{0.25cm}
 
 We have, for $\alpha(d)=1/(d+1)$,
@@ -1279,25 +1295,26 @@ Improved convergence rate~\citep{bibaut2019fast}:
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Algorithm for TML Estimation}
+\begin{frame}[c]{Algorithm for TML estimation}
 
 \begin{center}
 \begin{enumerate}\label{tmle_algo}
   \itemsep6pt
-  \item Construct initial estimators $g_n$ of $g_0(S, L)$ and $Q_n$ of
-    $\overline{Q}_0(S, L)$, perhaps using data-adaptive regression techniques.
+  \item Construct initial estimators $g_{n,S}$ of $g_{0,S}(S, L)$ and $Q_{n,Y}$
+    of $\overline{Q}_{0,Y}(S, L)$, perhaps using data-adaptive regression
+    techniques.
   \item For each observation $i$, compute an estimate $H_n(s_i, l_i)$ of the
-    auxiliary covariate $H(s_i, l_i)$.
+    auxiliary covariate $H_0(s_i, l_i)$.
   \item Estimate the parameter $\epsilon$ in the logistic regression model
-    $$\text{logit}\overline{Q}_{\epsilon, n}(s, l) =
-    \text{logit}\overline{Q}_n(s, l) + \epsilon H_n(s, l),$$
+    $$\text{logit}\overline{Q}_{\epsilon, n, Y}(s, l) =
+    \text{logit}\overline{Q}_{n,Y}(s, l) + \epsilon H_n(s, l),$$
     or an alternative regression model incorporating weights.
-  \item Compute TML estimator $\Psi_n$ of the target parameter, defining update
-    $\overline{Q}_n^{\star}$ of the initial estimate
-    $\overline{Q}_{n, \epsilon_n}$:
+  \item Compute TML estimator $\Psi_n$ of the target parameter, defining the
+    update $\overline{Q}_{n,Y}^{\star}$ of the initial estimate
+    $\overline{Q}_{n,Y}$ to $\overline{Q}_{\epsilon_n, n, Y}$:
     \begin{equation*}\label{tmle}
       \Psi_n = \Psi(P_n^{\star}) = \frac{1}{n} \sum_{i = 1}^n
-        \overline{Q}_n^{\star}(d(S_i, L_i), L_i).
+        \overline{Q}_{n,Y}^{\star}(d(S_i, L_i), L_i).
       \end{equation*}
 \end{enumerate}
 \end{center}
@@ -1315,21 +1332,21 @@ Improved convergence rate~\citep{bibaut2019fast}:
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[c]{Algorithm for IPCW-TML Estimation}
+\begin{frame}[c]{Algorithm for IPCW-TML estimation}
 
 \begin{center}
 \begin{enumerate}\label{ipcwtmle_algo}
   \itemsep8pt
-  \item Using all observed units ($X$), estimate sampling mechanism
-    $\pi(Y, L)$, perhaps using data-adaptive regression methods.
-  \item Using only observed units in the second-stage sample $C = 1$,
-    construct initial estimators $g_n(S,L)$ and $\overline{Q}_n(S,L)$,
-    weighting by the sampling mechanism estimate $\pi_n(Y,L)$.
+  \item Using all observed units, estimate the sampling mechanism
+    $g_{0,B}(Y, L)$, perhaps using data-adaptive regression methods.
+  \item Using only observed units in the phase-two sample $B = 1$,
+    construct initial estimators $g_{n,S}(S,L)$ and $\overline{Q}_{n,Y}(S,L)$,
+    weighting by the sampling mechanism estimate $g_{n,B}(Y,L)$.
   \item With the approach described for the full data case, compute
     $H_n(s_i,l_i)$, and fluctuate submodel via logistic regression.
   \item Compute IPCW-TML estimator $\Psi_n$ of the target parameter, by solving
     the IPCW-augmented EIF estimating equation.
-  \item Iteratively update estimated sampling weights $\pi_n(Y,L)$ and
+  \item Iteratively update estimated sampling weights $g_{n,B}(Y,L)$ and
     IPCW-augmented EIF, updating TMLE in each iteration.
 \end{enumerate}
 \end{center}
