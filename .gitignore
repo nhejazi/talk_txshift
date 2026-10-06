@@ -1,3 +1,14 @@
-*.{aux,log,nav,out,snm,toc,vrb}
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.nav
+*.out
+*.snm
+*.toc
+*.vrb
+*.xdv
 *.pdf
 !/figs/*.pdf

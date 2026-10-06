@@ -73,6 +73,11 @@
 \usepackage{natbib}
 \bibpunct{(}{)}{,}{a}{}{;}
 %\usepackage{bibentry}
+% hyperref >= 2026 stubs \hyper@natlinkbreak as {} under beamer's
+% implicit=false, eating natbib's author-year space; restore natbib's fallback
+\makeatletter
+\def\hyper@natlinkbreak#1#2{#1}
+\makeatother
 
 % highlight name in bibliography
 \usepackage{xstring}
